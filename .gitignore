@@ -1,3 +1,4 @@
+.DS_Store
 .idea/
 vrivka/CMakeLists.txt
 vrivka/a.out.dSYM/
@@ -5,4 +6,8 @@ vrivka/check.sh
 vrivka/cmake-build-debug/
 vrivka/file
 a.out
-history
+.history
+*.o
+*.d
+*.a
+msh

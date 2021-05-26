@@ -14,8 +14,8 @@
 # include <sys/stat.h>
 
 # define	BUFFER_SIZE 4096
-# define	EXEC_F_NAME "a.out"//change to "msh" before final compilation
-# define	HIST_F_NAME "history"//change to ".history" before final compilation
+# define	EXEC_F_NAME "msh"
+# define	HIST_F_NAME ".history"
 
 typedef struct	s_pars
 {
