@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void echo_func(char **av)
+int echo_func(char **av)
 {
 	int i;
 	int c;
@@ -10,7 +10,7 @@ void echo_func(char **av)
 	if (!av[i])
 	{
 		printf("\n");
-		return ;
+		return (0);
 	}
 	if (!ft_strncmp(av[i], "-n\0", 3))
 	{
@@ -25,4 +25,5 @@ void echo_func(char **av)
 	printf("%s", av[i]);
 	if (c != 1)
 		printf("\n");
+	return (0);
 }

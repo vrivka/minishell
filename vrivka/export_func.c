@@ -99,7 +99,7 @@ void exp_env_add(char *env)
 		exit (1);
 }
 
-void export_func(char **av)
+int export_func(char **av)
 {
 	int i;
 	int n;
@@ -119,4 +119,5 @@ void export_func(char **av)
 			i++;
 		}
 	}
+	return (0);
 }

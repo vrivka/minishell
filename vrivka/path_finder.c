@@ -56,14 +56,14 @@ char *path_finder(char *env_path, char *av_null)
 	return(path);
 }
 
-void exec_func(char **av)
+int exec_func(char **av)
 {
 	char *bin_path;
 	int pid;
 //	int fd;
 	int r;
 
-	bin_path = path_finder(env_value(g_msh.envc, "PATH"), "cat");//g_msh.pars->args[0]
+	bin_path = path_finder(env_value(g_msh.envc, "PATH"), g_msh.pars->args[0]);//g_msh.pars->args[0]
 	if (!bin_path)
 		printf("%s\n", strerror(errno));
 	else
@@ -82,4 +82,5 @@ void exec_func(char **av)
 		wait(&r);
 	}
 	free(bin_path);
+	return (0);
 }

@@ -1,13 +1,8 @@
-NAME = a.out
-
-LIBFT_PATH = libft/
-
-LIBFT = $(LIBFT_PATH)libft.a
+NAME = executor.a
 
 HEADER = test.h
 
-SRCS =	main.c \
-        envcpy.c \
+SRCS =	envcpy.c \
         env_finder.c \
         env_func.c \
         pwd_func.c \
@@ -16,33 +11,27 @@ SRCS =	main.c \
         frees_inits.c \
         cd_func.c \
         path_finder.c \
+        executor.c \
         error_func.c
 
 OBJS = $(SRCS:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra
 
-SANFLAGS = -g3 -fsanitize=address
-
 RM = rm -f
 
 all:	$(NAME)
 
-$(NAME):	$(OBJS) $(LIBFT)
-		@gcc $(CFLAGS) -o $(NAME) $(LIBFT) $^
-
-$(LIBFT):
-		@make -C libft
+$(NAME):	$(OBJS)
+		@ar rcs $(NAME) $?
 
 %.o:	%.c
-		@gcc $(CFLAGS) -c $< -o $@ -I.
+		@gcc $(CFLAGS) -c $< -o $@ -I../includes/
 
 clean:
-		@make clean -C libft
 		@$(RM) $(OBJS)
 
 fclean:	clean
-		@make fclean -C libft
 		@$(RM) $(NAME)
 
 re:		fclean all
