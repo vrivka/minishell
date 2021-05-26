@@ -1,14 +1,28 @@
-#ifndef MINISHELL
-# define MINISHELL
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-# include "./libft/libft.h"
+# include "libft.h"
 # include <term.h>
 # include <termios.h>
 # include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <sys/stat.h>
 
 # define	BUFFER_SIZE 4096
 # define	EXEC_F_NAME "a.out"//change to "msh" before final compilation
 # define	HIST_F_NAME "history"//change to ".history" before final compilation
+
+typedef struct	s_pars
+{
+	char		**args;
+	int			n;//index in line
+	int			j;//index of args
+}				t_pars;
 
 typedef struct	s_msh
 {
@@ -23,17 +37,12 @@ typedef struct	s_msh
 	char		**envp;
 	char		*line;//read line
 	int			ret;//saved return code after execve and buidins for $?. 0 by default
+
+	int			pid;
+	t_pars		pars;
 }				t_msh;
 
-//t_msh			g_msh;
-
-typedef struct	s_pars
-{
-	char		**args;
-	int			n;//index in line
-	int			j;//index of args
-}				t_pars;
-
+t_msh			g_msh;
 
 void			term_setup(t_msh *msh);
 int				ft_putchar(int c);
@@ -105,5 +114,29 @@ void			free_d_arr(char **array);
 //    int redir;
 //    struct s_exec *next;
 // } t_exec;
+
+
+
+
+/* Vrivka's functions */
+
+void executor(void);
+void all_init(char **env);
+char **envcpy(char **env);
+int envlen(char **env);
+
+void all_free(void);
+char **free_envc(char **tmp, int i);
+
+char **env_add(char *av);
+char **env_del(char *name);
+
+int export_func(char **av);
+int env_func(void);
+int pwd_func(void);
+int cd_func(char **av);
+int echo_func(char **av);
+int exec_func(char **av);
+int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
 #endif
