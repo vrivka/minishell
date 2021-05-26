@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/vrivka/minishell/cd_func.c
+minishell.h
+/Users/vrivka/minishell/minishell.h
+
+/Users/vrivka/minishell/libft/libft.h
+unistd.h
+-
+stdlib.h
+-
+
+/Users/vrivka/minishell/minishell.h
+unistd.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/wait.h
+-
+errno.h
+-
+libft/libft.h
+/Users/vrivka/minishell/libft/libft.h
+sys/stat.h
+-
+fcntl.h
+-
+

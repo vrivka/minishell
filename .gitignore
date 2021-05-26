@@ -1,0 +1,6 @@
+.idea/
+	vrivka/CMakeLists.txt
+	vrivka/a.out.dSYM/
+	vrivka/check.sh
+	vrivka/cmake-build-debug/
+	vrivka/file
