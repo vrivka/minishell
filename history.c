@@ -1,14 +1,14 @@
 #include "minishell.h"
 
-void	get_history(t_msh *msh, char **av)
+void	get_history(char **av)
 {
 	int		fd;
 	char	*str;
 
-	msh->hist_path = get_hist_path(av);
-	fd = open(msh->hist_path, O_RDONLY | O_CREAT, 0666);//if fd = -1 error
+	g_msh.hist_path = get_hist_path(av);
+	fd = open(g_msh.hist_path, O_RDONLY | O_CREAT, 0666);//if fd = -1 error
 	str = read_hist2str(fd);
-	msh->history = get_hist_array(str);
+	g_msh.history = get_hist_array(str);
 	close(fd);
 }
 
@@ -124,24 +124,24 @@ char	*get_hist_path(char **av)
 	return (path);
 }
 
-void	put_hist2file(t_msh *msh)
+void	put_hist2file(void)
 {
 	int	fd;
 	int	j;
 	int	size;
 
-	fd = open(msh->hist_path, O_WRONLY | O_CREAT | O_TRUNC, 0666);//if fd=-1 error
-	size = count_arr_lines(msh->history);
+	fd = open(g_msh.hist_path, O_WRONLY | O_CREAT | O_TRUNC, 0666);//if fd=-1 error
+	size = count_arr_lines(g_msh.history);
 	j = 0;
-	while (msh->history[j] != NULL)
+	while (g_msh.history[j] != NULL)
 	{
-		write(fd, msh->history[j], ft_strlen(msh->history[j]));
+		write(fd, g_msh.history[j], ft_strlen(g_msh.history[j]));
 		if (j < (size - 1))
 			write(fd, "\n", 1);
 		j++;
 	}
 	close(fd);
-	free_d_arr(msh->history);
+	free_d_arr(g_msh.history);
 }
 
 int		count_arr_lines(char **array)
@@ -154,25 +154,25 @@ int		count_arr_lines(char **array)
 	return (count);
 }
 
-void	insert_nline2hist(t_msh *msh)
+void	insert_nline2hist(void)
 {
 	char	**arr;
 	int		size;
 	int		j;
 
-	size = count_arr_lines(msh->history);
+	size = count_arr_lines(g_msh.history);
 	arr = (char **)ft_calloc(sizeof(char *), (size + 2));//+1 for new line
 	j = 0;
 	while (j < size)
 	{
 		arr[j] = (char *)ft_calloc(sizeof(char), 0);
-		arr[j] = ft_strrewrite(arr[j], msh->history[j]);
+		arr[j] = ft_strrewrite(arr[j], g_msh.history[j]);
 		j++;
 	}
 	arr[j] = (char *)ft_calloc(sizeof(char), 0);
-	arr[j] = ft_strrewrite(arr[j], msh->line);
-	free_d_arr(msh->history);
-	msh->history = arr;
+	arr[j] = ft_strrewrite(arr[j], g_msh.line);
+	free_d_arr(g_msh.history);
+	g_msh.history = arr;
 }
 
 
