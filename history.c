@@ -165,11 +165,11 @@ void	insert_nline2hist(void)
 	j = 0;
 	while (j < size)
 	{
-		arr[j] = (char *)ft_calloc(sizeof(char), 0);
+		arr[j] = (char *)ft_calloc(sizeof(char), 1);
 		arr[j] = ft_strrewrite(arr[j], g_msh.history[j]);
 		j++;
 	}
-	arr[j] = (char *)ft_calloc(sizeof(char), 0);
+	arr[j] = (char *)ft_calloc(sizeof(char), 1);
 	arr[j] = ft_strrewrite(arr[j], g_msh.line);
 	free_d_arr(g_msh.history);
 	g_msh.history = arr;

@@ -195,20 +195,25 @@ void	parser(void)
 	}
 	args2lower(&pars);
 
-	// executor(msh, &pars); ---------------------------------------------for Vlad
-
-	//// test print line & args ////
-	write(1, g_msh.line, ft_strlen(g_msh.line));
-	write(1, "\n", 1);
-	int i;
-	i = 0;
-	while (pars.args[i] != NULL)
+	if (!ft_strlen(pars.args[0]))
+		g_msh.status = 0;
+	else
 	{
-		write(1, pars.args[i], ft_strlen(pars.args[i]));
+		// executor(msh, &pars); ---------------------------------------------for Vlad
+
+		//// test print line & args ////
+		write(1, g_msh.line, ft_strlen(g_msh.line));
 		write(1, "\n", 1);
-		i++;
+		int i;
+		i = 0;
+		while (pars.args[i] != NULL)
+		{
+			write(1, pars.args[i], ft_strlen(pars.args[i]));
+			write(1, "\n", 1);
+			i++;
+		}
+		g_msh.status = 1;
+		free(g_msh.line);
+		////
 	}
-	g_msh.status = 1;
-	free(g_msh.line);
-	////
 }
