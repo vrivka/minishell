@@ -170,50 +170,42 @@ void	enlarge_arg(t_pars *pars)
 	pars->n = 0;
 }
 
+void	semicolon_pars(t_pars *pars)
+{
+	g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+	pars->n = 0;
+}
+
 void	parser(void)
 {
-	t_pars	pars;
+	t_pars	*pars;
 
-	ft_bzero(&pars, sizeof(t_pars));
+	pars = (t_pars *)ft_calloc(sizeof(t_pars), 1);//free
+	pars->args = (char **)ft_calloc(sizeof(char *), 2);//if args = NULL
+	pars->args[pars->j] = (char *)ft_calloc(sizeof(char), 1);//if args[] = NULL
 	g_msh.line = del_start_sp(g_msh.line);
-	pars.args = (char **)ft_calloc(sizeof(char *), 2);//if args = NULL
-	pars.args[pars.j] = (char *)ft_calloc(sizeof(char), 1);//if args[] = NULL
-	while (g_msh.line[pars.n] != '\0')
+	while (g_msh.line[pars->n] != '\0')
 	{
-		if (g_msh.line[pars.n] == '$')
-			dollar_pars(&pars);
-		else if (g_msh.line[pars.n] == '\'')
-			strongquotes_pars(&pars);
-		else if (g_msh.line[pars.n] == '\"')
-			weakquotes_pars(&pars);
-		else if (g_msh.line[pars.n] == '\\')//check if no symbol after '\'
-			backslash_pars(&pars);
-		else if (g_msh.line[pars.n] == ' ')
-			space_pars(&pars);
-		else
-			enlarge_arg(&pars);
-	}
-	args2lower(&pars);
-
-	if (!ft_strlen(pars.args[0]))
-		g_msh.status = 0;
-	else
-	{
-		// executor(msh, &pars); ---------------------------------------------for Vlad
-
-		//// test print line & args ////
-		write(1, g_msh.line, ft_strlen(g_msh.line));
-		write(1, "\n", 1);
-		int i;
-		i = 0;
-		while (pars.args[i] != NULL)
+		if (g_msh.line[pars->n] == '$')
+			dollar_pars(pars);
+		else if (g_msh.line[pars->n] == '\'')
+			strongquotes_pars(pars);
+		else if (g_msh.line[pars->n] == '\"')
+			weakquotes_pars(pars);
+		else if (g_msh.line[pars->n] == '\\')//check if no symbol after '\'
+			backslash_pars(pars);
+		else if (g_msh.line[pars->n] == ' ')
+			space_pars(pars);
+		else if (g_msh.line[pars->n] == ';')
 		{
-			write(1, pars.args[i], ft_strlen(pars.args[i]));
-			write(1, "\n", 1);
-			i++;
+			semicolon_pars(pars);
+			break ;
 		}
-		g_msh.status = 1;
-		free(g_msh.line);
-		////
+		else
+			enlarge_arg(pars);
 	}
+	if (!ft_strlen(g_msh.line))
+		g_msh.pars_status = 0;
+	args2lower(pars);
+	g_msh.pars = pars;
 }

@@ -152,7 +152,33 @@ void	main_loop(void)
 	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
-	parser();
+	g_msh.pars_status = 1;
+	while (g_msh.pars_status)
+	{
+		parser();
+
+			// executor(); ---------------------------------------------for Vlad
+		if (!ft_strlen(g_msh.pars->args[0]))
+			g_msh.status = 0;
+		else
+		{
+			//// test print line & args ////
+			write(1, g_msh.line, ft_strlen(g_msh.line));
+			write(1, "\n", 1);
+			int i;
+			i = 0;
+			while (g_msh.pars->args[i] != NULL)
+			{
+				write(1, g_msh.pars->args[i], ft_strlen(g_msh.pars->args[i]));
+				write(1, "\n", 1);
+				i++;
+			}
+			g_msh.status = 1;
+			free(g_msh.pars);
+			////
+		}
+	}
+	free(g_msh.line);
 }
 
 int		main(int ac, char **av, char **envp)

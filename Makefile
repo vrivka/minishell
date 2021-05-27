@@ -54,4 +54,14 @@ fclean:	clean
 
 re:		fclean all
 
+debug:	gcc -g -Wall -Wextra -Werror \
+		main.c \
+		string_ops.c \
+		d_array_ops.c \
+		history.c \
+		free_ops.c \
+		parser.c \
+		env_ops.c \
+		./libft/libft.a -I./includes -ltermcap
+
 .PHONY: all clean fclean re

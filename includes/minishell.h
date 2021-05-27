@@ -34,12 +34,13 @@ typedef struct	s_msh
 	int			h_index;//current position in history array
 	int			pos;//current position in read line in terminal
 	int			status;//main_loop return status after command execution
+	int			pars_status;
 	char		**envp;
 	char		*line;//read line
 	int			ret;//saved return code after execve and buidins for $?. 0 by default
 
 	int			pid;
-	t_pars		pars;
+	t_pars		*pars;
 }				t_msh;
 
 t_msh			g_msh;
