@@ -57,7 +57,6 @@ void	init_msh(char **av, char **envp)
 	g_msh.status = 1;
 	copy_envs(envp);
 	get_history(av);
-
 }
 
 void	key_loop(void)
@@ -113,13 +112,31 @@ void	key_loop(void)
 			g_msh.line = ft_strrewrite(g_msh.line, g_msh.history[g_msh.h_size - 1]);
 			break;
 		}
+		else if (!ft_strcmp(buf, "\e[D"))//left
+		{
+			if (g_msh.pos > 0)
+			{
+				tputs(tgetstr("le", 0), 1, ft_putchar);
+				g_msh.pos--;
+			}
+		}
+		else if (!ft_strcmp(buf, "\e[C"))//right
+		{
+			if (g_msh.pos < ft_strlen(g_msh.history[g_msh.h_index]))
+			{
+				tputs(tgetstr("nd", 0), 1, ft_putchar);
+				g_msh.pos++;
+			}
+		}
 		else
 		{
-			if (ft_isprint(buf[0]))
+			if (ft_isprint(buf[0]))//print
 			{
+				tputs(tgetstr("im", 0), 1, ft_putchar);
 				g_msh.history[g_msh.h_index] = ft_strjoin_fr(g_msh.history[g_msh.h_index], buf);
 				g_msh.pos++;
 				write (1, buf, len);
+				tputs(tgetstr("ei", 0), 1, ft_putchar);
 			}
 		}
 	}
@@ -133,7 +150,6 @@ void	main_loop(void)
 	g_msh.h_index = g_msh.h_size - 1;
 	write(1, "msh$ ", 5);
 	tputs(save_cursor, 1, ft_putchar);
-	// tputs(tgetstr("im", 0), 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
 	parser();
