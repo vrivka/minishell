@@ -59,6 +59,7 @@ void	init_msh(char **av, char **envp)
 	get_history(av);
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
+	g_msh.pars.bin_path = NULL;
 }
 
 void	key_loop(void)

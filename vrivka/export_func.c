@@ -57,19 +57,19 @@ void print_exp(void)
 	int i;
 
 	i = 0;
-	while (g_msh.envc[i])
+	while (g_msh.envp[i])
 		i++;
 	envc = (char **)malloc(sizeof(char *) * (i));
 	if (!envc)
-		return ;
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
-	while (g_msh.envc[i])
+	while (g_msh.envp[i])
 	{
-		if (!strncmp(g_msh.envc[i], "_=", 2))
+		if (!strncmp(g_msh.envp[i], "_=", 2))
 			i++;
 		else
 		{
-			envc[i] = g_msh.envc[i];
+			envc[i] = g_msh.envp[i];
 			i++;
 		}
 	}
@@ -88,15 +88,24 @@ void change_env(const char *env, int n)
 		i++;
 	if (!env[i])
 		return ;
-	free(g_msh.envc[n]);
-	g_msh.envc[n] = ft_strdup(env);
+	free(g_msh.envp[n]);
+	g_msh.envp[n] = ft_strdup(env);
+	if (!g_msh.envp[n])
+		error_func(ERROR_MEM, 1, 0, NULL);
 }
 
 void exp_env_add(char *env)
 {
-	g_msh.envc = env_add(env);
-	if (!g_msh.envc)
-		exit (1);
+	g_msh.envp = env_add(env);
+	if (!g_msh.envp)
+		error_func(ERROR_MEM, 1, 0, NULL);
+}
+
+int check_args(char *arg)
+{
+	if (ft_isalpha(arg[0]))
+		return (0);
+	return (1);
 }
 
 int export_func(char **av)
@@ -111,7 +120,9 @@ int export_func(char **av)
 		i = 1;
 		while (av[i])
 		{
-			n = env_finder(g_msh.envc, av[i]);
+			if (check_args(av[i]))
+				return (error_func("minishell: export: %s: not a valid identifier\n", 1, 1, av[i]));
+			n = env_finder(g_msh.envp, av[i]);
 			if (n >= 0)
 				change_env(av[i], n);
 			else

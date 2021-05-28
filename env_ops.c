@@ -53,7 +53,7 @@ char	*env_val_cut(const char *env)
 	}
 	tmp = (char *)malloc(sizeof(char) * (j + 1));
 	if (!tmp)
-		return (0);
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	while (env[k])
 	{

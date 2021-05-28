@@ -26,7 +26,7 @@ $(NAME):	$(OBJS)
 		@ar rcs $(NAME) $?
 
 %.o:	%.c
-		@gcc $(CFLAGS) -c $< -o $@ -I../includes/
+		@gcc $(CFLAGS) -c $< -o $@ -I../includes
 
 clean:
 		@$(RM) $(OBJS)
