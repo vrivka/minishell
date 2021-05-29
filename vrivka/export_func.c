@@ -9,6 +9,22 @@ void swap_string(char **s1, char **s2)
 	*s2 = tmp;
 }
 
+int my_strcmp(const char *s1, const char *s2)
+{
+	int i;
+	int r;
+
+	i = 0;
+	while (s1[i])
+	{
+		r = (unsigned char)s1[i] - (unsigned char)s2[i];
+		if (r)
+			return (r);
+		i++;
+	}
+	return (r);
+}
+
 void sort_env(char **exp)
 {
 	int i;
@@ -20,7 +36,7 @@ void sort_env(char **exp)
 		j = i + 1;
 		while (exp[j])
 		{
-			if (strcmp(exp[i], exp[j]) > 0)
+			if (my_strcmp(exp[i], exp[j]) > 0)
 				swap_string(&exp[i], &exp[j]);
 			j++;
 		}
@@ -38,6 +54,11 @@ void print_export(char **exp)
 	while (exp[a])
 	{
 		i = 0;
+		if (!ft_strncmp(exp[a], "_=", 2))
+		{
+			a++;
+			continue ;
+		}
 		while (exp[a][i] != '=' && exp[a][i] != 0)
 			i++;
 		if (exp[a][i] == 0)
@@ -54,29 +75,11 @@ void print_export(char **exp)
 void print_exp(void)
 {
 	char **envc;
-	int i;
 
-	i = 0;
-	while (g_msh.envp[i])
-		i++;
-	envc = (char **)malloc(sizeof(char *) * (i));
-	if (!envc)
-		error_func(ERROR_MEM, 1, 0, NULL);
-	i = 0;
-	while (g_msh.envp[i])
-	{
-		if (!strncmp(g_msh.envp[i], "_=", 2))
-			i++;
-		else
-		{
-			envc[i] = g_msh.envp[i];
-			i++;
-		}
-	}
-	envc[i] = 0;
+	envc = envcpy(g_msh.envp);
 	sort_env(envc);
 	print_export(envc);
-	free(envc);
+	free_envc(envc, envlen(envc));
 }
 
 void change_env(const char *env, int n)

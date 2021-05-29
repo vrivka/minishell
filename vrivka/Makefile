@@ -12,7 +12,10 @@ SRCS =	envcpy.c \
         cd_func.c \
         path_finder.c \
         executor.c \
-        error_func.c
+        error_func.c \
+        exec_func.c \
+        unset_func.c \
+        exit_func.c
 
 OBJS = $(SRCS:.c=.o)
 

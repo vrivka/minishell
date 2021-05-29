@@ -127,6 +127,7 @@ void executor(void);
 void all_init(char **env);
 char **envcpy(char **env);
 int envlen(char **env);
+int check_args(char *arg);
 
 void all_free(void);
 char **free_envc(char **tmp, int i);
@@ -140,6 +141,8 @@ int env_func(void);
 int pwd_func(void);
 int cd_func(char **av);
 int echo_func(char **av);
+int unset_func(char **av);
+int exit_func(char **av);
 int exec_func(char **av);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
