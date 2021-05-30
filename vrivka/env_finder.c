@@ -77,3 +77,15 @@ char **env_del(char *name)
 	free_envc(g_msh.envp, l);
 	return (tmp);
 }
+
+int shlvl(void)
+{
+	char *tmp;
+	int i;
+
+	tmp = env_value(g_msh.envp, "SHLVL");
+	if (!tmp)
+		return (1);
+	i = ft_atoi(tmp) + 1;
+	return (i);
+}

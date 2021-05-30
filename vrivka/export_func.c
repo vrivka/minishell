@@ -9,7 +9,7 @@ void swap_string(char **s1, char **s2)
 	*s2 = tmp;
 }
 
-int my_strcmp(const char *s1, const char *s2)
+int my_strcmp(const char *s1, const char *s2) //заменить
 {
 	int i;
 	int r;
@@ -36,7 +36,7 @@ void sort_env(char **exp)
 		j = i + 1;
 		while (exp[j])
 		{
-			if (my_strcmp(exp[i], exp[j]) > 0)
+			if (my_strcmp(exp[i], exp[j]) > 0) //заменить
 				swap_string(&exp[i], &exp[j]);
 			j++;
 		}

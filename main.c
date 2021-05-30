@@ -53,6 +53,10 @@ void	copy_envs(char **envp)
 
 void	init_msh(char **av, char **envp)
 {
+	char **tmp;
+	char *stri;
+
+	g_msh.pwd = NULL;
 	ft_bzero(&g_msh, sizeof(t_msh));
 	g_msh.status = 1;
 	copy_envs(envp);
@@ -60,6 +64,13 @@ void	init_msh(char **av, char **envp)
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
 	g_msh.pars.bin_path = NULL;
+	tmp = ft_split("export OLDPWD SHLVL", ' ');
+	free(tmp[2]);
+	stri = ft_itoa(shlvl());
+	tmp[2] = ft_strjoin("SHLVL=", stri);
+	free(stri);
+	export_func(tmp);
+	free_envc(tmp, 2);
 }
 
 void	key_loop(void)

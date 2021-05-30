@@ -135,6 +135,7 @@ char **free_envc(char **tmp, int i);
 char **env_add(char *av);
 char **env_del(char *name);
 char *path_finder(char *env_path, char *av_null);
+int shlvl(void);
 
 int export_func(char **av);
 int env_func(void);
