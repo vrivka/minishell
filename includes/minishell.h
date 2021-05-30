@@ -20,6 +20,7 @@
 
 typedef struct	s_pars
 {	
+	char		*bin_path;
 	char		**args;
 	int			n;//index in line
 	int			j;//index of args
