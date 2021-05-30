@@ -19,8 +19,7 @@
 # define 	ERROR_MEM	"minishell: Cannot allocate memory"
 
 typedef struct	s_pars
-{
-	char		*bin_path;
+{	
 	char		**args;
 	int			n;//index in line
 	int			j;//index of args
