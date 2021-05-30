@@ -15,7 +15,7 @@ int error_func(char *error_str, int exit_code, int ex_ret, char *arg)
 	}
 	else
 	{
-		printf("minishell: %s: %s: %s\n", g_msh.pars.args[0], arg, strerror(errno));
+		printf("minishell: %s: %s: %s\n", g_msh.pars->args[0], arg, strerror(errno));
 		if (ex_ret)
 			return (exit_code);
 		else
