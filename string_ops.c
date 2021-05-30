@@ -175,3 +175,16 @@ char	**ft_devide_str(char *s, int pos)
 	}
 	return (arr);
 }
+
+char	*ft_del_chinstr(char *s, int pos)
+{
+	char	**arr;
+	char	*tmp;
+
+	arr = ft_devide_str(s, pos);
+	arr[0] = ft_strdellstch_fr(arr[0]);
+	tmp = ft_strjoin(arr[0], arr[1]);
+	free_d_arr(arr);
+	free(s);
+	return (tmp);
+}

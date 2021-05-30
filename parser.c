@@ -204,14 +204,6 @@ void	parser(void)
 		else
 			enlarge_arg(pars);
 	}
-	if (!ft_strlen(g_msh.line))
-		g_msh.pars_status = 0;
 	args2lower(pars);
 	g_msh.pars = pars;
-
-	g_msh.pars->bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pars->args[0]);
-	//executor();// ---------------------------------------------for Vlad
-//	free(g_msh.pars->bin_path);
-//	free_envc(g_msh.pars->args, envlen(g_msh.pars->args));
-//	free(g_msh.line);
 }

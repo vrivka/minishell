@@ -111,7 +111,7 @@ void	key_loop(void)
 		{
 			if (g_msh.pos > 0)
 			{
-				g_msh.history[g_msh.h_index] = ft_strdellstch_fr(g_msh.history[g_msh.h_index]);
+				g_msh.history[g_msh.h_index] = ft_del_chinstr(g_msh.history[g_msh.h_index], g_msh.pos);
 				tputs(cursor_left, 1, ft_putchar);
 				tputs(tgetstr("dc", 0), 1, ft_putchar);
 				g_msh.pos--;
@@ -170,27 +170,27 @@ void	main_loop(void)
 	while (g_msh.pars_status)
 	{
 		parser();
-
-		executor(); //---------------------------------------------for Vlad
+		//// test print line & args ////
+		// write(1, g_msh.line, ft_strlen(g_msh.line));
+		// write(1, "\n", 1);
+		// int i;
+		// i = 0;
+		// while (g_msh.pars->args[i] != NULL)
+		// {
+		// 	write(1, g_msh.pars->args[i], ft_strlen(g_msh.pars->args[i]));
+		// 	write(1, "\n", 1);
+		// 	i++;
+		// }
+		// g_msh.status = 1;
+		// free(g_msh.pars);
+		////
 		if (!ft_strlen(g_msh.pars->args[0]))
-			g_msh.status = 0;
-		else
-		{
-			//// test print line & args ////
-			write(1, g_msh.line, ft_strlen(g_msh.line));
-			write(1, "\n", 1);
-			int i;
-			i = 0;
-			while (g_msh.pars->args[i] != NULL)
-			{
-				write(1, g_msh.pars->args[i], ft_strlen(g_msh.pars->args[i]));
-				write(1, "\n", 1);
-				i++;
-			}
-			g_msh.status = 1;
-			free(g_msh.pars);
-			////
-		}
+			break ;
+		g_msh.pars->bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pars->args[0]);// инициализация
+		executor(); //---------------------------------------------for Vlad
+
+		free(g_msh.pars->bin_path);
+		free_d_arr(g_msh.pars->args);
 	}
 	free(g_msh.line);
 }
@@ -205,3 +205,6 @@ int		main(int ac, char **av, char **envp)
 	put_hist2file();// final clean write history to file
 	return 0;
 }
+
+//когда {echo 123 ;} добавляет пустую строку в аrgs
+//
