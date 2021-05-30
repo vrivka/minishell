@@ -154,26 +154,26 @@ int		count_arr_lines(char **array)
 	return (count);
 }
 
-void	insert_nline2hist(void)
-{
-	char	**arr;
-	int		size;
-	int		j;
+// void	insert_nline2hist(void)
+// {
+// 	char	**arr;
+// 	int		size;
+// 	int		j;
 
-	size = count_arr_lines(g_msh.history);
-	arr = (char **)ft_calloc(sizeof(char *), (size + 2));//+1 for new line
-	j = 0;
-	while (j < size)
-	{
-		arr[j] = (char *)ft_calloc(sizeof(char), 0);
-		arr[j] = ft_strrewrite(arr[j], g_msh.history[j]);
-		j++;
-	}
-	arr[j] = (char *)ft_calloc(sizeof(char), 0);
-	arr[j] = ft_strrewrite(arr[j], g_msh.line);
-	free_d_arr(g_msh.history);
-	g_msh.history = arr;
-}
+// 	size = count_arr_lines(g_msh.history);
+// 	arr = (char **)ft_calloc(sizeof(char *), (size + 2));//+1 for new line
+// 	j = 0;
+// 	while (j < size)
+// 	{
+// 		arr[j] = (char *)ft_calloc(sizeof(char), 1);
+// 		arr[j] = ft_strrewrite(arr[j], g_msh.history[j]);
+// 		j++;
+// 	}
+// 	arr[j] = (char *)ft_calloc(sizeof(char), 1);
+// 	arr[j] = ft_strrewrite(arr[j], g_msh.line);
+// 	free_d_arr(g_msh.history);
+// 	g_msh.history = arr;
+// }
 
 
 

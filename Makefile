@@ -1,4 +1,4 @@
-NAME = minishell
+NAME = msh
 
 LIBFT_PATH = libft/
 
@@ -11,12 +11,12 @@ EXEC = $(EXEC_PATH)executor.a
 PARS = pars.a
 
 SRCS = main.c \
-       string_ops.c \
-       d_array_ops.c \
-       history.c \
-       free_ops.c \
-       parser.c \
-       env_ops.c
+		string_ops.c \
+		d_array_ops.c \
+		history.c \
+		free_ops.c \
+		parser.c \
+		env_ops.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -53,5 +53,15 @@ fclean:	clean
 		@$(RM) $(NAME)
 
 re:		fclean all
+
+debug:	gcc -g -Wall -Wextra -Werror \
+		main.c \
+		string_ops.c \
+		d_array_ops.c \
+		history.c \
+		free_ops.c \
+		parser.c \
+		env_ops.c \
+		./libft/libft.a -I./includes -ltermcap
 
 .PHONY: all clean fclean re

@@ -8,7 +8,7 @@ char	*del_start_sp(char *s1)
 	i = 0;
 	while (s1[i] == ' ')
 		i++;
-	s2 = ft_cutline(s1, i);
+	s2 = ft_cutstr_begin(s1, i);
 	return (s2);
 }
 
@@ -36,7 +36,7 @@ char	*get_env_name(void)
 		name[i] = g_msh.line[i];
 		i++;
 	}
-	g_msh.line = ft_cutline(g_msh.line, i);
+	g_msh.line = ft_cutstr_begin(g_msh.line, i);
 	return (name);
 }
 
@@ -64,7 +64,7 @@ char	*get_sq_str(void)
 		str[i] = g_msh.line[i];
 		i++;
 	}
-	g_msh.line = ft_cutline(g_msh.line, (i + 1));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (i + 1));
 	return (str);
 }
 
@@ -85,7 +85,7 @@ void	dollar_pars(t_pars *pars)
 	char	*env_name;
 	char	*env_val;
 
-	g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 	pars->n = 0;
 	env_name = get_env_name();
 	env_val = env_value(g_msh.envp, env_name);
@@ -100,7 +100,7 @@ void	strongquotes_pars(t_pars *pars)
 {
 	char	*sq_str;
 
-	g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 	pars->n = 0;
 	//check for 2nd ' -> search line
 	sq_str = get_sq_str();
@@ -111,42 +111,42 @@ void	strongquotes_pars(t_pars *pars)
 
 void	weakquotes_pars(t_pars *pars)
 {
-	g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 	pars->n = 0;
 	while (g_msh.line[pars->n] != '\"')
 	{
 		if (g_msh.line[pars->n] == '\\' && g_msh.line[pars->n + 1] == '\\')
 		{
-			g_msh.line = ft_cutline(g_msh.line, (pars->n + 2));
+			g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 2));
 			pars->args[pars->j] = ft_strjoin_fr(pars->args[pars->j], "\\");
 			pars->n = 0;
 		}
 		else if (g_msh.line[pars->n] == '\\' && g_msh.line[pars->n + 1] == '\"')
 		{
-			g_msh.line = ft_cutline(g_msh.line, (pars->n + 2));
+			g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 2));
 			pars->args[pars->j] = ft_strjoin_fr(pars->args[pars->j], "\"");
 			pars->n = 0;
 		}
 		else if (g_msh.line[pars->n] == '\\' && g_msh.line[pars->n + 1] == '$')
 		{
-			g_msh.line = ft_cutline(g_msh.line, (pars->n + 2));
+			g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 2));
 			pars->args[pars->j] = ft_strjoin_fr(pars->args[pars->j], "$");
 			pars->n = 0;
 		}
 		else
 		{
 			pars->args[pars->j] = ft_add_char2str(pars->args[pars->j], g_msh.line[pars->n]);
-			g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+			g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 			pars->n = 0;
 		}
 	}
-	g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 }
 
 void	backslash_pars(t_pars *pars)
 {
 	pars->args[pars->j] = ft_add_char2str(pars->args[pars->j], g_msh.line[1]);
-	g_msh.line = ft_cutline(g_msh.line, (pars->n + 2));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 2));
 	pars->n = 0;
 }
 
@@ -159,38 +159,55 @@ void	space_pars(t_pars *pars)
 		pars->args = add_str2darr(pars->args);
 		pars->j++;
 	}
-	g_msh.line = ft_cutline(g_msh.line, pars->n);
+	g_msh.line = ft_cutstr_begin(g_msh.line, pars->n);
 	pars->n = 0;
 }
 
 void	enlarge_arg(t_pars *pars)
 {
 	pars->args[pars->j] = ft_add_char2str(pars->args[pars->j], g_msh.line[pars->n]);
-	g_msh.line = ft_cutline(g_msh.line, (pars->n + 1));
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
+	pars->n = 0;
+}
+
+void	semicolon_pars(t_pars *pars)
+{
+	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 	pars->n = 0;
 }
 
 void	parser(void)
 {
-	t_pars	pars;
+	t_pars	*pars;
 
-	ft_bzero(&pars, sizeof(t_pars));
+	pars = (t_pars *)ft_calloc(sizeof(t_pars), 1);//free
+	pars->args = (char **)ft_calloc(sizeof(char *), 2);//if args = NULL
+	pars->args[pars->j] = (char *)ft_calloc(sizeof(char), 1);//if args[] = NULL
 	g_msh.line = del_start_sp(g_msh.line);
-	pars.args = (char **)ft_calloc(sizeof(char *), 2);//if args = NULL
-	pars.args[pars.j] = (char *)ft_calloc(sizeof(char), 1);//if args[] = NULL
-	while (g_msh.line[pars.n] != '\0')
+	while (g_msh.line[pars->n] != '\0')
 	{
-		if (g_msh.line[pars.n] == '$')
-			dollar_pars(&pars);
-		else if (g_msh.line[pars.n] == '\'')
-			strongquotes_pars(&pars);
-		else if (g_msh.line[pars.n] == '\"')
-			weakquotes_pars(&pars);
-		else if (g_msh.line[pars.n] == '\\')//check if no symbol after '\'
-			backslash_pars(&pars);
-		else if (g_msh.line[pars.n] == ' ')
-			space_pars(&pars);
+		if (g_msh.line[pars->n] == '$')
+			dollar_pars(pars);
+		else if (g_msh.line[pars->n] == '\'')
+			strongquotes_pars(pars);
+		else if (g_msh.line[pars->n] == '\"')
+			weakquotes_pars(pars);
+		else if (g_msh.line[pars->n] == '\\')//check if no symbol after '\'
+			backslash_pars(pars);
+		else if (g_msh.line[pars->n] == ' ')
+			space_pars(pars);
+		else if (g_msh.line[pars->n] == ';')
+		{
+			semicolon_pars(pars);
+			break ;
+		}
 		else
+			enlarge_arg(pars);
+	}
+	if (!ft_strlen(g_msh.line))
+		g_msh.pars_status = 0;
+	args2lower(pars);
+	g_msh.pars = pars;
 			enlarge_arg(&pars);
 	}
 	args2lower(&pars);

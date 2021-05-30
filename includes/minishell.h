@@ -14,8 +14,8 @@
 # include <sys/stat.h>
 
 # define	BUFFER_SIZE 4096
-# define	EXEC_F_NAME "a.out"//change to "msh" before final compilation
-# define	HIST_F_NAME "history"//change to ".history" before final compilation
+# define	EXEC_F_NAME "msh"
+# define	HIST_F_NAME ".history"
 # define 	ERROR_MEM	"minishell: Cannot allocate memory"
 
 typedef struct	s_pars
@@ -36,13 +36,14 @@ typedef struct	s_msh
 	int			h_index;//current position in history array
 	int			pos;//current position in read line in terminal
 	int			status;//main_loop return status after command execution
+	int			pars_status;
 	char		**envp;
 	char		*line;//read line
 	int			ret;//saved return code after execve and buidins for $?. 0 by default
 
 	int			pid;
+	t_pars		*pars;
 	char		*pwd;
-	t_pars		pars;
 }				t_msh;
 
 t_msh			g_msh;
@@ -80,6 +81,7 @@ void			strongquotes_pars(t_pars *pars);
 void			weakquotes_pars(t_pars *pars);
 void			backslash_pars(t_pars *pars);
 void			space_pars(t_pars *pars);
+void			semicolon_pars(t_pars *pars);
 void			enlarge_arg(t_pars *pars);
 //
 
@@ -88,8 +90,11 @@ char			*ft_strnew(size_t n);
 char			*ft_strjoin_fr(char *s1, char *s2);
 char			*ft_strdellstch_fr(char *s1);
 char			*ft_strrewrite(char *s1, char *s2);
-char			*ft_cutline(char *s1, int i);//cut line by index from beginning
+char			*ft_cutstr_begin(char *s, int i);//cut beginning of line by index
+char			*ft_cutstr_end(char *s, int i);//cut ending of line by index
 char			*ft_add_char2str(char *s, int c);//add symbol at the end of the string
+char			*ft_ins_ch2str(char *s, int c, int pos);//insert char into string by index
+char			**ft_devide_str(char *s, int pos);//split string to strings in a certain place
 //
 
 //d_array_ops - operations with double array

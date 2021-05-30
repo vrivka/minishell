@@ -80,7 +80,7 @@ char	*ft_strrewrite(char *s1, char *s2)//target/source
 	return (s);
 }
 
-char	*ft_cutline(char *s1, int i)
+char	*ft_cutstr_begin(char *s1, int i)
 {
 	char	*s2;
 	int		len;
@@ -97,6 +97,22 @@ char	*ft_cutline(char *s1, int i)
 	}
 	free(s1);
 	return (s2);
+}
+
+char	*ft_cutstr_end(char *s, int pos)
+{
+	char	*tmp;
+	int		i;
+
+	tmp = (char *)ft_calloc(sizeof(char), pos);
+	i = 0;
+	while (i < pos)
+	{
+		tmp[i] = s[i];
+		i++;
+	}
+	free(s);
+	return (tmp);
 }
 
 char	*ft_add_char2str(char *s, int c)
@@ -116,4 +132,46 @@ char	*ft_add_char2str(char *s, int c)
 	new[i] = c;
 	free(s);
 	return (new);
+}
+
+char	*ft_ins_ch2str(char *s, int c, int pos)
+{
+	char	**arr;
+	char	*tmp;
+
+	arr = ft_devide_str(s, pos);
+	arr[0] = ft_add_char2str(arr[0], c);
+	tmp = ft_strjoin(arr[0], arr[1]);
+	free_d_arr(arr);
+	free(s);
+	return (tmp);
+}
+
+char	**ft_devide_str(char *s, int pos)
+{
+	char	**arr;
+	int		i;
+	int		j;
+	int		len;
+
+	len = ft_strlen(s);
+	arr = (char **)ft_calloc(sizeof(char *), 3);
+	arr[0] = (char *)ft_calloc(sizeof(char), (pos + 1));
+	arr[1] = (char *)ft_calloc(sizeof(char), (len - pos  + 1));
+	i = 0;
+	j = 0;
+	while (i < pos)
+	{
+		arr[0][j] = s[i];
+		i++;
+		j++;
+	}
+	j = 0;
+	while (i < len)
+	{
+		arr[1][j] = s[i];
+		i++;
+		j++;
+	}
+	return (arr);
 }

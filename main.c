@@ -87,13 +87,12 @@ void	key_loop(void)
 			if (g_msh.h_index >= 0)
 			{
 				g_msh.pos = 0;
+				if (g_msh.h_index > 0)
+					g_msh.h_index--;
 				tputs(restore_cursor, 1, ft_putchar);
 				tputs(tgetstr("ce", 0), 1, ft_putchar);
 				write(1, g_msh.history[g_msh.h_index], ft_strlen(g_msh.history[g_msh.h_index]));
 				g_msh.pos += ft_strlen(g_msh.history[g_msh.h_index]);
-				g_msh.line = ft_strrewrite(g_msh.line, g_msh.history[g_msh.h_index]);
-				if (g_msh.h_index > 0)
-					g_msh.h_index--;
 			}
 		}
 		else if (!ft_strcmp(buf, "\e[B"))//down
@@ -101,20 +100,19 @@ void	key_loop(void)
 			if (g_msh.h_index < g_msh.h_size)
 			{
 				g_msh.pos = 0;
+				if (g_msh.h_index < (g_msh.h_size - 1))
+					g_msh.h_index++;
 				tputs(restore_cursor, 1, ft_putchar);
 				tputs(tgetstr("ce", 0), 1, ft_putchar);
 				write(1, g_msh.history[g_msh.h_index], ft_strlen(g_msh.history[g_msh.h_index]));
 				g_msh.pos += ft_strlen(g_msh.history[g_msh.h_index]);
-				g_msh.line = ft_strrewrite(g_msh.line, g_msh.history[g_msh.h_index]);
-				if (g_msh.h_index < (g_msh.h_size - 1))
-					g_msh.h_index++;
 			}
 		}
 		else if (!ft_strcmp(buf, "\177"))//backspace
 		{
 			if (g_msh.pos > 0)
 			{
-				g_msh.line = ft_strdellstch_fr(g_msh.line);
+				g_msh.history[g_msh.h_index] = ft_strdellstch_fr(g_msh.history[g_msh.h_index]);
 				tputs(cursor_left, 1, ft_putchar);
 				tputs(tgetstr("dc", 0), 1, ft_putchar);
 				g_msh.pos--;
@@ -123,14 +121,37 @@ void	key_loop(void)
 		else if (!ft_strcmp(buf, "\t"))//tab
 			continue ;
 		else if (!ft_strcmp(buf, "\n"))//enter
+		{
+			g_msh.history[g_msh.h_size - 1] = ft_strrewrite(g_msh.history[g_msh.h_size - 1], g_msh.history[g_msh.h_index]);
+			g_msh.line = ft_strrewrite(g_msh.line, g_msh.history[g_msh.h_size - 1]);
+			g_msh.pos = 0;
 			break;
+		}
+		else if (!ft_strcmp(buf, "\e[D"))//left
+		{
+			if (g_msh.pos > 0)
+			{
+				tputs(tgetstr("le", 0), 1, ft_putchar);
+				g_msh.pos--;
+			}
+		}
+		else if (!ft_strcmp(buf, "\e[C"))//right
+		{
+			if (g_msh.pos < ft_strlen(g_msh.history[g_msh.h_index]))
+			{
+				tputs(tgetstr("nd", 0), 1, ft_putchar);
+				g_msh.pos++;
+			}
+		}
 		else
 		{
-			if (ft_isprint(buf[0]))
+			if (ft_isprint(buf[0]))//print
 			{
-				g_msh.line = ft_strjoin_fr(g_msh.line, buf);
+				tputs(tgetstr("im", 0), 1, ft_putchar);
+				g_msh.history[g_msh.h_index] = ft_ins_ch2str(g_msh.history[g_msh.h_index], buf[0], g_msh.pos);
 				g_msh.pos++;
 				write (1, buf, len);
+				tputs(tgetstr("ei", 0), 1, ft_putchar);
 			}
 		}
 	}
@@ -139,15 +160,40 @@ void	key_loop(void)
 void	main_loop(void)
 {
 	g_msh.line = (char *)ft_calloc(sizeof(char), 1);
+	g_msh.history = add_str2darr(g_msh.history);
+	g_msh.h_size = count_arr_lines(g_msh.history);
+	g_msh.h_index = g_msh.h_size - 1;
 	write(1, "msh$ ", 5);
 	tputs(save_cursor, 1, ft_putchar);
-	// tputs(tgetstr("im", 0), 1, ft_putchar);
 	key_loop();
-	insert_nline2hist();
-	// msh->history = add_str2darr(msh->history);
-	g_msh.h_size++;
 	write(1, "\n", 1);
-	parser();
+	g_msh.pars_status = 1;
+	while (g_msh.pars_status)
+	{
+		parser();
+
+			// executor(); ---------------------------------------------for Vlad
+		if (!ft_strlen(g_msh.pars->args[0]))
+			g_msh.status = 0;
+		else
+		{
+			//// test print line & args ////
+			write(1, g_msh.line, ft_strlen(g_msh.line));
+			write(1, "\n", 1);
+			int i;
+			i = 0;
+			while (g_msh.pars->args[i] != NULL)
+			{
+				write(1, g_msh.pars->args[i], ft_strlen(g_msh.pars->args[i]));
+				write(1, "\n", 1);
+				i++;
+			}
+			g_msh.status = 1;
+			free(g_msh.pars);
+			////
+		}
+	}
+	free(g_msh.line);
 }
 
 int		main(int ac, char **av, char **envp)
