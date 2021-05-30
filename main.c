@@ -110,6 +110,7 @@ void	key_loop(void)
 		{
 			g_msh.history[g_msh.h_size - 1] = ft_strrewrite(g_msh.history[g_msh.h_size - 1], g_msh.history[g_msh.h_index]);
 			g_msh.line = ft_strrewrite(g_msh.line, g_msh.history[g_msh.h_size - 1]);
+			g_msh.pos = 0;
 			break;
 		}
 		else if (!ft_strcmp(buf, "\e[D"))//left
@@ -133,7 +134,7 @@ void	key_loop(void)
 			if (ft_isprint(buf[0]))//print
 			{
 				tputs(tgetstr("im", 0), 1, ft_putchar);
-				g_msh.history[g_msh.h_index] = ft_strjoin_fr(g_msh.history[g_msh.h_index], buf);
+				g_msh.history[g_msh.h_index] = ft_ins_ch2str(g_msh.history[g_msh.h_index], buf[0], g_msh.pos);
 				g_msh.pos++;
 				write (1, buf, len);
 				tputs(tgetstr("ei", 0), 1, ft_putchar);
