@@ -95,6 +95,7 @@ char			*ft_cutstr_end(char *s, int i);//cut ending of line by index
 char			*ft_add_char2str(char *s, int c);//add symbol at the end of the string
 char			*ft_ins_ch2str(char *s, int c, int pos);//insert char into string by index
 char			**ft_devide_str(char *s, int pos);//split string to strings in a certain place
+char			*ft_del_chinstr(char *s, int pos);//delete symbol before cursor (backspace)
 //
 
 //d_array_ops - operations with double array

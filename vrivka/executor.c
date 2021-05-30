@@ -2,7 +2,6 @@
 
 void executor(void)
 {
-	printf("%s\n", g_msh.pars->bin_path);
 	if (!ft_strncmp(g_msh.pars->args[0], "echo", 5))
 		g_msh.ret = echo_func(g_msh.pars->args);
 	else if (!ft_strncmp(g_msh.pars->args[0], "cd", 3))
