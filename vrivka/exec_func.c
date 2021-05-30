@@ -8,7 +8,7 @@ int exec_func(char **av)
 	g_msh.pid = fork();
 	if (g_msh.pid == 0)
 	{
-		r = execve(g_msh.pars.bin_path, av, g_msh.envp);
+		r = execve(g_msh.pars->bin_path, av, g_msh.envp);
 		exit(r);
 	}
 	else

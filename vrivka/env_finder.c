@@ -87,5 +87,6 @@ int shlvl(void)
 	if (!tmp)
 		return (1);
 	i = ft_atoi(tmp) + 1;
+	free(tmp);
 	return (i);
 }

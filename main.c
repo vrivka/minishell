@@ -63,7 +63,6 @@ void	init_msh(char **av, char **envp)
 	get_history(av);
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
-	g_msh.pars.bin_path = NULL;
 	tmp = ft_split("export OLDPWD SHLVL", ' ');
 	free(tmp[2]);
 	stri = ft_itoa(shlvl());
@@ -172,7 +171,7 @@ void	main_loop(void)
 	{
 		parser();
 
-			// executor(); ---------------------------------------------for Vlad
+		executor(); //---------------------------------------------for Vlad
 		if (!ft_strlen(g_msh.pars->args[0]))
 			g_msh.status = 0;
 		else
