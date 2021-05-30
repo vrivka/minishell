@@ -68,10 +68,10 @@ FLAGS = -Wall -Wextra -Werror
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	ar rcs $(NAME) $?
+	@ar rcs $(NAME) $?
 
 %.o : %.c
-	gcc $(FLAGS) -c $< -o $@ -MD
+	@gcc $(FLAGS) -c $< -o $@ -MD
 
 include $(wildcard $(D_FILES))
 

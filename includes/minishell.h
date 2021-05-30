@@ -16,9 +16,11 @@
 # define	BUFFER_SIZE 4096
 # define	EXEC_F_NAME "msh"
 # define	HIST_F_NAME ".history"
+# define 	ERROR_MEM	"minishell: Cannot allocate memory"
 
 typedef struct	s_pars
 {
+	char		*bin_path;
 	char		**args;
 	int			n;//index in line
 	int			j;//index of args
@@ -41,6 +43,7 @@ typedef struct	s_msh
 
 	int			pid;
 	t_pars		*pars;
+	char		*pwd;
 }				t_msh;
 
 t_msh			g_msh;
@@ -129,18 +132,23 @@ void executor(void);
 void all_init(char **env);
 char **envcpy(char **env);
 int envlen(char **env);
+int check_args(char *arg);
 
 void all_free(void);
 char **free_envc(char **tmp, int i);
 
 char **env_add(char *av);
 char **env_del(char *name);
+char *path_finder(char *env_path, char *av_null);
+int shlvl(void);
 
 int export_func(char **av);
 int env_func(void);
 int pwd_func(void);
 int cd_func(char **av);
 int echo_func(char **av);
+int unset_func(char **av);
+int exit_func(char **av);
 int exec_func(char **av);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
