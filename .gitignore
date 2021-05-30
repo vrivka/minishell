@@ -13,3 +13,8 @@ a.out
 *.a
 msh
 a.out.dSYM
+history
+CMakeLists.txt
+cmake-build-debug/
+diffe
+minihistory
