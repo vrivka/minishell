@@ -18,7 +18,7 @@
 # define	HIST_F_NAME ".history"
 
 typedef struct	s_pars
-{
+{	
 	char		**args;
 	int			n;//index in line
 	int			j;//index of args
