@@ -1,35 +1,5 @@
 #include "minishell.h"
 
-//int envncmp(const char *env, const char *find)
-//{
-//	int i;
-//
-//	i = 0;
-//	while (env[i] && env[i] != '=')
-//	{
-//		if (env[i] != find[i])
-//			return (0);
-//		i++;
-//	}
-//	if ((!env[i] || env[i] == '=') && (!find[i] || find[i] == '='))
-//		return (1);
-//	return (0);
-//}
-//
-//int env_finder(char **env, char *name)
-//{
-//	int i;
-//
-//	i = 0;
-//	while (env[i])
-//	{
-//		if (envncmp(env[i], name))
-//			return (i);
-//		i++;
-//	}
-//	return (-1);
-//}
-
 char *env_name_cut(const char *env)
 {
 	char *tmp;
@@ -51,66 +21,20 @@ char *env_name_cut(const char *env)
 	return (tmp);
 }
 
-//char *env_val_cut(const char *env)
-//{
-//	char *tmp;
-//	int i;
-//	int j;
-//	int k;
-//
-//	i = 0;
-//	while (env[i] && env[i] != '=')
-//		i++;
-//	if (!env[i])
-//		return (0);
-//	i++;
-//	k = i;
-//	j = 0;
-//	while (env[i])
-//	{
-//		j++;
-//		i++;
-//	}
-//	tmp = (char *)malloc(sizeof(char) * (j + 1));
-//	if (!tmp)
-//		return (0);
-//	i = 0;
-//	while (env[k])
-//	{
-//		tmp[i] = env[k];
-//		i++;
-//		k++;
-//	}
-//	tmp[i] = 0;
-//	return (tmp);
-//}
-
-//char *env_value(char **env, char *name)
-//{
-//	char *tmp;
-//	int i;
-//
-//	i = env_finder(env, name);
-//	if (i == -1)
-//		return (0);
-//	tmp = env_val_cut(env[i]);
-//	return (tmp);
-//}
-
 char **env_add(char *av)
 {
 	char **tmp;
 	int l;
 	int i;
 
-	l = envlen(g_msh.envc);
+	l = envlen(g_msh.envp);
 	tmp = (char **)malloc(sizeof(char *) * (l + 2));
 	if (!tmp)
 		return (0);
 	i = 0;
-	while (g_msh.envc[i])
+	while (g_msh.envp[i])
 	{
-		tmp[i] = ft_strdup(g_msh.envc[i]);
+		tmp[i] = ft_strdup(g_msh.envp[i]);
 		if (!tmp[i])
 			return (free_envc(tmp, i - 1));
 		i++;
@@ -119,7 +43,7 @@ char **env_add(char *av)
 	if (!tmp[i])
 		return (free_envc(tmp, i - 1));
 	tmp[i + 1] = 0;
-	free_envc(g_msh.envc, l);
+	free_envc(g_msh.envp, l);
 	return (tmp);
 }
 
@@ -131,18 +55,18 @@ char **env_del(char *name)
 	int n;
 	int j;
 
-	n = env_finder(g_msh.envc, name);
-	l = envlen(g_msh.envc);
+	n = env_finder(g_msh.envp, name);
+	l = envlen(g_msh.envp);
 	tmp = (char **)malloc(sizeof(char *) * l);
 	if (!tmp)
 		return (0);
 	i = 0;
 	j = 0;
-	while (g_msh.envc[i])
+	while (g_msh.envp[i])
 	{
 		if (i != n)
 		{
-			tmp[j] = ft_strdup(g_msh.envc[i]);
+			tmp[j] = ft_strdup(g_msh.envp[i]);
 			if (!tmp[j])
 				return (free_envc(tmp, i - 1));
 			j++;
@@ -150,6 +74,18 @@ char **env_del(char *name)
 		i++;
 	}
 	tmp[j] = 0;
-	free_envc(g_msh.envc, l);
+	free_envc(g_msh.envp, l);
 	return (tmp);
+}
+
+int shlvl(void)
+{
+	char *tmp;
+	int i;
+
+	tmp = env_value(g_msh.envp, "SHLVL");
+	if (!tmp)
+		return (1);
+	i = ft_atoi(tmp) + 1;
+	return (i);
 }

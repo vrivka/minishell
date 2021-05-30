@@ -35,8 +35,6 @@ char	*env_val_cut(const char *env)
 {
 	char	*tmp;
 	int		i;
-	int		j;
-	int		k;
 
 	i = 0;
 	while (env[i] && env[i] != '=')
@@ -44,24 +42,9 @@ char	*env_val_cut(const char *env)
 	if (!env[i])
 		return (0);
 	i++;
-	k = i;
-	j = 0;
-	while (env[i])
-	{
-		j++;
-		i++;
-	}
-	tmp = (char *)malloc(sizeof(char) * (j + 1));
+	tmp = ft_strdup(&env[i]);
 	if (!tmp)
-		return (0);
-	i = 0;
-	while (env[k])
-	{
-		tmp[i] = env[k];
-		i++;
-		k++;
-	}
-	tmp[i] = 0;
+		error_func(ERROR_MEM, 1, 0, NULL);
 	return (tmp);
 }
 

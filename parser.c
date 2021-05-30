@@ -195,20 +195,26 @@ void	parser(void)
 	}
 	args2lower(&pars);
 
-	// executor(msh, &pars); ---------------------------------------------for Vlad
+	g_msh.pars = pars;
+	g_msh.pars.bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pars.args[0]);
+	executor();// ---------------------------------------------for Vlad
+	free(g_msh.pars.bin_path);
+	free_envc(g_msh.pars.args, envlen(g_msh.pars.args));
 
 	//// test print line & args ////
-	write(1, g_msh.line, ft_strlen(g_msh.line));
-	write(1, "\n", 1);
-	int i;
-	i = 0;
-	while (pars.args[i] != NULL)
-	{
-		write(1, pars.args[i], ft_strlen(pars.args[i]));
-		write(1, "\n", 1);
-		i++;
-	}
-	g_msh.status = 1;
+//	printf("%s\n", g_msh.line);
+////	write(1, g_msh.line, ft_strlen(g_msh.line));
+////	write(1, "\n", 1);
+//	int i;
+//	i = 0;
+//	while (pars.args[i] != NULL)
+//	{
+//		printf("%s\n", pars.args[i]);
+////		write(1, pars.args[i], ft_strlen(pars.args[i]));
+////		write(1, "\n", 1);
+//		i++;
+//	}
+//	g_msh.status = 1;
 	free(g_msh.line);
 	////
 }

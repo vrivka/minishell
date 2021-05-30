@@ -12,7 +12,10 @@ SRCS =	envcpy.c \
         cd_func.c \
         path_finder.c \
         executor.c \
-        error_func.c
+        error_func.c \
+        exec_func.c \
+        unset_func.c \
+        exit_func.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -26,7 +29,7 @@ $(NAME):	$(OBJS)
 		@ar rcs $(NAME) $?
 
 %.o:	%.c
-		@gcc $(CFLAGS) -c $< -o $@ -I../includes/
+		@gcc $(CFLAGS) -c $< -o $@ -I../includes
 
 clean:
 		@$(RM) $(OBJS)

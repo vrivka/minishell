@@ -33,7 +33,7 @@ $(PARS):	$(OBJS)
 		@ar rcs $(PARS) $?
 
 %.o:	%.c
-		gcc $(CFLAGS) -o $@ -c $< -I./includes
+		@gcc $(CFLAGS) -o $@ -c $< -I./includes
 
 $(LIBFT):
 		@make -C $(LIBFT_PATH)
