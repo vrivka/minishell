@@ -191,7 +191,11 @@ void	main_loop(void)
 
 		free(g_msh.pars->bin_path);
 		free_d_arr(g_msh.pars->args);
+		free(g_msh.pars);
+		g_msh.pars = NULL;
 	}
+	free_d_arr(g_msh.pars->args);
+	free(g_msh.pars);
 	free(g_msh.line);
 }
 

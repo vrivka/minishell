@@ -14,8 +14,10 @@
 # include <sys/stat.h>
 
 # define	BUFFER_SIZE 4096
+
 # define	EXEC_F_NAME "msh"
 # define	HIST_F_NAME ".history"
+
 # define 	ERROR_MEM	"minishell: Cannot allocate memory"
 
 typedef struct	s_pars
