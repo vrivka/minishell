@@ -8,9 +8,7 @@ void	free_d_arr(char **array)
 	while (array[j] != NULL)
 	{
 		free(array[j]);
-		array[j] = NULL;
 		j++;
 	}
 	free(array);
-	array = NULL;
 }

@@ -165,7 +165,7 @@ void	space_pars(t_pars *pars)
 
 void	enlarge_arg(t_pars *pars)
 {
-	pars->args[pars->j] = ft_add_char2str(pars->args[pars->j], g_msh.line[pars->n]);
+ 	pars->args[pars->j] = ft_add_char2str(pars->args[pars->j], g_msh.line[pars->n]);
 	g_msh.line = ft_cutstr_begin(g_msh.line, (pars->n + 1));
 	pars->n = 0;
 }

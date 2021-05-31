@@ -18,3 +18,5 @@ CMakeLists.txt
 cmake-build-debug/
 diffe
 minihistory
+a..history
+msh.dSYM

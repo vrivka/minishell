@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: epilar <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/03 17:28:44 by epilar            #+#    #+#             */
-/*   Updated: 2020/11/10 12:26:05 by epilar           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 
 static int	num_of_str(char const *s, char c)
@@ -28,15 +16,29 @@ static int	num_of_str(char const *s, char c)
 	return (count);
 }
 
-static void	clear_mem(char **str, int i)
+// static void	clear_mem(char **str, int i)
+// {
+// 	i--;
+// 	while (i >= 0)
+// 	{
+// 		free(str[i]);
+// 		i--;
+// 	}
+// 	free(str);
+// }
+static void	clear_mem(char **str)
 {
-	i--;
-	while (i >= 0)
+	int	j;
+
+	j = 0;
+	while (str[j] != NULL)
 	{
-		free(str[i]);
-		i--;
+		free(str[j]);
+		str[j] = NULL;
+		j++;
 	}
 	free(str);
+	str = NULL;
 }
 
 static void	find_word(char const *s, char c, int *start, int *len)
@@ -49,7 +51,7 @@ static void	find_word(char const *s, char c, int *start, int *len)
 		(*len)++;
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**str;
 	int		i;
@@ -68,7 +70,8 @@ char		**ft_split(char const *s, char c)
 		find_word(s, c, &start, &len);
 		if (!(str[i] = (char *)malloc(sizeof(char) * (len + 1))))
 		{
-			clear_mem(str, i);
+			// clear_mem(str, i);
+			clear_mem(str);
 			return (NULL);
 		}
 		ft_strlcpy(str[i], &s[start], len + 1);

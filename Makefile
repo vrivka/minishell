@@ -18,6 +18,23 @@ SRCS = main.c \
 		parser.c \
 		env_ops.c
 
+# for debug
+VSRCS = vrivka/cd_func.c \
+		vrivka/echo_func.c \
+		vrivka/env_finder.c \
+		vrivka/env_func.c \
+		vrivka/envcpy.c \
+		vrivka/error_func.c \
+		vrivka/exec_func.c \
+		vrivka/executor.c \
+		vrivka/exit_func.c \
+		vrivka/export_func.c \
+		vrivka/frees_inits.c \
+		vrivka/path_finder.c \
+		vrivka/pwd_func.c \
+		vrivka/unset_func.c
+# 
+
 OBJS = $(SRCS:.c=.o)
 
 CFLAGS = -Wall -Werror -Wextra
@@ -55,7 +72,7 @@ fclean:	clean
 re:		fclean all
 
 dbg:
-		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) $(EXEC) \
+		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) $(VSRCS) \
 		-I./includes -ltermcap
 
 .PHONY: all clean fclean re
