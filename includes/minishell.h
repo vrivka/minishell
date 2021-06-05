@@ -18,15 +18,29 @@
 # define	EXEC_F_NAME "msh"
 # define	HIST_F_NAME ".history"
 
+# define	NOFLG 0b0000
+# define	SQFLG 0b0001
+# define	WQFLG 0b0010
+# define	BSFLG 0b0100
+# define	UBSFL 0b1000//flag to '\' unset
+
 # define 	ERROR_MEM	"minishell: Cannot allocate memory"
 
-typedef struct	s_pars
+typedef struct	s_pipe
 {	
 	char		*bin_path;
 	char		**args;
-	int			n;//index in line
-	int			j;//index of args
+	char		**rd;
+}				t_pipe;
+
+typedef struct	s_pars
+{
+	char	*s;
+	char	*args;
+	char	*rds;
+	int		i;
 }				t_pars;
+
 
 typedef struct	s_msh
 {
@@ -38,13 +52,19 @@ typedef struct	s_msh
 	int			h_index;//current position in history array
 	int			pos;//current position in read line in terminal
 	int			status;//main_loop return status after command execution
-	int			pars_status;
 	char		**envp;
 	char		*line;//read line
+
+	char		**semi;
+	int			semi_count;
+	char		flags;
+
 	int			ret;//saved return code after execve and buidins for $?. 0 by default
 
 	int			pid;
-	t_pars		*pars;
+	t_pipe		*pipe;
+	int			pipe_count;
+
 	char		*pwd;
 }				t_msh;
 
@@ -57,7 +77,7 @@ void			init_msh(char **av, char **envp);
 void			main_loop(void);
 void			key_loop(void);
 
-//history
+////history
 void			get_history(char **av);
 char			*get_hist_path(char **av);
 char			*read_hist2str(int fd);
@@ -68,26 +88,53 @@ int				get_str_len(char *str, int n);
 void			put_hist2file(void);
 int				count_arr_lines(char **array);
 void			insert_nline2hist(void);
-//
+////
 
-//parser
-void			parser(void);
+////semicolon split
+void			semicolon_splitter(void);
+void			init_semicolon_array(void);
+int				get_semi_num(char *s);
+void			set_flags(int c);
+int				check_flags(void);
+int				get_semiline_len(char *s);
+void			fill_semicolon_array(void);
+////
+
+////parser
+void			launch(void);
+void			parser(char *s);
+int				get_pipe_num(char *s);
+void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
-char			*get_env_name(void);
+void			lexer(t_pars *pars);
+
+char			*get_pipe_str(char **s);
+int				get_pipestr_len(char *s);
+
+void			redir_pars(t_pars *pars);
+void			space_pars_rd(t_pars *pars);
+void			dollar_pars_rd(t_pars *pars);
+char			*get_env_name(t_pars *pars);
 int				get_envname_len(char *s);
-char			*get_sq_str(void);
+void			strongquotes_pars_rd(t_pars *pars);
+char			*get_sq_str(t_pars *pars);
 int				get_sqstr_len(char *s);
-void			args2lower(t_pars *pars);
+void			weakquotes_pars_rd(t_pars *pars);
+void			backslash_pars_rd(t_pars *pars);
+void			enlarge_rds(t_pars *pars);
+
 void			dollar_pars(t_pars *pars);
 void			strongquotes_pars(t_pars *pars);
 void			weakquotes_pars(t_pars *pars);
 void			backslash_pars(t_pars *pars);
 void			space_pars(t_pars *pars);
-void			semicolon_pars(t_pars *pars);
-void			enlarge_arg(t_pars *pars);
-//
+void			enlarge_args(t_pars *pars);
+/////////end
 
-//strings_ops - operations with string
+void			args2lower(void);
+////
+
+////strings_ops - operations with string
 char			*ft_strnew(size_t n);
 char			*ft_strjoin_fr(char *s1, char *s2);
 char			*ft_strdellstch_fr(char *s1);
@@ -98,24 +145,24 @@ char			*ft_add_char2str(char *s, int c);//add symbol at the end of the string
 char			*ft_ins_ch2str(char *s, int c, int pos);//insert char into string by index
 char			**ft_devide_str(char *s, int pos);//split string to strings in a certain place
 char			*ft_del_chinstr(char *s, int pos);//delete symbol before cursor (backspace)
-//
+////
 
-//d_array_ops - operations with double array
+////d_array_ops - operations with double array
 char			**add_str2darr(char **array);
 
-//
+////
 
-//env_ops - operations with environment variables array
+////env_ops - operations with environment variables array
 void			copy_envs(char **envp);
 char			*env_value(char **env, char *name);//vlad
 char			*env_val_cut(const char *env);//vlad
 int				env_finder(char **env, char *name);//vlad
 int				envncmp(const char *env, const char *find);//vlad
-//
+////
 
-//free_ops - free memory routine
+////free_ops - free memory routine
 void			free_d_arr(char **array);
-//
+////
 
 // typedef struct s_exec
 // {
