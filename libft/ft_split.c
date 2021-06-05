@@ -16,16 +16,6 @@ static int	num_of_str(char const *s, char c)
 	return (count);
 }
 
-// static void	clear_mem(char **str, int i)
-// {
-// 	i--;
-// 	while (i >= 0)
-// 	{
-// 		free(str[i]);
-// 		i--;
-// 	}
-// 	free(str);
-// }
 static void	clear_mem(char **str)
 {
 	int	j;
@@ -51,31 +41,39 @@ static void	find_word(char const *s, char c, int *start, int *len)
 		(*len)++;
 }
 
-char	**ft_split(char const *s, char c)
+static void	fill_array(char **arr, char *s, char c)
 {
-	char	**str;
 	int		i;
 	int		start;
 	int		len;
 
-	if (s == NULL)
-		return (NULL);
-	if (!(str = (char **)ft_calloc(sizeof(char *), (num_of_str(s, c) + 1))))
-		return (NULL);
 	i = 0;
 	start = 0;
 	len = 0;
 	while (i < num_of_str(s, c))
 	{
 		find_word(s, c, &start, &len);
-		if (!(str[i] = (char *)malloc(sizeof(char) * (len + 1))))
+		arr[i] = (char *)malloc(sizeof(char) * (len + 1));
+		if (arr[i] == NULL)
 		{
-			// clear_mem(str, i);
-			clear_mem(str);
-			return (NULL);
+			clear_mem(arr);
+			break ;
 		}
-		ft_strlcpy(str[i], &s[start], len + 1);
+		ft_strlcpy(arr[i], &s[start], len + 1);
 		i++;
 	}
-	return (str);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**arr;
+
+	arr = NULL;
+	if (s == NULL)
+		return (NULL);
+	arr = (char **)ft_calloc(sizeof(char *), (num_of_str(s, c) + 1));
+	if (arr == NULL)
+		return (NULL);
+	fill_array(arr, (char *)s, c);
+	return (arr);
 }

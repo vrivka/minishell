@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   strtrim.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: epilar <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/03 14:07:04 by epilar            #+#    #+#             */
-/*   Updated: 2020/11/08 12:30:52 by epilar           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 
-static unsigned int		in_set(char c, char const *set)
+static unsigned int	in_set(char c, char const *set)
 {
 	while (*set)
 	{
@@ -23,7 +11,15 @@ static unsigned int		in_set(char c, char const *set)
 	return (0);
 }
 
-char					*ft_strtrim(char const *s1, char const *set)
+static int	size_decision(char *s1, char *start, char *end)
+{
+	if (!*s1 || end == start)
+		return (2);
+	else
+		return (end - start + 2);
+}
+
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	int				i;
 	unsigned int	size;
@@ -37,15 +33,14 @@ char					*ft_strtrim(char const *s1, char const *set)
 	while (s1[i] && in_set(s1[i], set))
 		i++;
 	start = (char *)&s1[i];
-	if ((i = ft_strlen((char *)s1) - 1) != -1)
+	i = ft_strlen((char *)s1) - 1;
+	if (i != -1)
 		while (i >= 0 && in_set(s1[i], set))
 			i--;
 	end = (char *)&s1[i];
-	if (!*s1 || end == start)
-		size = 2;
-	else
-		size = end - start + 2;
-	if (!(trim = malloc(sizeof(char) * size)))
+	size = size_decision((char *)s1, start, end);
+	trim = malloc(sizeof(char) * size);
+	if (trim == NULL)
 		return (NULL);
 	ft_strlcpy(trim, start, size);
 	return (trim);
