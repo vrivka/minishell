@@ -307,7 +307,7 @@ void	parser(char *s)
 
 		g_msh.pipe[i].args = ft_split(pars.args, ' ');
 		g_msh.pipe[i].rd = ft_split(pars.rds, ' ');
-		// g_msh.pipe.bin_path = ;
+		g_msh.pipe[i].bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pipe[i].args[0]);
 
 		free(pars.s);
 		free(pars.args);
