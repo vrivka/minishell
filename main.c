@@ -166,37 +166,9 @@ void	main_loop(void)
 	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
-	g_msh.pars_status = 1;
-	while (g_msh.pars_status)
-	{
-		parser();
-		//// test print line & args ////
-		// write(1, g_msh.line, ft_strlen(g_msh.line));
-		// write(1, "\n", 1);
-		// int i;
-		// i = 0;
-		// while (g_msh.pars->args[i] != NULL)
-		// {
-		// 	write(1, g_msh.pars->args[i], ft_strlen(g_msh.pars->args[i]));
-		// 	write(1, "\n", 1);
-		// 	i++;
-		// }
-		// g_msh.status = 1;
-		// free(g_msh.pars);
-		////
-		if (!ft_strlen(g_msh.pars->args[0]))
-			break ;
-		g_msh.pars->bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pars->args[0]);// инициализация
-		executor(); //---------------------------------------------for Vlad
+	semicolon_splitter();
 
-		free(g_msh.pars->bin_path);
-		free_d_arr(g_msh.pars->args);
-		free(g_msh.pars);
-		g_msh.pars = NULL;
-	}
-	free_d_arr(g_msh.pars->args);
-	free(g_msh.pars);
-	free(g_msh.line);
+	launch();
 }
 
 int		main(int ac, char **av, char **envp)
@@ -209,6 +181,3 @@ int		main(int ac, char **av, char **envp)
 	put_hist2file();// final clean write history to file
 	return 0;
 }
-
-//когда {echo 123 ;} добавляет пустую строку в аrgs
-//

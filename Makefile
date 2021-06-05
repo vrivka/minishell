@@ -15,7 +15,9 @@ SRCS = main.c \
 		d_array_ops.c \
 		history.c \
 		free_ops.c \
+		semi_split.c \
 		parser.c \
+		redir_pars.c \
 		env_ops.c
 
 # for debug
