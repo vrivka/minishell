@@ -65,6 +65,9 @@ typedef struct	s_msh
 	t_pipe		*pipe;
 	int			pipe_count;
 
+	int l_fd;
+	int r_fd;
+	int			**pipe_fd;
 	char		*pwd;
 }				t_msh;
 
@@ -191,6 +194,7 @@ char **env_add(char *av);
 char **env_del(char *name);
 char *path_finder(char *env_path, char *av_null);
 int shlvl(void);
+int it_builtin(int i);
 
 int export_func(char **av);
 int env_func(void);
@@ -200,6 +204,9 @@ int echo_func(char **av);
 int unset_func(char **av);
 int exit_func(char **av);
 int exec_func(char **av);
+int exec_builtin(int i, int n);
+void exec_pipe_func(char **av, int i);
+void open_dup_redirs(char **rd);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
 #endif
