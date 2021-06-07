@@ -15,7 +15,8 @@ SRCS =	envcpy.c \
         error_func.c \
         exec_func.c \
         unset_func.c \
-        exit_func.c
+        exit_func.c \
+        exec_pipe_func.c
 
 OBJS = $(SRCS:.c=.o)
 
