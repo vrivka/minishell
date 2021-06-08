@@ -34,7 +34,8 @@ VSRCS = vrivka/cd_func.c \
 		vrivka/frees_inits.c \
 		vrivka/path_finder.c \
 		vrivka/pwd_func.c \
-		vrivka/unset_func.c
+		vrivka/unset_func.c\
+		vrivka/exec_pipe_func.c
 # 
 
 OBJS = $(SRCS:.c=.o)
@@ -75,6 +76,6 @@ re:		fclean all
 
 dbg:
 		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) $(VSRCS) \
-		-I./includes -ltermcap
+		-I./includes -ltermcap -o msh
 
 .PHONY: all clean fclean re

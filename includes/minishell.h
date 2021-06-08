@@ -15,7 +15,7 @@
 
 # define	BUFFER_SIZE 4096
 
-# define	EXEC_F_NAME "msh"
+# define	EXEC_F_NAME "msh"//debagging binary should be "msh"!
 # define	HIST_F_NAME ".history"
 
 # define	NOFLG 0b0000
@@ -206,6 +206,8 @@ int unset_func(char **av);
 int exit_func(char **av);
 int exec_func(char **av);
 int exec_builtin(int i, int n);
+void exec_without_pipes(void);
+int exec_pipes(void);
 void exec_pipe_func(char **av, int i);
 void open_dup_redirs(char **rd);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
