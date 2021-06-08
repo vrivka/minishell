@@ -104,7 +104,9 @@ char	*ft_cutstr_end(char *s, int pos)
 	char	*tmp;
 	int		i;
 
-	tmp = (char *)ft_calloc(sizeof(char), pos);
+	tmp = (char *)ft_calloc(sizeof(char), (pos + 1));//if tmp == NULL
+	if (tmp == NULL)
+		exit(0);
 	i = 0;
 	while (i < pos)
 	{
