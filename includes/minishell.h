@@ -109,6 +109,7 @@ void			parser(char *s);
 int				get_pipe_num(char *s);
 void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
+char			*del_end_sp(char *s);
 void			lexer(t_pars *pars);
 
 char			*get_pipe_str(char **s);

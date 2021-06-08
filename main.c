@@ -166,9 +166,19 @@ void	main_loop(void)
 	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
-	semicolon_splitter();
 
+	g_msh.line = del_start_sp(g_msh.line);
+	g_msh.line = del_end_sp(g_msh.line);
+	if (ft_strlen(g_msh.line) == 0)
+	{
+		free(g_msh.line);
+		return ;
+	}
+	else
+	{
+	semicolon_splitter();
 	launch();
+	}
 }
 
 int		main(int ac, char **av, char **envp)
@@ -181,3 +191,5 @@ int		main(int ac, char **av, char **envp)
 	put_hist2file();// final clean write history to file
 	return 0;
 }
+
+// enter - segfault
