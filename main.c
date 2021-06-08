@@ -158,10 +158,11 @@ void	key_loop(void)
 
 void	main_loop(void)
 {
-	g_msh.line = (char *)ft_calloc(sizeof(char), 1);
+	g_msh.line = (char *)ft_calloc(sizeof(char), 1);//if ==NULL
 	g_msh.history = add_str2darr(g_msh.history);
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
+	g_msh.pos = 0;
 	write(1, "msh$ ", 5);
 	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
@@ -176,8 +177,8 @@ void	main_loop(void)
 	}
 	else
 	{
-	semicolon_splitter();
-	launch();
+		semicolon_splitter();
+		launch();
 	}
 }
 

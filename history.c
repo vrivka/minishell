@@ -7,6 +7,11 @@ void	get_history(char **av)
 
 	g_msh.hist_path = get_hist_path(av);
 	fd = open(g_msh.hist_path, O_RDONLY | O_CREAT, 0666);//if fd = -1 error
+	if (fd == -1)
+	{
+		write(1, "Could not open/create history file\n", 35);
+		exit(0);
+	}
 	str = read_hist2str(fd);
 	g_msh.history = get_hist_array(str);
 	close(fd);
@@ -101,7 +106,14 @@ char	*read_hist2str(int fd)
 	buf = (char *)ft_calloc(sizeof(char), 2);//if buf==NULL
 	s = (char *)ft_calloc(sizeof(char), 1);//if s==NULL
 	while ((rd = read(fd, &buf[0], 1)))//if rd==-1
+	{
+		if (rd == -1)
+		{
+			write(1, "Could not read history file\n", 28);
+			exit(0);
+		}
 		s = ft_strjoin_fr(s, buf);
+	}
 	free(buf);
 	return (s);
 }
@@ -113,7 +125,7 @@ char	*get_hist_path(char **av)
 	int		i;
 
 	len = ft_strlen(av[0]) - ft_strlen(EXEC_F_NAME);
-	path = (char *)ft_calloc(sizeof(char), (len + 1));
+	path = (char *)ft_calloc(sizeof(char), (len + 1));// if == NULL
 	i = 0;
 	while (i < len)
 	{

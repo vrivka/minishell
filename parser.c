@@ -323,13 +323,14 @@ void	launch(void)
 	int	n;
 
 	n = 0;
-	while (g_msh.semi[n])
+	while (g_msh.semi[n] != NULL)
 	{
 		parser(g_msh.semi[n]);
 		executor();//---------------------------------------------for Vlad
 		//free pipe
+		n++;
 	}
-	free_d_arr(g_msh.semi);
+	free(g_msh.semi);
 }
 
 

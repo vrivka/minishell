@@ -119,7 +119,7 @@ void	semicolon_splitter(void)
 	// int i = 0;
 	// while (g_msh.semi[i])
 	// {
-	// 	printf("# %s\n", g_msh.semi[i]);
+	// 	printf("semi[%d]# %s\n", i, g_msh.semi[i]);
 	// 	i++;
 	// }
 	// ///
