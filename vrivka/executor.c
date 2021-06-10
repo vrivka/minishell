@@ -52,6 +52,11 @@ int exec_pipes(void)
 		if (i < g_msh.pipe_count - 1)
 			pipe(g_msh.pipe_fd[i]);
 		exec_pipe_func(g_msh.pipe[i].args, i);
+		if (i + 1 != g_msh.pipe_count)
+		{
+			close(g_msh.pipe_fd[i][0]);
+			close(g_msh.pipe_fd[i][1]);
+		}
 		i++;
 	}
 	wait(&r);

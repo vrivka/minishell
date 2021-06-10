@@ -1,25 +1,18 @@
 #include "minishell.h"
 
-char **slash_add(char **arr)
+char *ft_strcjoin(char *s1, int c, char *s2)
 {
-	char **tmp;
-	int l;
+	char *tmp;
 	int i;
 
-	l = envlen(arr);
-	tmp = (char **)malloc(sizeof(char *) * (l + 1));
+	i = ft_strlen(s1) + ft_strlen(s2) + 1;
+	tmp = (char *)malloc(sizeof(char) * (i + 1));
 	if (!tmp)
-		error_func(ERROR_MEM, 1, 0, NULL);
-	i = 0;
-	while (arr[i])
-	{
-		tmp[i] = ft_strjoin(arr[i], "/");
-		if (!tmp[i])
-			error_func(ERROR_MEM, 1, 0, NULL);
-		i++;
-	}
-	tmp[i] = 0;
-	free_envc(arr, l);
+		return (NULL);
+	i = ft_strlen(s1);
+	ft_strlcpy(tmp, s1, i + 1);
+	tmp[i] = (char)c;
+	ft_strlcpy(&tmp[i + 1], s2, ft_strlen(s2) + 1);
 	return (tmp);
 }
 
@@ -39,11 +32,10 @@ char *path_finder(char *env_path, char *av_null)
 	tmp = ft_split(env_path, ':');
 	if (!tmp)
 		error_func(ERROR_MEM, 1, 0, NULL);
-	tmp = slash_add(tmp);
 	i = 0;
 	while (tmp[i])
 	{
-		path = ft_strjoin(tmp[i], av_null);
+		path = ft_strcjoin(tmp[i], '/', av_null);
 		if (!path)
 			error_func(ERROR_MEM, 1, 0, NULL);
 		st = stat(path, &buf);
