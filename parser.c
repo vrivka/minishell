@@ -327,7 +327,7 @@ void	launch(void)
 	{
 		parser(g_msh.semi[n]);
 		executor();//---------------------------------------------for Vlad
-		//free pipe
+		free_pipe();
 		n++;
 	}
 	free(g_msh.semi);
