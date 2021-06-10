@@ -4,11 +4,9 @@ char	*ft_strnew(size_t n)
 {
 	char	*str;
 
-	if (!(str = (char *)malloc(sizeof(char) * (n + 1))))
-		return (NULL);
-	str[n] = '\0';
-	while (n--)
-		str[n] = '\0';
+	str = (char *)ft_calloc((n + 1), sizeof(char));//if ==NULL
+	if (str == NULL)
+		exit(0);
 	return (str);
 }
 
@@ -190,3 +188,23 @@ char	*ft_del_chinstr(char *s, int pos)
 	free(s);
 	return (tmp);
 }
+
+//sp flag
+void	change_sp2us(char **s)
+{
+	int	i;
+
+	i = 0;
+	if (s)
+	{
+		while ((*s)[i] != '\0')
+		{
+			if ((*s)[i] == ' ')
+				(*s)[i] = '_';
+			i++;
+		}
+	}
+	else
+		return ;
+}
+//

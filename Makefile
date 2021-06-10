@@ -18,7 +18,9 @@ SRCS = main.c \
 		semi_split.c \
 		parser.c \
 		redir_pars.c \
-		env_ops.c
+		env_ops.c \
+		ft_spargs_split.c \
+		ft_sprds_split.c
 
 # for debug
 VSRCS = vrivka/cd_func.c \
