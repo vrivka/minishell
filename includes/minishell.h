@@ -195,6 +195,7 @@ char **free_envc(char **tmp, int i);
 char **env_add(char *av);
 char **env_del(char *name);
 char *path_finder(char *env_path, char *av_null);
+char *ft_strcjoin(char *s1, int c, char *s2);
 int shlvl(void);
 int it_builtin(int i);
 
