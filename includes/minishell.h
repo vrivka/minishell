@@ -59,6 +59,11 @@ typedef struct	s_msh
 	int			semi_count;
 	char		flags;
 
+	////
+	char		*check_spargs;//sp flag (space is argument(1) or not(0))
+	char		*check_sprds;//sp flag
+	////
+
 	int			ret;//saved return code after execve and buidins for $?. 0 by default
 
 	int			pid;
@@ -133,6 +138,13 @@ void			weakquotes_pars(t_pars *pars);
 void			backslash_pars(t_pars *pars);
 void			space_pars(t_pars *pars);
 void			enlarge_args(t_pars *pars);
+
+///sp flag
+void			change_sp2us(char **s);
+char			**ft_spargs_split(char const *s);
+char			**ft_sprds_split(char const *s);
+//
+
 /////////end
 
 void			args2lower(void);

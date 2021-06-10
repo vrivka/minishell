@@ -192,5 +192,3 @@ int		main(int ac, char **av, char **envp)
 	put_hist2file();// final clean write history to file
 	return 0;
 }
-
-// enter - segfault

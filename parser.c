@@ -146,6 +146,12 @@ void	dollar_pars(t_pars *pars)
 	free(env_name);
 	env_name = NULL;
 	pars->args = ft_strjoin_fr(pars->args, env_val);
+
+	////sp flag
+	change_sp2us(&env_val);//
+	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);//
+	//
+
 	free(env_val);
 	env_val = NULL;
 }
@@ -159,6 +165,12 @@ void	strongquotes_pars(t_pars *pars)
 	//check for 2nd ' -> search line
 	sq_str = get_sq_str(pars);
 	pars->args = ft_strjoin_fr(pars->args, sq_str);
+
+	////sp flag
+	change_sp2us(&sq_str);//
+	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, sq_str);//
+	//
+
 	free(sq_str);
 	sq_str = NULL;
 }
@@ -173,23 +185,46 @@ void	weakquotes_pars(t_pars *pars)
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "\\");
+
+			////sp flag
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\\");//
+			//
+
 			pars->i = 0;
 		}
 		else if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '\"')
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "\"");
+
+			////sp flag
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\"");//
+			//
+
 			pars->i = 0;
 		}
 		else if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '$')
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "$");
+
+			////sp flag
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "$");//
+			//
+
 			pars->i = 0;
 		}
 		else
 		{
 			pars->args = ft_add_char2str(pars->args, pars->s[pars->i]);
+
+			////sp flag
+			if (pars->s[pars->i] == ' ')
+				g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, '_');
+			else
+				g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[pars->i]);
+			//
+
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 			pars->i = 0;
 		}
@@ -200,6 +235,11 @@ void	weakquotes_pars(t_pars *pars)
 void	backslash_pars(t_pars *pars)
 {
 	pars->args = ft_add_char2str(pars->args, pars->s[1]);
+
+	////sp flag
+	g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[1]);
+	//
+
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 	pars->i = 0;
 }
@@ -210,12 +250,22 @@ void	space_pars(t_pars *pars)
 		pars->i++;
 	pars->s = ft_cutstr_begin(pars->s, pars->i);
 	pars->args = ft_add_char2str(pars->args, ' ');
+
+	////sp_flag
+	g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, ' ');
+	//
+
 	pars->i = 0;
 }
 
 void	enlarge_args(t_pars *pars)
 {
  	pars->args = ft_add_char2str(pars->args, pars->s[pars->i]);
+
+	////sp flag
+	g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[pars->i]);
+	//
+
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
 }
@@ -250,6 +300,11 @@ char	*get_pipe_str(char **s)
 
 void	lexer(t_pars *pars)
 {
+	//sp flag
+	g_msh.check_spargs = ft_strnew(0);//
+	g_msh.check_sprds = ft_strnew(0);//
+	//
+
 	while(pars->s[pars->i] != '\0')
 	{
 		if (pars->s[pars->i] == '>' || pars->s[pars->i] == '<')
@@ -278,8 +333,10 @@ void	fill_pars(t_pars *pars)
 	lexer(pars);
 
 	// ///////
-	// printf("args# %s\n", pars->args);
-	// printf("rds# %s\n", pars->rds);
+	// printf("args  # %s\n", pars->args);
+	// printf("spargs# %s\n", g_msh.check_spargs);
+	// printf("rds  # %s\n", pars->rds);
+	// printf("sprds# %s\n", g_msh.check_sprds);
 	// ///////
 }
 
@@ -305,9 +362,17 @@ void	parser(char *s)
 
 		fill_pars(&pars);
 
-		g_msh.pipe[i].args = ft_split(pars.args, ' ');
-		g_msh.pipe[i].rd = ft_split(pars.rds, ' ');
+		////sp flag
+		g_msh.pipe[i].args = ft_spargs_split(pars.args);//
+		g_msh.pipe[i].rd = ft_sprds_split(pars.rds);//
+		//
+
 		g_msh.pipe[i].bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pipe[i].args[0]);
+
+		////sp flag
+		free(g_msh.check_spargs);//
+		free(g_msh.check_sprds);//
+		//
 
 		free(pars.s);
 		free(pars.args);
