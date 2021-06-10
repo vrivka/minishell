@@ -166,6 +166,7 @@ int				envncmp(const char *env, const char *find);//vlad
 
 ////free_ops - free memory routine
 void			free_d_arr(char **array);
+void			free_pipe(void);
 ////
 
 // typedef struct s_exec
