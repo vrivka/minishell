@@ -3,9 +3,14 @@
 int text_document(char *delim)
 {
 	int fd;
+	int tfd;
 	char *s;
 
 	fd = open("./.text_document", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (fd < 0)
+		error_func(NULL, 1, 0, NULL);
+	tfd = dup(0);
+	dup2(0, 1);
 	while (1)
 	{
 		s = readline("> ");
@@ -15,6 +20,9 @@ int text_document(char *delim)
 		write(fd, "\n", 1);
 		free(s);
 	}
+	free(s);
+	dup2(tfd, 0);
+	close(tfd);
 	close(fd);
 	fd = open("./.text_document", O_RDONLY);
 	return (fd);
@@ -63,6 +71,6 @@ int exec_func(char **av)
 		unlink("./.text_document");
 		exit(r);
 	}
-	waitpid(g_msh.pid, &r, 0);
+	waitpid(0, &r, 0);
 	return (WEXITSTATUS(r));
 }

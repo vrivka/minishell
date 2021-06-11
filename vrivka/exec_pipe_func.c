@@ -78,6 +78,8 @@ void exec_pipe_func(char **av, int i)
 			if (r < 0)
 				error_func(NULL, 1, 0, g_msh.pipe[i].bin_path);
 		}
+		close(g_msh.l_fd);
+		close(g_msh.r_fd);
 		exit(r);
 	}
 }

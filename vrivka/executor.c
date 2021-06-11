@@ -87,7 +87,6 @@ int exec_pipes(void)
 
 void executor(void)
 {
-	// printf("%d\n", g_msh.pipe_count);
 	if (g_msh.pipe_count == 1)
 		exec_without_pipes();
 	else
