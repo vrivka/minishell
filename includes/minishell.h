@@ -85,6 +85,9 @@ void			init_msh(char **av, char **envp);
 void			main_loop(void);
 void			key_loop(void);
 
+void			set_term(void);
+void			unset_term(void);
+
 ////history
 void			get_history(char **av);
 char			*get_hist_path(char **av);
