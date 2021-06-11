@@ -5,18 +5,23 @@ int		ft_putchar(int c)
 	return (write(1, &c, 1));
 }	
 
-void	term_setup(void)//when exit return term settings back!
+void	term_setup(void)//when exit return term sets back!
 {
-	struct	termios term;
+	g_msh.term = (struct termios *)ft_calloc(1, sizeof(struct termios));
 
-	g_msh.term = &term;
 	g_msh.term_name = getenv("TERM");//"xterm-256color"
 	// if (msh->term == NULL)
 	// 	Can`t get terminal type from environment
+
 	tcgetattr(0, g_msh.term);//return 0 or -1
-	g_msh.term->c_lflag &= ~(ECHO);
-	g_msh.term->c_lflag &= ~(ICANON);
-	tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
+
+	//set term
+	// tcgetattr(0, g_msh.term);//return 0 or -1
+	// g_msh.term->c_lflag &= ~(ECHO);
+	// g_msh.term->c_lflag &= ~(ICANON);
+	// tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
+	////
+
 	tgetent(0, g_msh.term_name);//return 0 or -1
 }
 
@@ -70,6 +75,20 @@ void	init_msh(char **av, char **envp)
 	free(stri);
 	export_func(tmp);
 	free_envc(tmp, 2);
+}
+
+void	unset_term(void)
+{
+	g_msh.term->c_lflag &= ~(ECHO);
+	g_msh.term->c_lflag &= ~(ICANON);
+	tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
+}
+
+void	set_term(void)
+{
+	g_msh.term->c_lflag |= ECHO;
+	g_msh.term->c_lflag |= ICANON;
+	tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
 }
 
 void	key_loop(void)
@@ -163,10 +182,15 @@ void	main_loop(void)
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
 	g_msh.pos = 0;
+
+	unset_term();
+
 	write(1, "msh$ ", 5);
 	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
+
+	set_term();
 
 	g_msh.line = del_start_sp(g_msh.line);
 	g_msh.line = del_end_sp(g_msh.line);
