@@ -12,6 +12,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <sys/stat.h>
+# include <readline/readline.h>
 
 # define	BUFFER_SIZE 4096
 

@@ -40,26 +40,48 @@ void pipe_init(void)
 	}
 }
 
+void free_pipe_fd(int **fd, int pipe_count)
+{
+	int i;
+
+	i = 0;
+	while (i < pipe_count - 1)
+	{
+		free(fd[i]);
+		i++;
+	}
+	free(fd);
+}
+
 int exec_pipes(void)
 {
 	int i;
 	int r;
 
 	pipe_init();
+	if (pipe(g_msh.pipe_fd[0]) < 0)
+		error_func(NULL, 1, 1, NULL);
+	exec_pipe_func(g_msh.pipe[0].args, 0);
+	i = 1;
+	while (i < g_msh.pipe_count - 1)
+	{
+		if (pipe(g_msh.pipe_fd[i]) < 0)
+			error_func(NULL, 1, 1, NULL);
+		exec_pipe_func(g_msh.pipe[i].args, i);
+		close(g_msh.pipe_fd[i - 1][0]);
+		close(g_msh.pipe_fd[i - 1][1]);
+		i++;
+	}
+	exec_pipe_func(g_msh.pipe[i].args, i);
+	close(g_msh.pipe_fd[i - 1][0]);
+	close(g_msh.pipe_fd[i - 1][1]);
 	i = 0;
 	while (i < g_msh.pipe_count)
 	{
-		if (i < g_msh.pipe_count - 1)
-			pipe(g_msh.pipe_fd[i]);
-		exec_pipe_func(g_msh.pipe[i].args, i);
-		if (i + 1 != g_msh.pipe_count)
-		{
-			close(g_msh.pipe_fd[i][0]);
-			close(g_msh.pipe_fd[i][1]);
-		}
+		waitpid(0, &r, 0);
 		i++;
 	}
-	wait(&r);
+	free_pipe_fd(g_msh.pipe_fd, g_msh.pipe_count);
 	return (WEXITSTATUS(r));
 }
 

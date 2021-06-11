@@ -41,7 +41,9 @@ int cd_func(char **av)
 
 	if (!av[1])
 		return (cd_home());
-	tmp = getcwd(NULL, 0);
+	tmp = env_value(g_msh.envp, "PWD");
+	if (!tmp)
+		tmp = "";
 	pwd = cd_pwd(ft_strjoin("OLDPWD=", tmp));
 	free(tmp);
 	code = chdir(av[1]);
