@@ -49,7 +49,7 @@ RM = rm -rf
 all:	$(NAME)
 
 $(NAME):	$(PARS) $(LIBFT) $(EXEC)
-		@gcc $(CFLAGS) -o $(NAME) $^ -ltermcap
+		@gcc $(CFLAGS) -o $(NAME) $^ -ltermcap -lreadline
 
 $(PARS):	$(OBJS)
 		@ar rcs $(PARS) $?

@@ -8,7 +8,7 @@ void open_dup_pipes(int i)
 		close(g_msh.pipe_fd[i - 1][0]);
 		close(g_msh.pipe_fd[i - 1][1]);
 	}
-	if (i + 1 != g_msh.pipe_count)
+	if (i + 1 < g_msh.pipe_count)
 	{
 		dup2(g_msh.pipe_fd[i][1], 1);
 		close(g_msh.pipe_fd[i][1]);

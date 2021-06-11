@@ -115,7 +115,9 @@ int export_func(char **av)
 {
 	int i;
 	int n;
+	int r;
 
+	r = 0;
 	if (!av[1])
 		print_exp();
 	else
@@ -124,7 +126,7 @@ int export_func(char **av)
 		while (av[i])
 		{
 			if (check_args(av[i]))
-				return (error_func("minishell: export: %s: not a valid identifier\n", 1, 1, av[i]));
+				r = error_func("minishell: export: %s: not a valid identifier\n", 1, 1, av[i]);
 			n = env_finder(g_msh.envp, av[i]);
 			if (n >= 0)
 				change_env(av[i], n);
@@ -133,5 +135,5 @@ int export_func(char **av)
 			i++;
 		}
 	}
-	return (0);
+	return (r);
 }
