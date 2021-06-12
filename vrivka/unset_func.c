@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-int unset_func(char **av)
+int	unset_func(char **av)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = 1;
 	if (!av[1])
@@ -11,10 +11,15 @@ int unset_func(char **av)
 	while (av[i])
 	{
 		if (check_args(av[i]))
-			return (error_func("minishell: unset: %s: not a valid identifier\n", 1, 1, av[i]));
+			return (error_func("minishell: unset: %s: not a valid identifier\n",
+					1, 1, av[i]));
 		n = env_finder(g_msh.envp, av[i]);
 		if (n >= 0)
-			g_msh.envp = env_del(av[i]);
+		{
+			g_msh.envp = env_del(g_msh.envp, av[i], envlen(g_msh.envp));
+			if (!g_msh.envp)
+				error_func(ERROR_MEM, 1, 0, NULL);
+		}
 		i++;
 	}
 	return (0);

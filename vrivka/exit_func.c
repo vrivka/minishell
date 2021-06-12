@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-int exit_func(char **av)
+int	exit_func(char **av)
 {
-	int r;
-	int i;
+	int	r;
+	int	i;
 
 	if (!av[1])
 	{

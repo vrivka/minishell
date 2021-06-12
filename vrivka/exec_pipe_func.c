@@ -1,78 +1,18 @@
 #include "minishell.h"
 
-void open_dup_pipes(int i)
+void	exec_pipe_func(char **av, int i)
 {
-	if (i)
-	{
-		dup2(g_msh.pipe_fd[i - 1][0], 0);
-		close(g_msh.pipe_fd[i - 1][0]);
-		close(g_msh.pipe_fd[i - 1][1]);
-	}
-	if (i + 1 < g_msh.pipe_count)
-	{
-		dup2(g_msh.pipe_fd[i][1], 1);
-		close(g_msh.pipe_fd[i][1]);
-		close(g_msh.pipe_fd[i][0]);
-	}
-}
-
-int it_builtin(int i)
-{
-	if (!ft_strncmp(g_msh.pipe[i].args[0], "echo", 5))
-		return (1);
-	else if (!ft_strncmp(g_msh.pipe[i].args[0], "cd", 3))
-		return (2);
-	else if (!ft_strncmp(g_msh.pipe[i].args[0], "pwd", 4))
-		return (3);
-	else if (!ft_strncmp(g_msh.pipe[i].args[0], "export", 7))
-		return (4);
-	else if (!ft_strncmp(g_msh.pipe[i].args[0], "unset", 6))
-		return (5);
-	else if (!ft_strncmp(g_msh.pipe[i].args[0], "env", 4))
-		return (6);
-	else if (!ft_strncmp(g_msh.pipe[i].args[0], "exit", 5))
-		return (7);
-	else
-		return (0);
-}
-
-int exec_builtin(int i, int n) {
-	int r;
-
-	r = 0;
-	if (n == 1)
-		r = echo_func(g_msh.pipe[i].args);
-	else if (n == 2)
-		r = cd_func(g_msh.pipe[i].args);
-	else if (n == 3)
-		r = pwd_func();
-	else if (n == 4)
-		r = export_func(g_msh.pipe[i].args);
-	else if (n == 5)
-		r = unset_func(g_msh.pipe[i].args);
-	else if (n == 6)
-		r = env_func();
-	else if (n == 7)
-		r = exit_func(g_msh.pipe[i].args);
-	return (r);
-}
-
-void exec_pipe_func(char **av, int i)
-{
-	int r;
+	int	r;
 
 	g_msh.pid = fork();
+	if (g_msh.pid < 0)
+		error_func(NULL, 1, 0, NULL);
 	if (g_msh.pid == 0)
 	{
 		if (g_msh.pipe_count > 1)
 			open_dup_pipes(i);
 		if (g_msh.pipe[i].rd)
-		{
-			if (g_msh.pipe[0].l_fd < 0 || g_msh.pipe[0].r_fd < 0)
-				exit (1);
-			dup2(g_msh.pipe[i].l_fd, 0);
-			dup2(g_msh.pipe[i].r_fd, 1);
-		}
+			close_if(g_msh.pipe[i].l_fd, g_msh.pipe[i].r_fd);
 		r = it_builtin(i);
 		if (r)
 			r = exec_builtin(i, r);
@@ -80,10 +20,50 @@ void exec_pipe_func(char **av, int i)
 		{
 			r = execve(g_msh.pipe[i].bin_path, av, g_msh.envp);
 			if (r < 0)
-				error_func(NULL, 1, 0, g_msh.pipe[i].bin_path);
+				error_func("minishell: %s: command not found\n",
+					127, 0, g_msh.pipe[i].bin_path);
 		}
 		close(g_msh.l_fd);
 		close(g_msh.r_fd);
 		exit(r);
 	}
+}
+
+int	wait_all(int pipe_count)
+{
+	int	i;
+	int	r;
+
+	i = 0;
+	while (i < pipe_count)
+	{
+		waitpid(0, &r, 0);
+		i++;
+	}
+	return (r);
+}
+
+int	exec_pipes(void)
+{
+	int	i;
+	int	r;
+
+	if (pipe(g_msh.pipe_fd[0]) < 0)
+		error_func(NULL, 1, 0, NULL);
+	exec_pipe_func(g_msh.pipe[0].args, 0);
+	i = 1;
+	while (i < g_msh.pipe_count - 1)
+	{
+		if (pipe(g_msh.pipe_fd[i]) < 0)
+			error_func(NULL, 1, 0, NULL);
+		exec_pipe_func(g_msh.pipe[i].args, i);
+		close(g_msh.pipe_fd[i - 1][0]);
+		close(g_msh.pipe_fd[i - 1][1]);
+		i++;
+	}
+	exec_pipe_func(g_msh.pipe[i].args, i);
+	close(g_msh.pipe_fd[i - 1][0]);
+	close(g_msh.pipe_fd[i - 1][1]);
+	r = wait_all(g_msh.pipe_count);
+	return (WEXITSTATUS(r));
 }
