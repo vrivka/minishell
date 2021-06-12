@@ -32,6 +32,8 @@ typedef struct	s_pipe
 	char		*bin_path;
 	char		**args;
 	char		**rd;
+	int			l_fd;
+	int			r_fd;
 }				t_pipe;
 
 typedef struct	s_pars
@@ -231,7 +233,6 @@ int exec_builtin(int i, int n);
 void exec_without_pipes(void);
 int exec_pipes(void);
 void exec_pipe_func(char **av, int i);
-void open_dup_redirs(char **rd);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
 #endif
