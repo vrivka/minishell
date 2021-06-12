@@ -127,8 +127,6 @@ int				get_pipestr_len(char *s);
 void			redir_pars(t_pars *pars);
 void			space_pars_rd(t_pars *pars);
 void			dollar_pars_rd(t_pars *pars);
-char			*get_env_name(t_pars *pars);
-int				get_envname_len(char *s);
 void			strongquotes_pars_rd(t_pars *pars);
 char			*get_sq_str(t_pars *pars);
 int				get_sqstr_len(char *s);
@@ -136,20 +134,26 @@ void			weakquotes_pars_rd(t_pars *pars);
 void			backslash_pars_rd(t_pars *pars);
 void			enlarge_rds(t_pars *pars);
 
-void			dollar_pars(t_pars *pars);
-void			strongquotes_pars(t_pars *pars);
 void			weakquotes_pars(t_pars *pars);
+void			wq_dollar_val(t_pars *pars);
+void			wq_dollar_ret(t_pars *pars);
+
+void			strongquotes_pars(t_pars *pars);
 void			backslash_pars(t_pars *pars);
 void			space_pars(t_pars *pars);
 void			enlarge_args(t_pars *pars);
+
+////dollar pars
+void			dollar_pars(t_pars *pars);
+char			*get_env_name(t_pars *pars);
+void			add_sq_str(t_pars *pars, char **str);
+void			add_wq_str(t_pars *pars, char **str);
+char			*get_dstr(t_pars *pars);
 
 ///sp flag
 void			change_sp2us(char **s);
 char			**ft_spargs_split(char const *s);
 char			**ft_sprds_split(char const *s);
-//
-
-/////////end
 
 void			args2lower(void);
 ////
