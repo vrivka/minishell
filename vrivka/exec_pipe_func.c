@@ -36,8 +36,7 @@ int it_builtin(int i)
 		return (0);
 }
 
-int exec_builtin(int i, int n)
-{
+int exec_builtin(int i, int n) {
 	int r;
 
 	r = 0;
@@ -68,7 +67,12 @@ void exec_pipe_func(char **av, int i)
 		if (g_msh.pipe_count > 1)
 			open_dup_pipes(i);
 		if (g_msh.pipe[i].rd)
-			open_dup_redirs(g_msh.pipe[i].rd);
+		{
+			if (g_msh.pipe[0].l_fd < 0 || g_msh.pipe[0].r_fd < 0)
+				exit (1);
+			dup2(g_msh.pipe[i].l_fd, 0);
+			dup2(g_msh.pipe[i].r_fd, 1);
+		}
 		r = it_builtin(i);
 		if (r)
 			r = exec_builtin(i, r);
@@ -83,4 +87,3 @@ void exec_pipe_func(char **av, int i)
 		exit(r);
 	}
 }
-

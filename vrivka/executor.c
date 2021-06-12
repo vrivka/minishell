@@ -12,7 +12,15 @@ void exec_without_pipes(void)
 		fd_0 = dup(0);
 		fd_1 = dup(1);
 		if (g_msh.pipe[0].rd)
-			open_dup_redirs(g_msh.pipe[0].rd);
+		{
+			if (g_msh.pipe[0].l_fd < 0 || g_msh.pipe[0].r_fd < 0)
+			{
+				g_msh.ret = 1;
+				return ;
+			}
+			dup2(g_msh.pipe[0].l_fd, 0);
+			dup2(g_msh.pipe[0].r_fd, 1);
+		}
 		g_msh.ret = exec_builtin(0, r);
 		dup2(fd_0, 0);
 		dup2(fd_1, 1);
@@ -85,11 +93,112 @@ int exec_pipes(void)
 	return (WEXITSTATUS(r));
 }
 
+int text_document(char *delim)
+{
+	int fd;
+	char *s;
+
+	fd = open("./.text_document", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (fd < 0)
+		error_func(NULL, 1, 1, NULL);
+	while (1)
+	{
+		s = readline("> ");
+		if (!ft_strcmp(s, delim))
+			break ;
+		write(fd, s, ft_strlen(s));
+		write(fd, "\n", 1);
+		free(s);
+	}
+	free(s);
+	close(fd);
+	fd = open("./.text_document", O_RDONLY);
+	unlink("./.text_document");
+	return (fd);
+}
+
+void open_redirs(char **rd, int n)
+{
+	int i;
+
+	i = 0;
+	while (rd[i])
+	{
+		if (!ft_strcmp(rd[i], "<"))
+		{
+			if (g_msh.pipe[n].l_fd > 2)
+				close(g_msh.pipe[n].l_fd);
+			g_msh.pipe[n].l_fd = open(rd[i + 1], O_RDONLY);
+		}
+		else if (!ft_strcmp(rd[i], "<<"))
+		{
+			if (g_msh.pipe[n].l_fd > 2)
+				close(g_msh.pipe[n].l_fd);
+			g_msh.pipe[n].l_fd = text_document(rd[i + 1]);
+		}
+		else if (!ft_strcmp(rd[i], ">"))
+		{
+			if (g_msh.pipe[n].r_fd > 2)
+				close(g_msh.pipe[n].r_fd);
+			g_msh.pipe[n].r_fd = open(rd[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		}
+		else if (!ft_strcmp(rd[i], ">>"))
+		{
+			if (g_msh.pipe[n].r_fd > 2)
+				close(g_msh.pipe[n].r_fd);
+			g_msh.pipe[n].r_fd = open(rd[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
+		}
+		if (g_msh.pipe[n].l_fd < 0 || g_msh.pipe[n].r_fd < 0)
+		{
+			if (g_msh.pipe[n].r_fd > 2)
+				close(g_msh.pipe[n].r_fd);
+			if (g_msh.pipe[n].l_fd > 2)
+				close(g_msh.pipe[n].l_fd);
+			error_func(NULL, 1, 1, rd[i + 1]);
+			break ;
+		}
+		i += 2;
+	}
+}
+
+void redirs(void)
+{
+	int i;
+
+	i = 0;
+	printf("%d %d\n", g_msh.pipe[i].l_fd, g_msh.pipe[i].r_fd);
+	while (i < g_msh.pipe_count)
+	{
+		g_msh.pipe[i].l_fd = 0;
+		g_msh.pipe[i].r_fd = 1;
+		open_redirs(g_msh.pipe[i].rd, i);
+		i++;
+	}
+	printf("%d %d\n", g_msh.pipe[i].l_fd, g_msh.pipe[i].r_fd);
+}
+
+void close_redirs(void)
+{
+	int i;
+
+	i = 0;
+	while (i < g_msh.pipe_count)
+	{
+		if (g_msh.pipe[i].r_fd > 2)
+			close(g_msh.pipe[i].r_fd);
+		if (g_msh.pipe[i].l_fd > 2)
+			close(g_msh.pipe[i].l_fd);
+		i++;
+	}
+}
+
 void executor(void)
 {
+	redirs();
+	printf("%d %d\n", g_msh.pipe[0].l_fd, g_msh.pipe[0].r_fd);
 	if (g_msh.pipe_count == 1)
 		exec_without_pipes();
 	else
 		g_msh.ret = exec_pipes();
+	close_redirs();
 }
-
