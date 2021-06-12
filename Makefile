@@ -11,6 +11,7 @@ EXEC = $(EXEC_PATH)executor.a
 PARS = pars.a
 
 SRCS = main.c \
+		key_loop.c \
 		string_ops.c \
 		d_array_ops.c \
 		history.c \

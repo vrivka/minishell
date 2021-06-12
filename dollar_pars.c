@@ -4,7 +4,7 @@ char	*get_env_name(t_pars *pars)
 {
 	char	*name;
 
-	name = (char *)ft_calloc(1, sizeof(char));//if ==NULL
+	name = ft_strnew(0);
 	while(pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ')
 	{
 		if (ft_strchr("\'\"\\", pars->s[pars->i]))
@@ -28,7 +28,7 @@ void	add_sq_str(t_pars *pars, char **str)
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
 
-	while (pars->s[pars->i] != '\'')// check for second '
+	while (pars->s[pars->i] != '\'')
 	{
 		*str = ft_add_char2str(*str, pars->s[pars->i]);
 		pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
@@ -43,7 +43,7 @@ void	add_wq_str(t_pars *pars, char **str)
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
 
-	while (pars->s[pars->i] != '\"')// check for second "
+	while (pars->s[pars->i] != '\"')
 	{
 		*str = ft_add_char2str(*str, pars->s[pars->i]);
 		pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
@@ -57,7 +57,7 @@ char	*get_dstr(t_pars *pars)
 {
 	char	*str;
 
-	str = (char *)ft_calloc(1, sizeof(char));
+	str = ft_strnew(0);
 	while(pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ')
 	{
 		if (pars->s[pars->i] == '\\')
@@ -105,16 +105,12 @@ void	dollar_pars(t_pars *pars)
 	if (env_val != NULL)
 	{
 		pars->args = ft_strjoin_fr(pars->args, env_val);
-		////sp flag
-		change_sp2us(&env_val);//
-		g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);//
-		//
+		change_sp2us(&env_val);
+		g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);
 		free(env_val);
 	}
 	pars->args = ft_strjoin_fr(pars->args, d_str);
-	////sp flag
-	change_sp2us(&d_str);//
-	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, d_str);//
-	//
+	change_sp2us(&d_str);
+	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, d_str);
 	free(d_str);
 }

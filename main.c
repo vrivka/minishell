@@ -5,24 +5,22 @@ int		ft_putchar(int c)
 	return (write(1, &c, 1));
 }	
 
-void	term_setup(void)//when exit return term sets back!
+void	term_setup(void)
 {
+	int	ret;
+
 	g_msh.term = (struct termios *)ft_calloc(1, sizeof(struct termios));
-
-	g_msh.term_name = getenv("TERM");//"xterm-256color"
-	// if (msh->term == NULL)
-	// 	Can`t get terminal type from environment
-
-	tcgetattr(0, g_msh.term);//return 0 or -1
-
-	//set term
-	// tcgetattr(0, g_msh.term);//return 0 or -1
-	// g_msh.term->c_lflag &= ~(ECHO);
-	// g_msh.term->c_lflag &= ~(ICANON);
-	// tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
-	////
-
-	tgetent(0, g_msh.term_name);//return 0 or -1
+	if (g_msh.term == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
+	g_msh.term_name = getenv("TERM");
+	if (g_msh.term_name == NULL)
+		error_func(ERR_TERMNAME, 1, 0, NULL);
+	ret = tcgetattr(0, g_msh.term);
+	if (ret == -1)
+		error_func(ERR_TERMATTR, 1, 0, NULL);
+	ret = tgetent(0, g_msh.term_name);
+	if (ret == -1)
+		error_func(ERR_TERMCAP, 1, 0, NULL);
 }
 
 void	copy_envs(char **envp)
@@ -35,11 +33,15 @@ void	copy_envs(char **envp)
 	while (envp[j] != NULL)
 		j++;
 	g_msh.envp = (char **)ft_calloc(sizeof(char *), (j + 1));
+	if (g_msh.envp == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	j = 0;
 	while (envp[j] != NULL)
 	{
 		len = ft_strlen(envp[j]);
 		g_msh.envp[j] = (char *)ft_calloc(sizeof(char), (len + 1));
+		if (g_msh.envp[j] == NULL)
+			error_func(ERROR_MEM, 1, 0, NULL);
 		i = 0;
 		while (envp[j][i] != '\0')
 		{
@@ -48,12 +50,6 @@ void	copy_envs(char **envp)
 		}
 		j++;
 	}
-	// j = 0;
-	// while (msh->envp[j] != NULL)//print env vars
-	// {
-	// 	printf("%s\n", msh->envp[j]);
-	// 	j++;
-	// }
 }
 
 void	init_msh(char **av, char **envp)
@@ -69,9 +65,15 @@ void	init_msh(char **av, char **envp)
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
 	tmp = ft_split("export OLDPWD SHLVL", ' ');
+	if (tmp == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	free(tmp[2]);
 	stri = ft_itoa(shlvl());
+	if (stri == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	tmp[2] = ft_strjoin("SHLVL=", stri);
+	if (tmp[2] == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	free(stri);
 	export_func(tmp);
 	free_envc(tmp, 2);
@@ -79,119 +81,41 @@ void	init_msh(char **av, char **envp)
 
 void	unset_term(void)
 {
+	int	ret;
+
 	g_msh.term->c_lflag &= ~(ECHO);
 	g_msh.term->c_lflag &= ~(ICANON);
-	tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
+	ret = tcsetattr(0, TCSANOW, g_msh.term);
+	if (ret == -1)
+		error_func(ERR_SETTERM, 1, 0, NULL);
 }
 
 void	set_term(void)
 {
+	int	ret;
+
 	g_msh.term->c_lflag |= ECHO;
 	g_msh.term->c_lflag |= ICANON;
-	tcsetattr(0, TCSANOW, g_msh.term);//return 0 or -1
-}
-
-void	key_loop(void)
-{
-	char	buf[BUFFER_SIZE];
-	int		len;
-
-	while (1)
-	{
-		ft_memset(buf, 0, BUFFER_SIZE);
-		len = read(0, buf, BUFFER_SIZE);
-		if (!ft_strcmp(buf, "\e[A"))//up
-		{
-			if (g_msh.h_index >= 0)
-			{
-				g_msh.pos = 0;
-				if (g_msh.h_index > 0)
-					g_msh.h_index--;
-				tputs(restore_cursor, 1, ft_putchar);
-				tputs(tgetstr("ce", 0), 1, ft_putchar);
-				write(1, g_msh.history[g_msh.h_index], ft_strlen(g_msh.history[g_msh.h_index]));
-				g_msh.pos += ft_strlen(g_msh.history[g_msh.h_index]);
-			}
-		}
-		else if (!ft_strcmp(buf, "\e[B"))//down
-		{
-			if (g_msh.h_index < g_msh.h_size)
-			{
-				g_msh.pos = 0;
-				if (g_msh.h_index < (g_msh.h_size - 1))
-					g_msh.h_index++;
-				tputs(restore_cursor, 1, ft_putchar);
-				tputs(tgetstr("ce", 0), 1, ft_putchar);
-				write(1, g_msh.history[g_msh.h_index], ft_strlen(g_msh.history[g_msh.h_index]));
-				g_msh.pos += ft_strlen(g_msh.history[g_msh.h_index]);
-			}
-		}
-		else if (!ft_strcmp(buf, "\177"))//backspace
-		{
-			if (g_msh.pos > 0)
-			{
-				g_msh.history[g_msh.h_index] = ft_del_chinstr(g_msh.history[g_msh.h_index], g_msh.pos);
-				tputs(cursor_left, 1, ft_putchar);
-				tputs(tgetstr("dc", 0), 1, ft_putchar);
-				g_msh.pos--;
-			}
-		}
-		else if (!ft_strcmp(buf, "\t"))//tab
-			continue ;
-		else if (!ft_strcmp(buf, "\n"))//enter
-		{
-			g_msh.history[g_msh.h_size - 1] = ft_strrewrite(g_msh.history[g_msh.h_size - 1], g_msh.history[g_msh.h_index]);
-			g_msh.line = ft_strrewrite(g_msh.line, g_msh.history[g_msh.h_size - 1]);
-			g_msh.pos = 0;
-			break;
-		}
-		else if (!ft_strcmp(buf, "\e[D"))//left
-		{
-			if (g_msh.pos > 0)
-			{
-				tputs(tgetstr("le", 0), 1, ft_putchar);
-				g_msh.pos--;
-			}
-		}
-		else if (!ft_strcmp(buf, "\e[C"))//right
-		{
-			if (g_msh.pos < ft_strlen(g_msh.history[g_msh.h_index]))
-			{
-				tputs(tgetstr("nd", 0), 1, ft_putchar);
-				g_msh.pos++;
-			}
-		}
-		else
-		{
-			if (ft_isprint(buf[0]))//print
-			{
-				tputs(tgetstr("im", 0), 1, ft_putchar);
-				g_msh.history[g_msh.h_index] = ft_ins_ch2str(g_msh.history[g_msh.h_index], buf[0], g_msh.pos);
-				g_msh.pos++;
-				write (1, buf, len);
-				tputs(tgetstr("ei", 0), 1, ft_putchar);
-			}
-		}
-	}
+	ret = tcsetattr(0, TCSANOW, g_msh.term);
+	if (ret == -1)
+		error_func(ERR_SETTERM, 1, 0, NULL);
 }
 
 void	main_loop(void)
 {
-	g_msh.line = (char *)ft_calloc(sizeof(char), 1);//if ==NULL
+	g_msh.line = (char *)ft_calloc(sizeof(char), 1);
+	if (g_msh.line == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	g_msh.history = add_str2darr(g_msh.history);
 	g_msh.h_size = count_arr_lines(g_msh.history);
 	g_msh.h_index = g_msh.h_size - 1;
 	g_msh.pos = 0;
-
 	unset_term();
-
 	write(1, "msh$ ", 5);
 	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
-
 	set_term();
-
 	g_msh.line = del_start_sp(g_msh.line);
 	g_msh.line = del_end_sp(g_msh.line);
 	if (ft_strlen(g_msh.line) == 0)
@@ -211,9 +135,9 @@ int		main(int ac, char **av, char **envp)
 	(void)ac;
 	init_msh(av, envp);
 	term_setup();
-	while (g_msh.status)//executor sets status: 0 if error, 1 if succes
+	while (g_msh.status)
 		main_loop();
-	put_hist2file();// final clean write history to file
+	put_hist2file();
 	free(g_msh.term);
 	return 0;
 }

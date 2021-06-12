@@ -4,9 +4,9 @@ char	*ft_strnew(size_t n)
 {
 	char	*str;
 
-	str = (char *)ft_calloc((n + 1), sizeof(char));//if ==NULL
+	str = (char *)ft_calloc((n + 1), sizeof(char));
 	if (str == NULL)
-		exit(0);
+		error_func(ERROR_MEM, 1, 0, NULL);
 	return (str);
 }
 
@@ -20,9 +20,9 @@ char	*ft_strjoin_fr(char *s1, char *s2)
 	j = 0;
 	if (!s1 && !s2)
 		return (NULL);
-	if (!(s = (char *)malloc(sizeof(char) * (ft_strlen(s1) +
-				ft_strlen(s2) + 1))))
-		return (NULL);
+	s = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (s == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	while (s1[i])
 	{
 		s[i] = s1[i];
@@ -49,8 +49,9 @@ char *ft_strdellstch_fr(char *s1)
 	if (!s1)
 		return (NULL);
 	len = ft_strlen(s1);
-	if (!(s = (char *)ft_calloc(sizeof(char), len)))
-		return (NULL);
+	s = (char *)ft_calloc(sizeof(char), len);
+	if (s == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	while (i < (len - 1))
 	{
 		s[i] = s1[i];
@@ -60,7 +61,7 @@ char *ft_strdellstch_fr(char *s1)
 	return (s);
 }
 
-char	*ft_strrewrite(char *s1, char *s2)//target/source
+char	*ft_strrewrite(char *s1, char *s2)
 {
 	char	*s;
 	int		i;
@@ -69,6 +70,8 @@ char	*ft_strrewrite(char *s1, char *s2)//target/source
 	i = 0;
 	len = ft_strlen(s2);
 	s = (char *)ft_calloc(sizeof(char), (len + 1));
+	if (s == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	while (i < len)
 	{
 		s[i] = s2[i];
@@ -85,7 +88,9 @@ char	*ft_cutstr_begin(char *s1, int i)
 	int		j;
 
 	len = ft_strlen(s1);
-	s2 = (char *)ft_calloc(sizeof(char), (len - i + 1));//if s2 = NULL
+	s2 = (char *)ft_calloc(sizeof(char), (len - i + 1));
+	if (s2 == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	j = 0;
 	while (s1[i] != '\0')
 	{
@@ -102,9 +107,9 @@ char	*ft_cutstr_end(char *s, int pos)
 	char	*tmp;
 	int		i;
 
-	tmp = (char *)ft_calloc(sizeof(char), (pos + 1));//if tmp == NULL
+	tmp = (char *)ft_calloc(sizeof(char), (pos + 1));
 	if (tmp == NULL)
-		exit(0);
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	while (i < pos)
 	{
@@ -122,7 +127,9 @@ char	*ft_add_char2str(char *s, int c)
 	int		i;
 
 	len = ft_strlen(s);
-	new = (char *)ft_calloc(sizeof(char), (len + 2));//if new = NULL
+	new = (char *)ft_calloc(sizeof(char), (len + 2));
+	if (new == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	while (s[i] != '\0')
 	{
@@ -156,8 +163,14 @@ char	**ft_devide_str(char *s, int pos)
 
 	len = ft_strlen(s);
 	arr = (char **)ft_calloc(sizeof(char *), 3);
+	if (arr == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	arr[0] = (char *)ft_calloc(sizeof(char), (pos + 1));
+	if (arr[0] == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	arr[1] = (char *)ft_calloc(sizeof(char), (len - pos  + 1));
+	if (arr[1] == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	j = 0;
 	while (i < pos)
@@ -189,7 +202,6 @@ char	*ft_del_chinstr(char *s, int pos)
 	return (tmp);
 }
 
-//sp flag
 void	change_sp2us(char **s)
 {
 	int	i;
@@ -207,7 +219,6 @@ void	change_sp2us(char **s)
 	else
 		return ;
 }
-//
 
 char	*del_start_sp(char *s1)
 {
