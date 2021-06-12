@@ -6,12 +6,9 @@ void	get_history(char **av)
 	char	*str;
 
 	g_msh.hist_path = get_hist_path(av);
-	fd = open(g_msh.hist_path, O_RDONLY | O_CREAT, 0666);//if fd = -1 error
+	fd = open(g_msh.hist_path, O_RDONLY | O_CREAT, 0666);
 	if (fd == -1)
-	{
-		write(1, "Could not open/create history file\n", 35);
-		exit(0);
-	}
+		error_func(ERR_OPCRHISF, 1, 0, NULL);
 	str = read_hist2str(fd);
 	g_msh.history = get_hist_array(str);
 	close(fd);
@@ -22,19 +19,12 @@ char	**get_hist_array(char *str)
 	char	**arr;
 	int		size;
 
-	size = get_arr_size(str);//count \n
-	arr = (char **)ft_calloc(sizeof(char *), (size + 1));// if ar==NULL
+	size = get_arr_size(str);
+	arr = (char **)ft_calloc(sizeof(char *), (size + 1));
+	if (arr == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	fill_array(arr, str);
 	free(str);
-	// //
-	// int j; //print history array
-	// j = 0;
-	// while (arr[j] != NULL)
-	// {
-	// 	printf("%s\n", arr[j]);
-	// 	j++;
-	// }
-	// //
 	return (arr);
 }
 
@@ -51,6 +41,8 @@ void	fill_array(char **arr, char *str)
 	{
 		len = get_str_len(str, n);
 		arr[j] = (char *)ft_calloc(sizeof(char), (len + 1));
+		if (arr[j] == NULL)
+			error_func(ERROR_MEM, 1, 0, NULL);
 		i = 0;
 		while (str[n] != '\n' && str[n] != '\0')
 		{
@@ -94,7 +86,7 @@ int		get_arr_size(char *str)
 			size++;
 		i++;
 	}
-	return (size + 1);//+1 because last line without \n
+	return (size + 1);
 }
 
 char	*read_hist2str(int fd)
@@ -103,15 +95,16 @@ char	*read_hist2str(int fd)
 	char	*s;
 	int		rd;
 
-	buf = (char *)ft_calloc(sizeof(char), 2);//if buf==NULL
-	s = (char *)ft_calloc(sizeof(char), 1);//if s==NULL
-	while ((rd = read(fd, &buf[0], 1)))//if rd==-1
+	buf = (char *)ft_calloc(sizeof(char), 2);
+	if (buf == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
+	s = (char *)ft_calloc(sizeof(char), 1);
+	if (s == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
+	while ((rd = read(fd, &buf[0], 1)))
 	{
 		if (rd == -1)
-		{
-			write(1, "Could not read history file\n", 28);
-			exit(0);
-		}
+			error_func(ERR_READHISF, 1, 0, NULL);
 		s = ft_strjoin_fr(s, buf);
 	}
 	free(buf);
@@ -125,7 +118,9 @@ char	*get_hist_path(char **av)
 	int		i;
 
 	len = ft_strlen(av[0]) - ft_strlen(EXEC_F_NAME);
-	path = (char *)ft_calloc(sizeof(char), (len + 1));// if == NULL
+	path = (char *)ft_calloc(sizeof(char), (len + 1));
+	if (path == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	while (i < len)
 	{
@@ -142,7 +137,9 @@ void	put_hist2file(void)
 	int	j;
 	int	size;
 
-	fd = open(g_msh.hist_path, O_WRONLY | O_CREAT | O_TRUNC, 0666);//if fd=-1 error
+	fd = open(g_msh.hist_path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (fd == -1)
+		error_func(ERR_OPCRHISF, 1, 0, NULL);
 	size = count_arr_lines(g_msh.history);
 	j = 0;
 	while (g_msh.history[j] != NULL)
@@ -165,33 +162,3 @@ int		count_arr_lines(char **array)
 		count++;
 	return (count);
 }
-
-// void	insert_nline2hist(void)
-// {
-// 	char	**arr;
-// 	int		size;
-// 	int		j;
-
-// 	size = count_arr_lines(g_msh.history);
-// 	arr = (char **)ft_calloc(sizeof(char *), (size + 2));//+1 for new line
-// 	j = 0;
-// 	while (j < size)
-// 	{
-// 		arr[j] = (char *)ft_calloc(sizeof(char), 1);
-// 		arr[j] = ft_strrewrite(arr[j], g_msh.history[j]);
-// 		j++;
-// 	}
-// 	arr[j] = (char *)ft_calloc(sizeof(char), 1);
-// 	arr[j] = ft_strrewrite(arr[j], g_msh.line);
-// 	free_d_arr(g_msh.history);
-// 	g_msh.history = arr;
-// }
-
-
-
-//start of minishell - open file (O_RDONLY | O_CREAT, 0666)
-//read file to array
-//close fd
-//while working - press enter(\n) / ctrl-d / exit - open (O_WRONLY | O_CREAT | O_TRUNC, 0666)
-//write array to file
-//close fd

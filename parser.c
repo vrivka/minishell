@@ -60,6 +60,8 @@ char	*get_sq_str(t_pars *pars)
 
 	len = get_sqstr_len(pars->s);
 	str = (char *)ft_calloc(sizeof(char), (len + 1));//if str=NULL
+	if (str == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	while (pars->s[i] != '\'')
 	{
@@ -76,15 +78,10 @@ void	strongquotes_pars(t_pars *pars)
 
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
-	//check for 2nd ' -> search line
 	sq_str = get_sq_str(pars);
 	pars->args = ft_strjoin_fr(pars->args, sq_str);
-
-	////sp flag
-	change_sp2us(&sq_str);//
-	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, sq_str);//
-	//
-
+	change_sp2us(&sq_str);
+	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, sq_str);
 	free(sq_str);
 	sq_str = NULL;
 }
@@ -92,11 +89,7 @@ void	strongquotes_pars(t_pars *pars)
 void	backslash_pars(t_pars *pars)
 {
 	pars->args = ft_add_char2str(pars->args, pars->s[1]);
-
-	////sp flag
 	g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[1]);
-	//
-
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 	pars->i = 0;
 }
@@ -107,22 +100,14 @@ void	space_pars(t_pars *pars)
 		pars->i++;
 	pars->s = ft_cutstr_begin(pars->s, pars->i);
 	pars->args = ft_add_char2str(pars->args, ' ');
-
-	////sp_flag
 	g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, ' ');
-	//
-
 	pars->i = 0;
 }
 
 void	enlarge_args(t_pars *pars)
 {
  	pars->args = ft_add_char2str(pars->args, pars->s[pars->i]);
-
-	////sp flag
 	g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[pars->i]);
-	//
-
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
 }
@@ -150,6 +135,8 @@ char	*get_pipe_str(char **s)
 
 	len = get_pipestr_len(*s);
 	tmp = ft_substr(*s, 0, len);
+	if (tmp == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	if ((*s)[len] == '|')
 		*s = ft_cutstr_begin(*s, (len + 1));
 	return (tmp);
@@ -157,22 +144,20 @@ char	*get_pipe_str(char **s)
 
 void	lexer(t_pars *pars)
 {
-	//sp flag
-	g_msh.check_spargs = ft_strnew(0);//
-	g_msh.check_sprds = ft_strnew(0);//
-	//
+	g_msh.check_spargs = ft_strnew(0);
+	g_msh.check_sprds = ft_strnew(0);
 
 	while(pars->s[pars->i] != '\0')
 	{
 		if (pars->s[pars->i] == '>' || pars->s[pars->i] == '<')
 			redir_pars(pars);
 
-		else if (pars->s[pars->i] == '$')//only letters,numbers and _ after $
+		else if (pars->s[pars->i] == '$')
 			dollar_pars(pars);
 		else if (pars->s[pars->i] == '\'')
 			strongquotes_pars(pars);
 		else if (pars->s[pars->i] == '\"')
-			weakquotes_pars(pars);//correct dollar!<--------------------------------
+			weakquotes_pars(pars);
 		else if (pars->s[pars->i] == '\\')//check if no symbol after '\'
 			backslash_pars(pars);
 
@@ -205,31 +190,31 @@ void	parser(char *s)
 	ft_bzero(&pars, sizeof(t_pars));
 
 	g_msh.pipe_count = get_pipe_num(s) + 1;
-	g_msh.pipe = (t_pipe *)ft_calloc((g_msh.pipe_count + 1), sizeof(t_pipe));// if == NULL
+	g_msh.pipe = (t_pipe *)ft_calloc((g_msh.pipe_count + 1), sizeof(t_pipe));
+	if (g_msh.pipe == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 
 	i = 0;
 	while(i < g_msh.pipe_count)
 	{
-		// init_pars(s);
-		pars.s = get_pipe_str(&s);//take out part of s before | or \0
-		pars.args = (char *)ft_calloc(1, sizeof(char));// if ==NULL
-		pars.rds = (char *)ft_calloc(1, sizeof(char));// if ==NULL
+		pars.s = get_pipe_str(&s);
+		pars.args = ft_strnew(0);
+		pars.rds = ft_strnew(0);
 		pars.i = 0;
-		//
 
 		fill_pars(&pars);
 
-		////sp flag
-		g_msh.pipe[i].args = ft_spargs_split(pars.args);//
-		g_msh.pipe[i].rd = ft_sprds_split(pars.rds);//
-		//
+		g_msh.pipe[i].args = ft_spargs_split(pars.args);
+		if (g_msh.pipe[i].args == NULL)
+			error_func(ERROR_MEM, 1, 0, NULL);
+		g_msh.pipe[i].rd = ft_sprds_split(pars.rds);
+		if (g_msh.pipe[i].rd == NULL)
+			error_func(ERROR_MEM, 1, 0, NULL);
 
 		g_msh.pipe[i].bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pipe[i].args[0]);
 
-		////sp flag
-		free(g_msh.check_spargs);//
-		free(g_msh.check_sprds);//
-		//
+		free(g_msh.check_spargs);
+		free(g_msh.check_sprds);
 
 		free(pars.s);
 		free(pars.args);
@@ -248,7 +233,7 @@ void	launch(void)
 	while (g_msh.semi[n] != NULL)
 	{
 		parser(g_msh.semi[n]);
-		executor();//---------------------------------------------for Vlad
+		executor();
 		free_pipe();
 		n++;
 	}

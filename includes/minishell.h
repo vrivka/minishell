@@ -25,7 +25,14 @@
 # define	BSFLG 0b0100
 # define	UBSFL 0b1000//flag to '\' unset
 
-# define 	ERROR_MEM	"minishell: Cannot allocate memory"
+# define	ERROR_MEM		"minishell: Could not allocate memory"
+# define	ERR_OPCRHISF	"minishell: Could not open/create history file"
+# define	ERR_READHISF	"minishell: Could not read history file"
+# define	ERR_TERMNAME	"minishell: Could not get term type from envs"
+# define	ERR_TERMATTR	"minishell: Could not get term parameters"
+# define	ERR_TERMCAP		"minishell: Could not look up termcap entry"
+# define	ERR_SETTERM		"minishell: Could not set term parameters"
+# define	ERR_READKEY		"minishell: Could not read from STDIN"
 
 typedef struct	s_pipe
 {	

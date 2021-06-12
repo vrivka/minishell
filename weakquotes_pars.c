@@ -5,7 +5,7 @@ void	wq_dollar_val(t_pars *pars)
 	char	*env_name;
 	char	*env_val;
 
-	env_name = (char *)ft_calloc(1, sizeof(char));//if ==NULL
+	env_name = ft_strnew(0);
 
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
@@ -24,10 +24,8 @@ void	wq_dollar_val(t_pars *pars)
 	if (env_val != NULL)
 	{
 		pars->args = ft_strjoin_fr(pars->args, env_val);
-		////sp flag
-		change_sp2us(&env_val);//
-		g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);//
-		//
+		change_sp2us(&env_val);
+		g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);
 		free(env_val);
 	}
 	free(env_name);
@@ -40,6 +38,8 @@ void	wq_dollar_ret(t_pars *pars)
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 	pars->i = 0;
 	ret = ft_itoa(g_msh.ret);
+	if (ret == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	pars->args = ft_strjoin_fr(pars->args, ret);
 	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, ret);
 	if (ret != NULL)
@@ -56,44 +56,28 @@ void	weakquotes_pars(t_pars *pars)
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "\\");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\\");//
-			//
-
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\\");
 			pars->i = 0;
 		}
 		else if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '\"')
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "\"");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\"");//
-			//
-
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\"");
 			pars->i = 0;
 		}
 		else if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '$')
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "$");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "$");//
-			//
-
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "$");
 			pars->i = 0;
 		}
 		else if (pars->s[pars->i] == '$' && pars->s[pars->i + 1] == '\\')
 		{
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
 			pars->args = ft_strjoin_fr(pars->args, "$\\");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "$\\");//
-			//
-
+			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "$\\");
 			pars->i = 0;
 		}
 		else if (pars->s[pars->i] == '$' && ft_isdigit(pars->s[pars->i + 1]))
@@ -108,14 +92,10 @@ void	weakquotes_pars(t_pars *pars)
 		else
 		{
 			pars->args = ft_add_char2str(pars->args, pars->s[pars->i]);
-
-			////sp flag
 			if (pars->s[pars->i] == ' ')
 				g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, '_');
 			else
 				g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[pars->i]);
-			//
-
 			pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 			pars->i = 0;
 		}

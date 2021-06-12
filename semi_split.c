@@ -29,7 +29,7 @@ int		check_flags(void)
 		return (0);
 }
 
-int		get_semi_num(char *s)//count num of semicolons to devide line
+int		get_semi_num(char *s)
 {
 	int	i;
 	int	n;
@@ -64,21 +64,23 @@ int		get_semiline_len(char *s)
 	return (len);
 }
 
-void	init_semicolon_array(void)//need to free semi array
+void	init_semicolon_array(void)
 {
 	int	len;
 	int	n;
-	g_msh.pos = 0;//may be it`s unnecessary))
+	g_msh.pos = 0;
 
 	g_msh.semi_count = get_semi_num(g_msh.line) + 1;
-	// printf("count: %d\n", g_msh.semi_count);//
-	g_msh.semi = (char **)ft_calloc(sizeof(char *), (g_msh.semi_count + 1));//if ==NULL
+	g_msh.semi = (char **)ft_calloc(sizeof(char *), (g_msh.semi_count + 1));
+	if (g_msh.semi == NULL)
+		error_func(ERROR_MEM, 1, 0, NULL);
 	n = 0;
 	while(n < g_msh.semi_count)
 	{
 		len = get_semiline_len(g_msh.line);
-		// printf("len: %d\n", len);//
 		g_msh.semi[n] = (char *)ft_calloc(sizeof(char), (len + 1));
+		if (g_msh.semi[n] == NULL)
+			error_func(ERROR_MEM, 1, 0, NULL);
 		if (g_msh.line[g_msh.pos] == ';')
 			g_msh.pos++;
 		n++;
@@ -110,17 +112,7 @@ void	fill_semicolon_array(void)
 
 void	semicolon_splitter(void)
 {
-	// printf("line: %s\n", g_msh.line);//
 	init_semicolon_array();
 	fill_semicolon_array();
 	free(g_msh.line);
-
-	// /// print test
-	// int i = 0;
-	// while (g_msh.semi[i])
-	// {
-	// 	printf("semi[%d]# %s\n", i, g_msh.semi[i]);
-	// 	i++;
-	// }
-	// ///
 }

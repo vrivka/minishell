@@ -59,4 +59,3 @@ char	*env_value(char **env, char *name)
 	tmp = env_val_cut(env[i]);
 	return (tmp);
 }
-//vlad
