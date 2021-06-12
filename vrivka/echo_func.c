@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-int echo_func(char **av)
+int	echo_func(char **av)
 {
-	int i;
-	int c;
+	int	i;
+	int	c;
 
 	i = 1;
 	c = 0;

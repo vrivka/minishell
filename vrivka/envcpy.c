@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int envlen(char **env)
+int	envlen(char **env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (env[i])
@@ -10,14 +10,14 @@ int envlen(char **env)
 	return (i);
 }
 
-char **envcpy(char **env)
+char	**envcpy(char **env)
 {
-	char **tmp;
-	int i;
+	char	**tmp;
+	int		i;
 
 	tmp = (char **)malloc(sizeof(char *) * (envlen(env) + 1));
 	if (!tmp)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (env[i])
 	{

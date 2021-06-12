@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-char *ft_strcjoin(char *s1, int c, char *s2)
+char	*ft_strcjoin(char *s1, int c, char *s2)
 {
-	char *tmp;
-	int i;
+	char	*tmp;
+	int		i;
 
 	i = ft_strlen(s1) + ft_strlen(s2) + 1;
 	tmp = (char *)malloc(sizeof(char) * (i + 1));
@@ -16,22 +16,13 @@ char *ft_strcjoin(char *s1, int c, char *s2)
 	return (tmp);
 }
 
-char *path_finder(char *env_path, char *av_null)
+char	*check_path(char **tmp, char *av_null)
 {
-	char *path;
-	char **tmp;
-	struct stat buf;
-	int st;
-	int i;
+	char		*path;
+	struct stat	buf;
+	int			st;
+	int			i;
 
-	if (!strncmp(av_null, "/", 1) || !strncmp(av_null, "./", 2) || !strncmp(av_null, "../", 3) || !env_path)
-	{
-		path = ft_strdup(av_null);
-		return (path);
-	}
-	tmp = ft_split(env_path, ':');
-	if (!tmp)
-		error_func(ERROR_MEM, 1, 0, NULL);
 	i = 0;
 	while (tmp[i])
 	{
@@ -45,8 +36,32 @@ char *path_finder(char *env_path, char *av_null)
 		i++;
 	}
 	if (st)
+	{
 		path = ft_strdup(av_null);
+		if (!path)
+			error_func(ERROR_MEM, 1, 0, NULL);
+	}
 	free_envc(tmp, envlen(tmp));
+	return (path);
+}
+
+char	*path_finder(char *env_path, char *av_null)
+{
+	char	*path;
+	char	**tmp;
+
+	if (!strncmp(av_null, "/", 1) || !strncmp(av_null, "./", 2)
+		|| !strncmp(av_null, "../", 3) || !env_path)
+	{
+		path = ft_strdup(av_null);
+		if (!path)
+			error_func(ERROR_MEM, 1, 0, NULL);
+		return (path);
+	}
+	tmp = ft_split(env_path, ':');
+	if (!tmp)
+		error_func(ERROR_MEM, 1, 0, NULL);
+	path = check_path(tmp, av_null);
 	free(env_path);
-	return(path);
+	return (path);
 }

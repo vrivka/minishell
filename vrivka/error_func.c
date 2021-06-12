@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int error_func(char *error_str, int exit_code, int ex_ret, char *arg)
+int	error_func(char *error_str, int exit_code, int ex_ret, char *arg)
 {
-	int fd;
+	int	fd;
 
 	fd = dup(1);
 	dup2(2, 1);

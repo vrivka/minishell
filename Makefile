@@ -4,10 +4,6 @@ LIBFT_PATH = libft/
 
 LIBFT = $(LIBFT_PATH)libft.a
 
-EXEC_PATH = vrivka/
-
-EXEC = $(EXEC_PATH)executor.a
-
 PARS = pars.a
 
 SRCS = main.c \
@@ -23,7 +19,26 @@ SRCS = main.c \
 		weakquotes_pars.c \
 		env_ops.c \
 		ft_spargs_split.c \
-		ft_sprds_split.c
+		ft_sprds_split.c \
+		vrivka/cd_func.c \
+        vrivka/echo_func.c \
+        vrivka/env_func.c \
+        vrivka/env_handler.c \
+        vrivka/envcpy.c \
+        vrivka/error_func.c \
+        vrivka/exec_func.c \
+        vrivka/exec_pipe_func.c \
+        vrivka/exec_utils.c \
+        vrivka/executor.c \
+        vrivka/exit_func.c \
+        vrivka/export_func.c \
+        vrivka/export_func_utils.c \
+        vrivka/free_shlvl.c \
+        vrivka/open_redirs.c \
+        vrivka/open_redirs_utils.c \
+        vrivka/path_finder.c \
+        vrivka/pwd_func.c \
+        vrivka/unset_func.c
 
 # for debug
 VSRCS = vrivka/cd_func.c \
@@ -51,7 +66,7 @@ RM = rm -rf
 
 all:	$(NAME)
 
-$(NAME):	$(PARS) $(LIBFT) $(EXEC)
+$(NAME):	$(PARS) $(LIBFT)
 		@gcc $(CFLAGS) -o $(NAME) $^ -ltermcap -lreadline
 
 $(PARS):	$(OBJS)
@@ -63,17 +78,12 @@ $(PARS):	$(OBJS)
 $(LIBFT):
 		@make -C $(LIBFT_PATH)
 
-$(EXEC):
-		@make -C $(EXEC_PATH)
-
 clean:
 		@make clean -C $(LIBFT_PATH)
-		@make clean -C $(EXEC_PATH)
 		@$(RM) $(OBJS)
 
 fclean:	clean
 		@make fclean -C $(LIBFT_PATH)
-		@make fclean -C $(EXEC_PATH)
 		@$(RM) $(PARS)
 		@$(RM) $(NAME)
 

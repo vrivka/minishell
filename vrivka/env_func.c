@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int env_func(void)
+int	env_func(void)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (g_msh.envp[i])
@@ -11,5 +11,5 @@ int env_func(void)
 			printf("%s\n", g_msh.envp[i]);
 		i++;
 	}
-	return(0);
+	return (0);
 }

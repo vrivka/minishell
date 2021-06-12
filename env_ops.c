@@ -40,7 +40,7 @@ char	*env_val_cut(const char *env)
 	while (env[i] && env[i] != '=')
 		i++;
 	if (!env[i])
-		return (0);
+		return (NULL);
 	i++;
 	tmp = ft_strdup(&env[i]);
 	if (!tmp)
