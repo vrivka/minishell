@@ -214,5 +214,6 @@ int		main(int ac, char **av, char **envp)
 	while (g_msh.status)//executor sets status: 0 if error, 1 if succes
 		main_loop();
 	put_hist2file();// final clean write history to file
+	free(g_msh.term);
 	return 0;
 }

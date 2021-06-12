@@ -42,70 +42,6 @@ int		get_pipe_num(char *s)
 	return (n);
 }
 
-char	*del_start_sp(char *s1)
-{
-	char	*s2;
-	int		i;
-
-	s2 = NULL;
-	i = 0;
-	if (s1[i] == ' ')
-	{
-		while (s1[i] == ' ')
-			i++;
-		s2 = ft_cutstr_begin(s1, i);
-		return (s2);
-	}
-	return (s1);
-}
-
-char	*del_end_sp(char *s1)
-{
-	char	*s2;
-	int		i;
-	int		len;
-
-	s2 = NULL;
-	len = ft_strlen(s1);
-	i = len - 1;
-	if (s1[i] == ' ')
-	{
-		while (s1[i] == ' ')
-			i--;
-		s2 = ft_cutstr_end(s1, (i + 1));
-		return (s2);
-	}
-	return (s1);
-}
-
-int		get_envname_len(char *s)
-{
-	int		i;
-
-	i = 0;
-	while (ft_isalnum(s[i]))
-		i++;
-	return (i);
-}
-
-char	*get_env_name(t_pars *pars)
-{
-	char	*name;
-	int		len;
-	int		i;
-
-	len = get_envname_len(pars->s);
-	name = (char *)ft_calloc(sizeof(char), (len + 1));//if name = NULL
-	i = 0;
-	while (ft_isalnum(pars->s[i]))
-	{
-		name[i] = pars->s[i];
-		i++;
-	}
-	pars->s = ft_cutstr_begin(pars->s, i);
-	return (name);
-}
-
 int		get_sqstr_len(char *s)
 {
 	int		i;
@@ -134,28 +70,6 @@ char	*get_sq_str(t_pars *pars)
 	return (str);
 }
 
-void	dollar_pars(t_pars *pars)
-{
-	char	*env_name;
-	char	*env_val;
-
-	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
-	pars->i = 0;
-	env_name = get_env_name(pars);
-	env_val = env_value(g_msh.envp, env_name);
-	free(env_name);
-	env_name = NULL;
-	pars->args = ft_strjoin_fr(pars->args, env_val);
-
-	////sp flag
-	change_sp2us(&env_val);//
-	g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);//
-	//
-
-	free(env_val);
-	env_val = NULL;
-}
-
 void	strongquotes_pars(t_pars *pars)
 {
 	char	*sq_str;
@@ -173,63 +87,6 @@ void	strongquotes_pars(t_pars *pars)
 
 	free(sq_str);
 	sq_str = NULL;
-}
-
-void	weakquotes_pars(t_pars *pars)
-{
-	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
-	pars->i = 0;
-	while (pars->s[pars->i] != '\"')
-	{
-		if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '\\')
-		{
-			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
-			pars->args = ft_strjoin_fr(pars->args, "\\");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\\");//
-			//
-
-			pars->i = 0;
-		}
-		else if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '\"')
-		{
-			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
-			pars->args = ft_strjoin_fr(pars->args, "\"");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "\"");//
-			//
-
-			pars->i = 0;
-		}
-		else if (pars->s[pars->i] == '\\' && pars->s[pars->i + 1] == '$')
-		{
-			pars->s = ft_cutstr_begin(pars->s, (pars->i + 2));
-			pars->args = ft_strjoin_fr(pars->args, "$");
-
-			////sp flag
-			g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, "$");//
-			//
-
-			pars->i = 0;
-		}
-		else
-		{
-			pars->args = ft_add_char2str(pars->args, pars->s[pars->i]);
-
-			////sp flag
-			if (pars->s[pars->i] == ' ')
-				g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, '_');
-			else
-				g_msh.check_spargs = ft_add_char2str(g_msh.check_spargs, pars->s[pars->i]);
-			//
-
-			pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
-			pars->i = 0;
-		}
-	}
-	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 }
 
 void	backslash_pars(t_pars *pars)
@@ -315,7 +172,7 @@ void	lexer(t_pars *pars)
 		else if (pars->s[pars->i] == '\'')
 			strongquotes_pars(pars);
 		else if (pars->s[pars->i] == '\"')
-			weakquotes_pars(pars);
+			weakquotes_pars(pars);//correct dollar!<--------------------------------
 		else if (pars->s[pars->i] == '\\')//check if no symbol after '\'
 			backslash_pars(pars);
 

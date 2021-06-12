@@ -18,6 +18,8 @@ SRCS = main.c \
 		semi_split.c \
 		parser.c \
 		redir_pars.c \
+		dollar_pars.c \
+		weakquotes_pars.c \
 		env_ops.c \
 		ft_spargs_split.c \
 		ft_sprds_split.c
@@ -78,6 +80,6 @@ re:		fclean all
 
 dbg:
 		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) $(VSRCS) \
-		-I./includes -ltermcap -o msh
+		-I./includes -ltermcap -lreadline -o msh
 
 .PHONY: all clean fclean re
