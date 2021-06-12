@@ -166,7 +166,6 @@ void redirs(void)
 	int i;
 
 	i = 0;
-	printf("%d %d\n", g_msh.pipe[i].l_fd, g_msh.pipe[i].r_fd);
 	while (i < g_msh.pipe_count)
 	{
 		g_msh.pipe[i].l_fd = 0;
@@ -174,7 +173,6 @@ void redirs(void)
 		open_redirs(g_msh.pipe[i].rd, i);
 		i++;
 	}
-	printf("%d %d\n", g_msh.pipe[i].l_fd, g_msh.pipe[i].r_fd);
 }
 
 void close_redirs(void)
@@ -195,7 +193,6 @@ void close_redirs(void)
 void executor(void)
 {
 	redirs();
-	printf("%d %d\n", g_msh.pipe[0].l_fd, g_msh.pipe[0].r_fd);
 	if (g_msh.pipe_count == 1)
 		exec_without_pipes();
 	else
