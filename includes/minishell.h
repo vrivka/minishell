@@ -13,6 +13,7 @@
 # include <errno.h>
 # include <sys/stat.h>
 # include <readline/readline.h>
+# include <signal.h>
 
 # define	BUFFER_SIZE 4096
 
@@ -198,9 +199,12 @@ int				envncmp(const char *env, const char *find);//vlad
 int				check_semi(void);
 int				check_pipe(char *s);
 int				check_mid_pipe(char *tmp);
-int				check_backslash(char *s);
 int				check_sq(char *s);
 int				check_wq(char *s);
+////
+
+////sig_handler
+void			sig_handler(int signum);
 ////
 
 ////free_ops - free memory routine

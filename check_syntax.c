@@ -34,7 +34,6 @@ int	check_mid_pipe(char *tmp)
 		else
 			i++;
 	}
-
 	return (0);
 }
 
@@ -50,14 +49,6 @@ int	check_pipe(char *s)
 		free(tmp);
 		return (0);
 	}
-	
-	return (1);
-}
-
-int	check_backslash(char *s)
-{
-	if (s[ft_strlen(s) - 1] == '\\')
-		return (0);
 	return (1);
 }
 

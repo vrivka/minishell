@@ -199,7 +199,7 @@ int	parser(char *s)
 			return (error_func(ERR_SYNTAX, 0, 1, "|\n"));
 		}
 	}
-	if (!check_backslash(s))
+	if (s[ft_strlen(s) - 1] == '\\')
 	{
 		free(s);
 		return (error_func(ERR_SYNTAX, 0, 1, "\\\n"));

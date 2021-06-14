@@ -131,7 +131,7 @@ int	main_loop(void)
 			free_d_arr(g_msh.semi);
 			return (error_func(ERR_SYNTAX, 1, 1, ";\n"));
 		}
-		launch();//<---------------------------------
+		launch();
 	}
 	return (1);
 }
