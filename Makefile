@@ -20,6 +20,7 @@ SRCS = main.c \
 		env_ops.c \
 		ft_spargs_split.c \
 		ft_sprds_split.c \
+		check_syntax.c \
 		vrivka/cd_func.c \
         vrivka/echo_func.c \
         vrivka/env_func.c \
@@ -39,24 +40,6 @@ SRCS = main.c \
         vrivka/path_finder.c \
         vrivka/pwd_func.c \
         vrivka/unset_func.c
-
-# for debug
-VSRCS = vrivka/cd_func.c \
-		vrivka/echo_func.c \
-		vrivka/env_finder.c \
-		vrivka/env_func.c \
-		vrivka/envcpy.c \
-		vrivka/error_func.c \
-		vrivka/exec_func.c \
-		vrivka/executor.c \
-		vrivka/exit_func.c \
-		vrivka/export_func.c \
-		vrivka/frees_inits.c \
-		vrivka/path_finder.c \
-		vrivka/pwd_func.c \
-		vrivka/unset_func.c\
-		vrivka/exec_pipe_func.c
-# 
 
 OBJS = $(SRCS:.c=.o)
 
@@ -90,7 +73,7 @@ fclean:	clean
 re:		fclean all
 
 dbg:
-		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) $(VSRCS) \
+		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) \
 		-I./includes -ltermcap -lreadline -o msh
 
 .PHONY: all clean fclean re

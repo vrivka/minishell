@@ -101,7 +101,7 @@ void	set_term(void)
 		error_func(ERR_SETTERM, 1, 0, NULL);
 }
 
-void	main_loop(void)
+int	main_loop(void)
 {
 	g_msh.line = (char *)ft_calloc(sizeof(char), 1);
 	if (g_msh.line == NULL)
@@ -121,13 +121,19 @@ void	main_loop(void)
 	if (ft_strlen(g_msh.line) == 0)
 	{
 		free(g_msh.line);
-		return ;
+		return (1);
 	}
 	else
 	{
 		semicolon_splitter();
-		launch();
+		if (!check_semi())
+		{
+			free_d_arr(g_msh.semi);
+			return (error_func(ERR_SYNTAX, 1, 1, ";\n"));
+		}
+		launch();//<---------------------------------
 	}
+	return (1);
 }
 
 int		main(int ac, char **av, char **envp)
@@ -136,7 +142,7 @@ int		main(int ac, char **av, char **envp)
 	init_msh(av, envp);
 	term_setup();
 	while (g_msh.status)
-		main_loop();
+		g_msh.status = main_loop();
 	put_hist2file();
 	free(g_msh.term);
 	return 0;
