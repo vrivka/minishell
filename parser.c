@@ -182,7 +182,7 @@ void	fill_pars(t_pars *pars)
 	// ///////
 }
 
-void	parser(char *s)
+int	parser(char *s)
 {
 	t_pars	pars;
 	int		i;
@@ -190,6 +190,31 @@ void	parser(char *s)
 	ft_bzero(&pars, sizeof(t_pars));
 
 	g_msh.pipe_count = get_pipe_num(s) + 1;
+
+	if (g_msh.pipe_count > 1)
+	{
+		if (!check_pipe(s))
+		{
+			free(s);
+			return (error_func(ERR_SYNTAX, 0, 1, "|\n"));
+		}
+	}
+	if (!check_backslash(s))
+	{
+		free(s);
+		return (error_func(ERR_SYNTAX, 0, 1, "\\\n"));
+	}
+	if (!check_sq(s))
+	{
+		free(s);
+		return (error_func(ERR_SYNTAX, 0, 1, "\'\n"));
+	}
+	if (!check_wq(s))
+	{
+		free(s);
+		return (error_func(ERR_SYNTAX, 0, 1, "\"\n"));
+	}
+
 	g_msh.pipe = (t_pipe *)ft_calloc((g_msh.pipe_count + 1), sizeof(t_pipe));
 	if (g_msh.pipe == NULL)
 		error_func(ERROR_MEM, 1, 0, NULL);
@@ -223,6 +248,8 @@ void	parser(char *s)
 	}
 	free(s);
 	args2lower();
+
+	return (1);
 }
 
 void	launch(void)
@@ -232,7 +259,11 @@ void	launch(void)
 	n = 0;
 	while (g_msh.semi[n] != NULL)
 	{
-		parser(g_msh.semi[n]);
+		if (!parser(g_msh.semi[n]))
+		{
+			n++;
+			continue;
+		}
 		executor();
 		free_pipe();
 		n++;

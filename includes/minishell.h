@@ -33,6 +33,7 @@
 # define	ERR_TERMCAP		"minishell: Could not look up termcap entry"
 # define	ERR_SETTERM		"minishell: Could not set term parameters"
 # define	ERR_READKEY		"minishell: Could not read from STDIN"
+# define	ERR_SYNTAX		"minishell: Syntax error near %s"
 
 typedef struct	s_pipe
 {	
@@ -92,7 +93,7 @@ void			term_setup(void);
 int				ft_putchar(int c);
 
 void			init_msh(char **av, char **envp);
-void			main_loop(void);
+int				main_loop(void);
 void			key_loop(void);
 
 void			set_term(void);
@@ -123,7 +124,7 @@ void			fill_semicolon_array(void);
 
 ////parser
 void			launch(void);
-void			parser(char *s);
+int				parser(char *s);
 int				get_pipe_num(char *s);
 void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
@@ -191,6 +192,15 @@ char			*env_value(char **env, char *name);//vlad
 char			*env_val_cut(const char *env);//vlad
 int				env_finder(char **env, char *name);//vlad
 int				envncmp(const char *env, const char *find);//vlad
+////
+
+////check_syntax
+int				check_semi(void);
+int				check_pipe(char *s);
+int				check_mid_pipe(char *tmp);
+int				check_backslash(char *s);
+int				check_sq(char *s);
+int				check_wq(char *s);
 ////
 
 ////free_ops - free memory routine

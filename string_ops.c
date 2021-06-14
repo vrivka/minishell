@@ -249,7 +249,11 @@ char	*del_end_sp(char *s1)
 	if (s1[i] == ' ')
 	{
 		while (s1[i] == ' ')
+		{
+			if (s1[i - 1] == '\\')
+				break ;
 			i--;
+		}
 		s2 = ft_cutstr_end(s1, (i + 1));
 		return (s2);
 	}
