@@ -5,6 +5,8 @@ void	key_loop(void)
 	char	buf[BUFFER_SIZE];
 	int		len;
 
+	signal(SIGINT, sig_handler);//Ctr-C<-------------------------
+	signal(SIGQUIT, sig_handler);//Ctrl-backslash
 	while (1)
 	{
 		ft_memset(buf, 0, BUFFER_SIZE);
@@ -70,6 +72,17 @@ void	key_loop(void)
 			{
 				tputs(tgetstr("nd", 0), 1, ft_putchar);
 				g_msh.pos++;
+			}
+		}
+		else if (!ft_strcmp(buf, "\x04"))//Ctrl-D
+		{
+			if (ft_strlen(g_msh.history[g_msh.h_index]))
+				continue;
+			else
+			{
+				write(1, "exit\n", 5);
+				put_hist2file();
+				exit(0);
 			}
 		}
 		else
