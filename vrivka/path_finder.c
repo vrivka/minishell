@@ -50,8 +50,9 @@ char	*path_finder(char *env_path, char *av_null)
 	char	*path;
 	char	**tmp;
 
-	if (!strncmp(av_null, "/", 1) || !strncmp(av_null, "./", 2)
-		|| !strncmp(av_null, "../", 3) || !env_path)
+	if (!ft_strncmp(av_null, "/", 1) || !ft_strncmp(av_null, "./", 2)
+		|| !ft_strncmp(av_null, "../", 3) || !ft_strncmp(av_null, ".", 1)
+		|| !env_path)
 	{
 		free(env_path);
 		path = ft_strdup(av_null);
