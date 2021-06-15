@@ -20,11 +20,8 @@ void	exec_pipe_func(char **av, int i)
 		{
 			r = execve(g_msh.pipe[i].bin_path, av, g_msh.envp);
 			if (r < 0)
-				error_func("minishell: %s: command not found\n",
-					127, 0, g_msh.pipe[i].bin_path);
+				check_dir(g_msh.pipe[i].bin_path, 0);
 		}
-		close(g_msh.l_fd);
-		close(g_msh.r_fd);
 		exit(r);
 	}
 }

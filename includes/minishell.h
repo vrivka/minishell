@@ -14,6 +14,7 @@
 # include <sys/stat.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <dirent.h>
 
 # define	BUFFER_SIZE 4096
 
@@ -268,6 +269,7 @@ void open_double_right_redir(char *path, int n);
 int exec_builtin(int i, int n);
 int exec_without_pipes(void);
 int exec_pipes(void);
+void check_dir(char *arg, int st);
 void close_if(int fd1, int fd2);
 void pipe_init(void);
 void exec_pipe_func(char **av, int i);

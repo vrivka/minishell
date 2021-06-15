@@ -29,6 +29,35 @@ int	exec_without_pipes(void)
 	return (r);
 }
 
+void	check_dir(char *arg, int st)
+{
+	struct stat		buf;
+	DIR				*fd;
+
+	if (!ft_strncmp(arg, "/", 1) || !ft_strncmp(arg, "./", 2)
+		|| !ft_strncmp(arg, "../", 3))
+	{
+		st = stat(arg, &buf);
+		if (st < 0)
+			error_func(NULL, 127, 0, arg);
+		else
+		{
+			fd = opendir(arg);
+			if (!fd)
+				error_func("minishell: %s: Permission denied\n", 126, 0, arg);
+			else
+				error_func("minishell: %s: is a directory\n", 126, 0, arg);
+		}
+	}
+	else if (!ft_strcmp(arg, "."))
+	{
+		error_func("minishell: .: filename argument required", 1, 1, NULL);
+		error_func(".: usage: . filename [arguments]", 2, 0, NULL);
+	}
+	else
+		error_func("minishell: %s: command not found\n", 127, 0, arg);
+}
+
 int	exec_func(char **av)
 {
 	int	r;
@@ -42,10 +71,7 @@ int	exec_func(char **av)
 			close_if(g_msh.pipe[0].l_fd, g_msh.pipe[0].r_fd);
 		r = execve(g_msh.pipe[0].bin_path, av, g_msh.envp);
 		if (r < 0)
-			error_func("minishell: %s: command not found\n",
-				127, 0, g_msh.pipe[0].bin_path);
-		close(g_msh.pipe[0].l_fd);
-		close(g_msh.pipe[0].r_fd);
+			check_dir(g_msh.pipe[0].bin_path, 0);
 		exit(r);
 	}
 	waitpid(0, &r, 0);
