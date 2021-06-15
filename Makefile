@@ -40,7 +40,8 @@ SRCS = main.c \
         vrivka/open_redirs_utils.c \
         vrivka/path_finder.c \
         vrivka/pwd_func.c \
-        vrivka/unset_func.c
+        vrivka/unset_func.c \
+        vrivka/text_handler.c
 
 OBJS = $(SRCS:.c=.o)
 

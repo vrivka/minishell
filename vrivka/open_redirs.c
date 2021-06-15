@@ -14,6 +14,35 @@ void	redirs(void)
 	}
 }
 
+char	*parse_redir(char *line, char **env)
+{
+	char	*new_line;
+	int		i;
+
+	if (check_line(line))
+		return (line);
+	new_line = NULL;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != '\\' && line[i] != '$')
+			new_line = augment_char(new_line, line[i]);
+		else if (line[i] == '\\')
+			new_line = check_bs(new_line, line, &i);
+		else if (line[i] == '$')
+			new_line = check_dol(new_line, line, &i, env);
+		i++;
+	}
+	if (!new_line)
+	{
+		new_line = ft_strdup("");
+		if (!new_line)
+			error_func(ERROR_MEM, 1, 0, NULL);
+	}
+	free(line);
+	return (new_line);
+}
+
 int	text_document(char *delim)
 {
 	int		fd;
@@ -27,6 +56,7 @@ int	text_document(char *delim)
 		s = readline("> ");
 		if (!ft_strcmp(s, delim))
 			break ;
+		s = parse_redir(s, g_msh.envp);
 		write(fd, s, ft_strlen(s));
 		write(fd, "\n", 1);
 		free(s);
