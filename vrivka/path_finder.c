@@ -53,6 +53,7 @@ char	*path_finder(char *env_path, char *av_null)
 	if (!strncmp(av_null, "/", 1) || !strncmp(av_null, "./", 2)
 		|| !strncmp(av_null, "../", 3) || !env_path)
 	{
+		free(env_path);
 		path = ft_strdup(av_null);
 		if (!path)
 			error_func(ERROR_MEM, 1, 0, NULL);

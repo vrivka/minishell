@@ -227,12 +227,10 @@ void			free_pipe(void);
 /* Vrivka's functions */
 
 void executor(void);
-void all_init(char **env);
 char **envcpy(char **env);
 int envlen(char **env);
 int check_args(char *arg);
 
-void all_free(void);
 char **free_envc(char **tmp, int i);
 
 char **env_add(char **env, char *av, int l);
@@ -244,8 +242,8 @@ int it_builtin(int i);
 
 int export_func(char **av);
 void export_arg(char *arg);
-void	change_env(const char *env, int n);
-void	exp_env_add(char *env);
+void change_env(const char *env, int n);
+void exp_env_add(char *env);
 int	check_args(char *arg);
 int env_func(void);
 int pwd_func(void);
@@ -258,6 +256,11 @@ void open_dup_pipes(int i);
 void redirs(void);
 void open_redirs(char **rd, int n);
 int text_document(char *delim);
+char *parse_redir(char *line, char **env);
+char *check_dol(char *line, char *ptr_dol, int *i, char **env);
+char *check_bs(char *line, const char *ptr_bs, int *i);
+char *augment_char(char *line, char c);
+int check_line(const char *line);
 void open_left_redir(char *path, int n);
 void open_double_left_redir(char *path, int n);
 void open_right_redir(char *path, int n);
