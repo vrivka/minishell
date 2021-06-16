@@ -7,6 +7,8 @@ void	key_loop(void)
 
 	signal(SIGINT, sig_handler);//Ctr-C<-------------------------
 	signal(SIGQUIT, sig_handler);//Ctrl-backslash
+	write(1, "msh$ ", 5);
+	tputs(save_cursor, 1, ft_putchar);
 	while (1)
 	{
 		ft_memset(buf, 0, BUFFER_SIZE);

@@ -19,7 +19,6 @@ void	set_flags(int c)
 		g_msh.flags = g_msh.flags | BSFLG;
 	else if ((g_msh.flags & BSFLG) && !(g_msh.flags & UBSFL))
 		g_msh.flags = g_msh.flags | UBSFL;
-
 }
 
 int		check_flags(void)

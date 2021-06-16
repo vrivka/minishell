@@ -152,13 +152,3 @@ void	put_hist2file(void)
 	close(fd);
 	free_d_arr(g_msh.history);
 }
-
-int		count_arr_lines(char **array)
-{
-	int	count;
-
-	count = 0;
-	while (array[count] != NULL)
-		count++;
-	return (count);
-}

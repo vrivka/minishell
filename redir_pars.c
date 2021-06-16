@@ -118,6 +118,8 @@ void	redir_pars(t_pars *pars)
 		space_pars_rd(pars);
 	while (pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ')
 	{
+		if (pars->s[pars->i] == '<' || pars->s[pars->i] == '>')
+			break;
 		if (pars->s[pars->i] == '$')
 			dollar_pars_rd(pars);
 		if (pars->s[pars->i] == '\'')

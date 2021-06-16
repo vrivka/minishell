@@ -10,5 +10,6 @@ void	sig_handler(int signum)
 		g_msh.pos = 0;
 	}
 	else if (signum == SIGQUIT)
+		write(1, "QUIT: 3\n", 8);
 		return ;
 }

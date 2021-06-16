@@ -111,11 +111,10 @@ int	main_loop(void)
 	g_msh.h_index = g_msh.h_size - 1;
 	g_msh.pos = 0;
 	unset_term();
-	write(1, "msh$ ", 5);
-	tputs(save_cursor, 1, ft_putchar);
 	key_loop();
 	write(1, "\n", 1);
 	set_term();
+
 	g_msh.line = del_start_sp(g_msh.line);
 	g_msh.line = del_end_sp(g_msh.line);
 	if (ft_strlen(g_msh.line) == 0)
