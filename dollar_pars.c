@@ -5,7 +5,7 @@ char	*get_env_name(t_pars *pars)
 	char	*name;
 
 	name = ft_strnew(0);
-	while(pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ')
+	while(pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ' && pars->s[pars->i] != '=')//<-----------
 	{
 		if (ft_strchr("\'\"\\", pars->s[pars->i]))
 			break ;
@@ -58,7 +58,7 @@ char	*get_dstr(t_pars *pars)
 	char	*str;
 
 	str = ft_strnew(0);
-	while(pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ')
+	while(pars->s[pars->i] != '\0' && pars->s[pars->i] != ' ' && pars->s[pars->i] != '$')
 	{
 		if (pars->s[pars->i] == '\\')
 		{

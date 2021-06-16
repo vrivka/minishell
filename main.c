@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-int		ft_putchar(int c)
-{
-	return (write(1, &c, 1));
-}	
-
 void	term_setup(void)
 {
 	int	ret;
@@ -77,28 +72,6 @@ void	init_msh(char **av, char **envp)
 	free(stri);
 	export_func(tmp);
 	free_envc(tmp, 2);
-}
-
-void	unset_term(void)
-{
-	int	ret;
-
-	g_msh.term->c_lflag &= ~(ECHO);
-	g_msh.term->c_lflag &= ~(ICANON);
-	ret = tcsetattr(0, TCSANOW, g_msh.term);
-	if (ret == -1)
-		error_func(ERR_SETTERM, 1, 0, NULL);
-}
-
-void	set_term(void)
-{
-	int	ret;
-
-	g_msh.term->c_lflag |= ECHO;
-	g_msh.term->c_lflag |= ICANON;
-	ret = tcsetattr(0, TCSANOW, g_msh.term);
-	if (ret == -1)
-		error_func(ERR_SETTERM, 1, 0, NULL);
 }
 
 int	main_loop(void)
