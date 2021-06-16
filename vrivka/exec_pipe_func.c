@@ -62,5 +62,6 @@ int	exec_pipes(void)
 	close(g_msh.pipe_fd[i - 1][0]);
 	close(g_msh.pipe_fd[i - 1][1]);
 	r = wait_all(g_msh.pipe_count);
+	g_msh.pid = 0;
 	return (WEXITSTATUS(r));
 }
