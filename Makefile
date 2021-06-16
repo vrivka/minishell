@@ -8,21 +8,32 @@ PARS = pars.a
 
 SRCS = main.c \
 		key_loop.c \
-		string_ops.c \
-		d_array_ops.c \
-		history.c \
-		free_ops.c \
-		semi_split.c \
-		parser.c \
-		redir_pars.c \
-		dollar_pars.c \
-		weakquotes_pars.c \
-		env_ops.c \
-		ft_spargs_split.c \
-		ft_sprds_split.c \
-		check_syntax.c \
-		utils.c \
+		utils/env_ops.c \
+		utils/string_ops1.c \
+		utils/string_ops2.c \
+		utils/d_array_ops.c \
+		utils/free_ops.c \
+		utils/utils.c \
+		semicolon/semi_split.c \
+		semicolon/semi_utils.c \
+		parser/parser.c \
+		parser/pipe_str_ops.c \
+		parser/lexer.c \
+		parser/redir_pars1.c \
+		parser/redir_pars2.c \
+		parser/dollar_pars.c \
+		parser/dollar_pars_utils.c \
+		parser/weakquotes_pars.c \
+		parser/weakquotes_pars_utils.c \
+		parser/weakquotes_pars_rd.c \
+		parser/ft_spargs_split.c \
+		parser/ft_sprds_split.c \
+		parser/parser_utils.c \
+		parser/delete_spaces.c \
+		syntax/check_syntax1.c \
+		syntax/check_syntax2.c \
 		sig_handler.c \
+		history/history.c \
 		vrivka/cd_func.c \
         vrivka/echo_func.c \
         vrivka/env_func.c \
