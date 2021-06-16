@@ -206,7 +206,7 @@ void	parser(char *s)
 		if (g_msh.pipe[i].rd == NULL)
 			error_func(ERROR_MEM, 1, 0, NULL);
 
-		repair_empty_rd();//<---------------------------------------
+		repair_empty_rd();
 
 		g_msh.pipe[i].bin_path = path_finder(env_value(g_msh.envp, "PATH"), g_msh.pipe[i].args[0]);
 
@@ -243,27 +243,27 @@ void	launch(void)
 
 		parser(g_msh.semi[n]);
 
-		////////print g_msh.pipe[]
-		int	i = 0;
-		while(i < g_msh.pipe_count)
-		{
-			printf("pipe[%d]\n", i);
-			int n = 0;
-			while(g_msh.pipe[i].args[n] != NULL)
-			{
-				printf("  args#%s\n", g_msh.pipe[i].args[n]);
-				n++;
-			}
-			n = 0;
-			while(g_msh.pipe[i].rd[n] != NULL)
-			{
-				printf("  rd#%s\n", g_msh.pipe[i].rd[n]);
-				n++;
-			}
-			printf("********************\n");
-			i++;
-		}
-		/////////////////////////
+		// ////////print g_msh.pipe[]
+		// int	i = 0;
+		// while(i < g_msh.pipe_count)
+		// {
+		// 	printf("pipe[%d]\n", i);
+		// 	int n = 0;
+		// 	while(g_msh.pipe[i].args[n] != NULL)
+		// 	{
+		// 		printf("  args#%s\n", g_msh.pipe[i].args[n]);
+		// 		n++;
+		// 	}
+		// 	n = 0;
+		// 	while(g_msh.pipe[i].rd[n] != NULL)
+		// 	{
+		// 		printf("  rd#%s\n", g_msh.pipe[i].rd[n]);
+		// 		n++;
+		// 	}
+		// 	printf("********************\n");
+		// 	i++;
+		// }
+		// /////////////////////////
 
 		executor();
 		free_pipe();
