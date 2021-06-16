@@ -24,10 +24,20 @@ void	exp_env_add(char *env)
 
 int	check_args(char *arg)
 {
-	if (ft_isalpha(arg[0]))
-		return (0);
-	return (error_func("minishell: export: %s: not a valid identifier\n",
-			1, 1, arg));
+	int	i;
+
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+		return (error_func("minishell: export: %s: not a valid identifier\n",
+				1, 1, arg));
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (error_func("minishell: export: %s: not a valid "
+					"identifier\n", 1, 1, arg));
+		i++;
+	}
+	return (0);
 }
 
 void	export_arg(char *arg)

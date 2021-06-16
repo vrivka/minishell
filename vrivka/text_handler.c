@@ -57,7 +57,7 @@ char	*val_ret(char *ptr_dol, char **env, int *i)
 	char	*env_name;
 
 	env_name = NULL;
-	while (ptr_dol[*i + 1] && ft_isalnum(ptr_dol[*i + 1]))
+	while (ptr_dol[*i + 1] && (ft_isalnum(ptr_dol[*i + 1]) || ptr_dol[*i + 1] == '_'))
 	{
 		env_name = augment_char(env_name, ptr_dol[*i + 1]);
 		*i += 1;
@@ -79,7 +79,7 @@ char	*check_dol(char *line, char *ptr_dol, int *i, char **env)
 			error_func(ERROR_MEM, 1, 0, NULL);
 		*i += 1;
 	}
-	else if (!ptr_dol[*i + 1] || !ft_isalnum(ptr_dol[*i + 1]))
+	else if (!ptr_dol[*i + 1] || (!ft_isalnum(ptr_dol[*i + 1]) && ptr_dol[*i + 1] != '_'))
 		return (augment_char(line, '$'));
 	else
 		env_val = val_ret(ptr_dol, env, i);

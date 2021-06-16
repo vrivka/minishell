@@ -75,5 +75,6 @@ int	exec_func(char **av)
 		exit(r);
 	}
 	waitpid(0, &r, 0);
+	g_msh.pid = 0;
 	return (WEXITSTATUS(r));
 }
