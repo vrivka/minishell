@@ -20,11 +20,13 @@
 # define	EXEC_F_NAME "msh"//debagging binary should be "msh"!
 # define	HIST_F_NAME ".history"
 
-# define	NOFLG 0b0000
-# define	SQFLG 0b0001
-# define	WQFLG 0b0010
-# define	BSFLG 0b0100
-# define	UBSFL 0b1000//flag to '\' unset
+# define	NOFLG 0b00000000
+# define	SQFLG 0b00000001
+# define	WQFLG 0b00000010
+# define	BSFLG 0b00000100
+# define	UBSFL 0b00001000//flag to '\' unset
+// # define	SRDFL 0b00010000//single redirect
+// # define	DRDFL 0b00100000//double redirect
 
 # define	ERROR_MEM		"minishell: Could not allocate memory"
 # define	ERR_OPCRHISF	"minishell: Could not open/create history file"
@@ -125,8 +127,9 @@ void			fill_semicolon_array(void);
 
 ////parser
 void			launch(void);
-int				parser(char *s);
+void			parser(char *s);
 int				get_pipe_num(char *s);
+void			repair_empty_rd(void);
 void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
 char			*del_end_sp(char *s);
@@ -184,6 +187,7 @@ char			*ft_del_chinstr(char *s, int pos);//delete symbol before cursor (backspac
 
 ////d_array_ops - operations with double array
 char			**add_str2darr(char **array);
+char			**ins_str2arr(char **arr, int n);//insert new string into array after index
 
 ////
 
@@ -196,11 +200,14 @@ int				envncmp(const char *env, const char *find);//vlad
 ////
 
 ////check_syntax
+int				check_syntax(char *s);
 int				check_semi(void);
 int				check_pipe(char *s);
 int				check_mid_pipe(char *tmp);
 int				check_sq(char *s);
 int				check_wq(char *s);
+int				check_empty(char *s);
+int				check_rd(char *s);
 ////
 
 ////sig_handler
@@ -211,18 +218,6 @@ void			sig_handler(int signum);
 void			free_d_arr(char **array);
 void			free_pipe(void);
 ////
-
-// typedef struct s_exec
-// {
-//    char *bin_path;
-//    char **args;
-//    int flag;
-//    int redir;
-//    struct s_exec *next;
-// } t_exec;
-
-
-
 
 /* Vrivka's functions */
 

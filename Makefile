@@ -21,6 +21,7 @@ SRCS = main.c \
 		ft_spargs_split.c \
 		ft_sprds_split.c \
 		check_syntax.c \
+		utils.c \
 		sig_handler.c \
 		vrivka/cd_func.c \
         vrivka/echo_func.c \
