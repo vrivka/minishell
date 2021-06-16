@@ -54,6 +54,13 @@ int	text_document(char *delim)
 	while (1)
 	{
 		s = readline("> ");
+		if (!s)
+		{
+			write(1, "\b\b", 2);
+			write(1, "  ", 2);
+			write(1, "\b\b", 2);
+			break ;
+		}
 		if (!ft_strcmp(s, delim))
 			break ;
 		s = parse_redir(s, g_msh.envp);
