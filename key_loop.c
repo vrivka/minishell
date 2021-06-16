@@ -84,6 +84,7 @@ void	key_loop(void)
 			{
 				write(1, "exit\n", 5);
 				put_hist2file();
+				set_term();
 				exit(0);
 			}
 		}

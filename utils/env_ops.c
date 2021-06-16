@@ -1,7 +1,6 @@
 #include "minishell.h"
 
-//vlad
-int		envncmp(const char *env, const char *find)
+int	envncmp(const char *env, const char *find)
 {
 	int		i;
 
@@ -17,7 +16,7 @@ int		envncmp(const char *env, const char *find)
 	return (0);
 }
 
-int		env_finder(char **env, char *name)
+int	env_finder(char **env, char *name)
 {
 	int		i;
 

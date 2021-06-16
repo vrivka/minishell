@@ -146,10 +146,21 @@ void			strongquotes_pars_rd(t_pars *pars);
 char			*get_sq_str(t_pars *pars);
 int				get_sqstr_len(char *s);
 void			weakquotes_pars_rd(t_pars *pars);
+void			wq_bsbs_pars_rd(t_pars *pars);
+void			wq_bswq_pars_rd(t_pars *pars);
+void			wq_bsdol_pars_rd(t_pars *pars);
 void			backslash_pars_rd(t_pars *pars);
 void			enlarge_rds(t_pars *pars);
+void			place_space(t_pars *pars);
+void			place_rd_symbols(t_pars *pars);
 
 void			weakquotes_pars(t_pars *pars);
+void			wq_bsbs_pars(t_pars *pars);
+void			wq_bswq_pars(t_pars *pars);
+void			wq_bsdol_pars(t_pars *pars);
+void			wq_dolbs_pars(t_pars *pars);
+void			wq_doldig_pars(t_pars *pars);
+void			wq_enlarge_args(t_pars *pars);
 void			wq_dollar_val(t_pars *pars);
 void			wq_dollar_ret(t_pars *pars);
 
@@ -182,14 +193,13 @@ char			*ft_cutstr_begin(char *s, int i);//cut beginning of line by index
 char			*ft_cutstr_end(char *s, int i);//cut ending of line by index
 char			*ft_add_char2str(char *s, int c);//add symbol at the end of the string
 char			*ft_ins_ch2str(char *s, int c, int pos);//insert char into string by index
-char			**ft_devide_str(char *s, int pos);//split string to strings in a certain place
 char			*ft_del_chinstr(char *s, int pos);//delete symbol before cursor (backspace)
 ////
 
 ////d_array_ops - operations with double array
 char			**add_str2darr(char **array);
 char			**ins_str2arr(char **arr, int n);//insert new string into array after index
-
+char			**ft_devide_str(char *s, int pos);//split string to strings in a certain place
 ////
 
 ////env_ops - operations with environment variables array
@@ -209,6 +219,7 @@ int				check_sq(char *s);
 int				check_wq(char *s);
 int				check_empty(char *s);
 int				check_rd(char *s);
+int				check_drd(char *s);
 ////
 
 ////sig_handler

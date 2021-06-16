@@ -9,9 +9,12 @@ static int	num_of_str(char const *s)
 	count = 0;
 	while (s[i])
 	{
-		if (s[i] != ' ' && (s[i + 1] == ' ' || s[i + 1] == '\0') && (g_msh.check_spargs[i + 1] == ' ' || g_msh.check_spargs[i + 1] == '\0'))
+		if (s[i] != ' ' && (s[i + 1] == ' ' || s[i + 1] == '\0') && \
+		(g_msh.check_spargs[i + 1] == ' ' || g_msh.check_spargs[i + 1] == '\0'))
 			count++;
-		if (s[i] == ' ' && g_msh.check_spargs[i] == '_' && (s[i + 1] == ' ' || s[i + 1] == '\0') && (g_msh.check_spargs[i + 1] == ' ' || g_msh.check_spargs[i + 1] == '\0'))
+		if (s[i] == ' ' && g_msh.check_spargs[i] == '_' && \
+		(s[i + 1] == ' ' || s[i + 1] == '\0') && \
+		(g_msh.check_spargs[i + 1] == ' ' || g_msh.check_spargs[i + 1] == '\0'))
 			count++;
 		i++;
 	}
