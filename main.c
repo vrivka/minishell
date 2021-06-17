@@ -117,5 +117,5 @@ int		main(int ac, char **av, char **envp)
 		g_msh.status = main_loop();
 	put_hist2file();
 	free(g_msh.term);
-	return 0;
+	return (0);
 }
