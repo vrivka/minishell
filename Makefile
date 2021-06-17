@@ -34,6 +34,7 @@ SRCS = main.c \
 		syntax/check_syntax2.c \
 		signals.c \
 		history/history.c \
+		history/history_utils.c \
 		vrivka/cd_func.c \
         vrivka/echo_func.c \
         vrivka/env_func.c \
