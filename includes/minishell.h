@@ -220,6 +220,7 @@ int				check_wq(char *s);
 int				check_empty(char *s);
 int				check_rd(char *s);
 int				check_drd(char *s);
+int				check_alone_rd(int i, int n);
 ////
 
 ////sig_handler

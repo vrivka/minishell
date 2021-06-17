@@ -69,27 +69,27 @@ void	launch(void)
 
 		parser(g_msh.semi[n]);
 
-		// ////////print g_msh.pipe[]
-		// int	i = 0;
-		// while(i < g_msh.pipe_count)
-		// {
-		// 	printf("pipe[%d]\n", i);
-		// 	int n = 0;
-		// 	while(g_msh.pipe[i].args[n] != NULL)
-		// 	{
-		// 		printf("  args#%s\n", g_msh.pipe[i].args[n]);
-		// 		n++;
-		// 	}
-		// 	n = 0;
-		// 	while(g_msh.pipe[i].rd[n] != NULL)
-		// 	{
-		// 		printf("  rd#%s\n", g_msh.pipe[i].rd[n]);
-		// 		n++;
-		// 	}
-		// 	printf("********************\n");
-		// 	i++;
-		// }
-		// /////////////////////////
+		////////print g_msh.pipe[]
+		int	i = 0;
+		while(i < g_msh.pipe_count)
+		{
+			printf("pipe[%d]\n", i);
+			int n = 0;
+			while(g_msh.pipe[i].args[n] != NULL)
+			{
+				printf("  args#%s\n", g_msh.pipe[i].args[n]);
+				n++;
+			}
+			n = 0;
+			while(g_msh.pipe[i].rd[n] != NULL)
+			{
+				printf("  rd#%s\n", g_msh.pipe[i].rd[n]);
+				n++;
+			}
+			printf("********************\n");
+			i++;
+		}
+		/////////////////////////
 
 		executor();
 		free_pipe();
