@@ -54,3 +54,23 @@ int	check_semi(void)
 	}
 	return (1);
 }
+
+int	check_alone_rd(int i, int n)
+{
+	if (((!ft_strcmp("<", g_msh.pipe[i].rd[n]) || \
+		!ft_strcmp(">", g_msh.pipe[i].rd[n]) || \
+		!ft_strcmp("<<", g_msh.pipe[i].rd[n]) || \
+		!ft_strcmp(">>", g_msh.pipe[i].rd[n])) && \
+		g_msh.pipe[i].rd[n + 1] == NULL) || \
+		((!ft_strcmp("<", g_msh.pipe[i].rd[n]) || \
+		!ft_strcmp(">", g_msh.pipe[i].rd[n]) || \
+		!ft_strcmp("<<", g_msh.pipe[i].rd[n]) || \
+		!ft_strcmp(">>", g_msh.pipe[i].rd[n])) && \
+		(!ft_strcmp("<", g_msh.pipe[i].rd[n + 1]) || \
+		!ft_strcmp(">", g_msh.pipe[i].rd[n + 1]) || \
+		!ft_strcmp("<<", g_msh.pipe[i].rd[n + 1]) || \
+		!ft_strcmp(">>", g_msh.pipe[i].rd[n + 1]))))
+		return (1);
+	else
+		return (0);
+}

@@ -41,14 +41,7 @@ void	repair_empty_rd(void)
 		n = 0;
 		while (g_msh.pipe[i].rd[n] != NULL)
 		{
-			if ((!ft_strcmp("<", g_msh.pipe[i].rd[n]) || \
-			!ft_strcmp(">", g_msh.pipe[i].rd[n]) || \
-			!ft_strcmp("<<", g_msh.pipe[i].rd[n]) || \
-			!ft_strcmp(">>", g_msh.pipe[i].rd[n])) && \
-			(!ft_strcmp("<", g_msh.pipe[i].rd[n + 1]) || \
-			!ft_strcmp(">", g_msh.pipe[i].rd[n + 1]) || \
-			!ft_strcmp("<<", g_msh.pipe[i].rd[n + 1]) || \
-			!ft_strcmp(">>", g_msh.pipe[i].rd[n + 1])))
+			if (check_alone_rd(i, n))
 			{
 				g_msh.pipe[i].rd = ins_str2arr(g_msh.pipe[i].rd, n);
 				continue ;
