@@ -48,6 +48,9 @@ void	close_redirs_free_pipes(void)
 
 void	executor(void)
 {
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+
 	pipe_init();
 	if (g_msh.pipe_count == 1)
 		g_msh.ret = exec_without_pipes();

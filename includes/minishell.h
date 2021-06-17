@@ -224,7 +224,8 @@ int				check_alone_rd(int i, int n);
 ////
 
 ////sig_handler
-void			sig_handler(int signum);
+void			sig_handler_promt(int signum);
+void			sig_handler_exec(int signum);
 ////
 
 ////free_ops - free memory routine

@@ -62,6 +62,16 @@ int	exec_func(char **av)
 {
 	int	r;
 
+	if (!ft_strcmp("./msh", av[0]))//надо сделать универсальный способ
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else
+	{
+		signal(SIGINT, sig_handler_exec);
+		signal(SIGQUIT, sig_handler_exec);
+	}
 	g_msh.pid = fork();
 	if (g_msh.pid < 0)
 		error_func(NULL, 1, 0, NULL);
@@ -72,9 +82,11 @@ int	exec_func(char **av)
 		r = execve(g_msh.pipe[0].bin_path, av, g_msh.envp);
 		if (r < 0)
 			check_dir(g_msh.pipe[0].bin_path, 0);
+
 		exit(r);
 	}
 	waitpid(0, &r, 0);
 	g_msh.pid = 0;
+
 	return (WEXITSTATUS(r));
 }
