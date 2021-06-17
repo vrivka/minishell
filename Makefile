@@ -32,7 +32,7 @@ SRCS = main.c \
 		parser/delete_spaces.c \
 		syntax/check_syntax1.c \
 		syntax/check_syntax2.c \
-		sig_handler.c \
+		signals.c \
 		history/history.c \
 		vrivka/cd_func.c \
         vrivka/echo_func.c \

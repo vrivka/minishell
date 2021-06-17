@@ -5,8 +5,8 @@ void	key_loop(void)
 	char	buf[BUFFER_SIZE];
 	int		len;
 
-	signal(SIGINT, sig_handler);//Ctr-C<-------------------------
-	signal(SIGQUIT, sig_handler);//Ctrl-backslash
+	signal(SIGINT, sig_handler_promt);//Ctr-C<-------------------------
+	signal(SIGQUIT, sig_handler_promt);//Ctrl-backslash
 	write(1, "msh$ ", 5);
 	tputs(save_cursor, 1, ft_putchar);
 	while (1)
@@ -76,7 +76,7 @@ void	key_loop(void)
 				g_msh.pos++;
 			}
 		}
-		else if (!ft_strcmp(buf, "\x04"))//Ctrl-D
+		else if (!ft_strcmp(buf, "\4"))//Ctrl-D
 		{
 			if (ft_strlen(g_msh.history[g_msh.h_index]))
 				continue;
