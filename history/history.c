@@ -97,6 +97,8 @@ char	*read_hist2str(int fd)
 			error_func(ERR_READHISF, 1, 0, NULL);
 		s = ft_strjoin_fr(s, buf);
 	}
+	if (s[ft_strlen(s) - 1] != '\n')
+		s = ft_strjoin_fr(s, "\n");
 	return (s);
 }
 

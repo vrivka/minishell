@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	reinit_history(void)
+{
+	g_msh.history = add_str2darr(g_msh.history);
+	g_msh.h_size = count_arr_lines(g_msh.history);
+	g_msh.h_index = g_msh.h_size - 1;
+}
+
 int	count_arr_lines(char **array)
 {
 	int	count;
