@@ -62,7 +62,7 @@ int	exec_func(char **av)
 {
 	int	r;
 
-	if (!ft_strcmp("./msh", av[0]))//надо сделать универсальный способ
+	if (check_exec_name(av[0], EXEC_F_NAME))
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
@@ -90,3 +90,5 @@ int	exec_func(char **av)
 
 	return (WEXITSTATUS(r));
 }
+
+

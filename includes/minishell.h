@@ -298,4 +298,5 @@ void pipe_init(void);
 void exec_pipe_func(char **av, int i);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
+int	check_exec_name(char *bin, char *name);
 #endif
