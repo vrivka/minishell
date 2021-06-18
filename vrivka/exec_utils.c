@@ -65,3 +65,22 @@ int	exec_builtin(int i, int n)
 		r = exit_func(g_msh.pipe[i].args);
 	return (r);
 }
+
+int	check_exec_name(char *bin, char *name)
+{
+	char	*p;
+	int		len;
+
+	len = ft_strlen(bin);
+	p = ft_strnstr(bin, name, len);
+	if (p == NULL)
+		return (0);
+	else
+	{
+		if (p[ft_strlen(name)] == '\0')
+			return (1);
+		else
+			check_exec_name(p, name);
+	}
+	return (0);
+}
