@@ -17,5 +17,6 @@ int	exit_func(char **av)
 		return (error_func("minishell: exit: too many arguments", 1, 1, NULL));
 	r = ft_atoi(av[1]);
 	put_hist2file();
+	free(g_msh.term);
 	exit(r);
 }

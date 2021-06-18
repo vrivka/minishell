@@ -16,7 +16,7 @@
 # include <signal.h>
 # include <dirent.h>
 
-# define	BUFFER_SIZE 4096
+# define	BUFFER_SIZE 64
 
 # define	EXEC_F_NAME "msh"//debagging binary should be "msh"!
 # define	HIST_F_NAME ".history"
@@ -26,8 +26,6 @@
 # define	WQFLG 0b00000010
 # define	BSFLG 0b00000100
 # define	UBSFL 0b00001000//flag to '\' unset
-// # define	SRDFL 0b00010000//single redirect
-// # define	DRDFL 0b00100000//double redirect
 
 # define	ERROR_MEM		"minishell: Could not allocate memory"
 # define	ERR_OPCRHISF	"minishell: Could not open/create history file"
@@ -66,7 +64,6 @@ typedef struct	s_msh
 	int			h_size;//number of history lines
 	int			h_index;//current position in history array
 	int			pos;//current position in read line in terminal
-	int			status;//main_loop return status after command execution
 	char		**envp;
 	char		*line;//read line
 
@@ -97,8 +94,24 @@ void			term_setup(void);
 int				ft_putchar(int c);
 
 void			init_msh(char **av, char **envp);
-int				main_loop(void);
+void			main_loop(void);
+void			reinit_history(void);
+void			clean_line(void);
+
+////key_loop
 void			key_loop(void);
+void			wait4signals(void);
+void			welcome_promt(void);
+int				key_decisions(char *buf, int c, int len);
+void			key_up_func(void);
+void			key_down_func(void);
+void			key_left_func(void);
+void			key_right_func(void);
+void			key_bs_func(void);
+void			key_ctrld_func(void);
+void			key_print_func(char *buf, int c, int len);
+int				key_enter_func(void);
+////
 
 void			set_term(void);
 void			unset_term(void);
@@ -129,12 +142,14 @@ void			fill_semicolon_array(void);
 ////parser
 void			launch(void);
 void			parser(char *s);
+void			pars_init(t_pars *pars);
 int				get_pipe_num(char *s);
 void			repair_empty_rd(void);
 void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
 char			*del_end_sp(char *s);
 void			lexer(t_pars *pars);
+void			free_tmp_vars(t_pars *pars);
 
 char			*get_pipe_str(char **s);
 int				get_pipestr_len(char *s);

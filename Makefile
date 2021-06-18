@@ -7,13 +7,16 @@ LIBFT = $(LIBFT_PATH)libft.a
 PARS = pars.a
 
 SRCS = main.c \
-		key_loop.c \
+		key_loop/key_loop.c \
+		key_loop/key_funcs1.c \
+		key_loop/key_funcs2.c \
 		utils/env_ops.c \
 		utils/string_ops1.c \
 		utils/string_ops2.c \
 		utils/d_array_ops.c \
 		utils/free_ops.c \
-		utils/utils.c \
+		utils/utils1.c \
+		utils/utils2.c \
 		semicolon/semi_split.c \
 		semicolon/semi_utils.c \
 		parser/parser.c \
