@@ -144,7 +144,7 @@ void			launch(void);
 void			parser(char *s);
 void			pars_init(t_pars *pars);
 int				get_pipe_num(char *s);
-void			repair_empty_rd(void);
+void			repair_empty_rd(int i);
 void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
 char			*del_end_sp(char *s);
