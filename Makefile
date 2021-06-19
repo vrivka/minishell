@@ -32,6 +32,7 @@ SRCS = main.c \
 		parser/ft_spargs_split.c \
 		parser/ft_sprds_split.c \
 		parser/parser_utils.c \
+		parser/repair.c \
 		parser/delete_spaces.c \
 		syntax/check_syntax1.c \
 		syntax/check_syntax2.c \
@@ -53,6 +54,7 @@ SRCS = main.c \
         vrivka/export_func_utils.c \
         vrivka/free_shlvl.c \
         vrivka/open_redirs.c \
+		vrivka/open_redirs_signals.c \
         vrivka/open_redirs_utils.c \
         vrivka/path_finder.c \
         vrivka/pwd_func.c \

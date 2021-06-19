@@ -146,6 +146,7 @@ void			parser(char *s);
 void			pars_init(t_pars *pars);
 int				get_pipe_num(char *s);
 void			repair_empty_rd(int i);
+void			repair_empty_args(int i);
 void			fill_pars(t_pars *pars);
 char			*del_start_sp(char *s);
 char			*del_end_sp(char *s);
@@ -304,6 +305,7 @@ int	check_exec_name(char *bin, char *name);
 
 //
 int	key_loop_rd(void);
+void	wait4signal_rd(void);
 void	sig_handler_promt_rd(int signum);
 void	unset_term_rd(void);
 void	set_term_rd(void);
