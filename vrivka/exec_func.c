@@ -58,10 +58,8 @@ void	check_dir(char *arg, int st)
 		error_func("minishell: %s: command not found\n", 127, 0, arg);
 }
 
-int	exec_func(char **av)
+void	signals_check(char **av)
 {
-	int	r;
-
 	if (check_exec_name(av[0], EXEC_F_NAME))
 	{
 		signal(SIGINT, SIG_IGN);
@@ -72,6 +70,13 @@ int	exec_func(char **av)
 		signal(SIGINT, sig_handler_exec);
 		signal(SIGQUIT, sig_handler_exec);
 	}
+}
+
+int	exec_func(char **av)
+{
+	int	r;
+
+	signals_check(av);
 	g_msh.pid = fork();
 	if (g_msh.pid < 0)
 		error_func(NULL, 1, 0, NULL);
@@ -82,13 +87,9 @@ int	exec_func(char **av)
 		r = execve(g_msh.pipe[0].bin_path, av, g_msh.envp);
 		if (r < 0)
 			check_dir(g_msh.pipe[0].bin_path, 0);
-
 		exit(r);
 	}
 	waitpid(0, &r, 0);
 	g_msh.pid = 0;
-
 	return (WEXITSTATUS(r));
 }
-
-

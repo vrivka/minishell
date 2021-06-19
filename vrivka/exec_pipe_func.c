@@ -4,6 +4,7 @@ void	exec_pipe_func(char **av, int i)
 {
 	int	r;
 
+	signals_check(av);
 	g_msh.pid = fork();
 	if (g_msh.pid < 0)
 		error_func(NULL, 1, 0, NULL);
