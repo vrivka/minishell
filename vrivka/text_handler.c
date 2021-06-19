@@ -34,32 +34,32 @@ char	*augment_char(char *line, char c)
 	return (tmp);
 }
 
-char	*check_bs(char *line, const char *ptr_bs, int *i)
+char	*check_bs(char *nl, const char *ol, int *i)
 {
-	if (ptr_bs[*i + 1] == '\\')
+	if (ol[*i + 1] == '\\')
 	{
-		line = augment_char(line, '\\');
+		nl = augment_char(nl, '\\');
 		*i += 1;
 	}
-	else if (ptr_bs[*i + 1] == '$')
+	else if (ol[*i + 1] == '$')
 	{
-		line = augment_char(line, '$');
+		nl = augment_char(nl, '$');
 		*i += 1;
 	}
 	else
-		line = augment_char(line, '\\');
-	return (line);
+		nl = augment_char(nl, '\\');
+	return (nl);
 }
 
-char	*val_ret(char *ptr_dol, char **env, int *i)
+char	*val_ret(char *ol, char **env, int *i)
 {
 	char	*env_val;
 	char	*env_name;
 
 	env_name = NULL;
-	while (ptr_dol[*i + 1] && (ft_isalnum(ptr_dol[*i + 1]) || ptr_dol[*i + 1] == '_'))
+	while (ol[*i + 1] && (ft_isalnum(ol[*i + 1]) || ol[*i + 1] == '_'))
 	{
-		env_name = augment_char(env_name, ptr_dol[*i + 1]);
+		env_name = augment_char(env_name, ol[*i + 1]);
 		*i += 1;
 	}
 	env_val = env_value(env, env_name);
@@ -67,31 +67,31 @@ char	*val_ret(char *ptr_dol, char **env, int *i)
 	return (env_val);
 }
 
-char	*check_dol(char *line, char *ptr_dol, int *i, char **env)
+char	*check_dol(char *nl, char *ol, int *i, char **env)
 {
 	char	*env_val;
 	int		j;
 
-	if (ptr_dol[*i + 1] == '?')
+	if (ol[*i + 1] == '?')
 	{
 		env_val = ft_itoa(g_msh.ret);
 		if (!env_val)
 			error_func(ERROR_MEM, 1, 0, NULL);
 		*i += 1;
 	}
-	else if (!ptr_dol[*i + 1] || (!ft_isalnum(ptr_dol[*i + 1]) && ptr_dol[*i + 1] != '_'))
-		return (augment_char(line, '$'));
+	else if (!ol[*i + 1] || (!ft_isalnum(ol[*i + 1]) && ol[*i + 1] != '_'))
+		return (augment_char(nl, '$'));
 	else
-		env_val = val_ret(ptr_dol, env, i);
+		env_val = val_ret(ol, env, i);
 	if (env_val)
 	{
 		j = 0;
 		while (env_val[j])
 		{
-			line = augment_char(line, env_val[j]);
+			nl = augment_char(nl, env_val[j]);
 			j++;
 		}
 		free(env_val);
 	}
-	return (line);
+	return (nl);
 }

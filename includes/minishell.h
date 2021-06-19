@@ -276,6 +276,7 @@ int echo_func(char **av);
 int unset_func(char **av);
 int exit_func(char **av);
 int exec_func(char **av);
+void signals_check(char **av);
 void open_dup_pipes(int i);
 void redirs(void);
 void open_redirs(char **rd, int n);
