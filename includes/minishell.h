@@ -84,6 +84,7 @@ typedef struct	s_msh
 
 	int l_fd;
 	int r_fd;
+	int	rdfl;
 	int			**pipe_fd;
 	char		*pwd;
 }				t_msh;
@@ -300,4 +301,11 @@ void exec_pipe_func(char **av, int i);
 int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 
 int	check_exec_name(char *bin, char *name);
+
+//
+int	key_loop_rd(void);
+void	sig_handler_promt_rd(int signum);
+void	unset_term_rd(void);
+void	set_term_rd(void);
+//
 #endif
