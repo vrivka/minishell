@@ -30,22 +30,6 @@ char	*get_sq_str(t_pars *pars)
 	return (str);
 }
 
-void	repair_empty_rd(int i)
-{
-	int	n;
-
-	n = 0;
-	while (g_msh.pipe[i].rd[n] != NULL)
-	{
-		if (check_alone_rd(i, n))
-		{
-			g_msh.pipe[i].rd = ins_str2arr(g_msh.pipe[i].rd, n);
-			continue ;
-		}
-		n++;
-	}
-}
-
 void	args2lower(void)
 {
 	int		i;

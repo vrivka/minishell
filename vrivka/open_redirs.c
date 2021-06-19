@@ -43,38 +43,6 @@ char	*parse_redir(char *line, char **env)
 	return (new_line);
 }
 
-// int	text_document(char *delim)
-// {
-// 	int		fd;
-// 	char	*s;
-
-// 	fd = open("./.text_document", O_CREAT | O_WRONLY | O_TRUNC, 0777);
-// 	if (fd < 0)
-// 		error_func(NULL, 1, 1, NULL);
-// 	while (1)
-// 	{
-// 		s = readline("> ");
-// 		if (!s)
-// 		{
-// 			write(1, "\b\b", 2);
-// 			write(1, "  ", 2);
-// 			write(1, "\b\b", 2);
-// 			break ;
-// 		}
-// 		if (!ft_strcmp(s, delim))
-// 			break ;
-// 		s = parse_redir(s, g_msh.envp);
-// 		write(fd, s, ft_strlen(s));
-// 		write(fd, "\n", 1);
-// 		free(s);
-// 	}
-// 	free(s);
-// 	close(fd);
-// 	fd = open("./.text_document", O_RDONLY);
-// 	unlink("./.text_document");
-// 	return (fd);
-// }
-
 void	unset_term_rd(void)
 {
 	int	ret;
@@ -113,7 +81,6 @@ int	text_document(char *delim)
 	g_msh.line = ft_strnew(0);
 	while (1)
 	{
-		//
 		g_msh.pos = 0;
 		unset_term_rd();
 		write(1, "> ", 2);
@@ -125,7 +92,6 @@ int	text_document(char *delim)
 		}
 		write(1, "\n", 1);
 		set_term_rd();
-		//
 
 		if (!ft_strcmp(g_msh.line, delim))
 			break ;
@@ -141,23 +107,13 @@ int	text_document(char *delim)
 	return (fd);
 }
 
-void	sig_handler_promt_rd(int signum)
-{
-	if (signum == SIGINT)
-		g_msh.rdfl = 1;
-	else if (signum == SIGQUIT)
-		return ;
-}
-
 int	key_loop_rd(void)
 {
 	char	buf[BUFFER_SIZE];
 	int		len;
 
 	g_msh.rdfl = 0;
-	signal(SIGINT, SIG_IGN);
-	// signal(SIGINT, sig_handler_promt_rd);
-	signal(SIGQUIT, sig_handler_promt_rd);
+	wait4signal_rd();
 	while (1)
 	{
 		ft_memset(buf, 0, BUFFER_SIZE);
@@ -205,8 +161,8 @@ int	key_loop_rd(void)
 			if (ft_isprint(buf[0]) && ft_strcmp(buf, "\t"))//except tab
 			{
 				tputs(tgetstr("im", 0), 1, ft_putchar);
-				g_msh.pos++;
 				g_msh.line = ft_ins_ch2str(g_msh.line, buf[0], g_msh.pos);
+				g_msh.pos++;
 				write (1, buf, len);
 				tputs(tgetstr("ei", 0), 1, ft_putchar);
 			}
