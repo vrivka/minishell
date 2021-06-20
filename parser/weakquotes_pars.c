@@ -8,7 +8,7 @@ void	wq_dollar_val(t_pars *pars)
 	env_name = ft_strnew(0);
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
-	while (pars->s[pars->i] != '\"')
+	while (pars->s[pars->i] != '\"' && pars->s[pars->i] != '\'')
 	{
 		if (pars->s[pars->i] == ' ')
 			break ;
