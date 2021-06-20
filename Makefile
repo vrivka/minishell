@@ -1,4 +1,4 @@
-NAME = msh
+NAME = minishell
 
 LIBFT_PATH = libft/
 
@@ -97,6 +97,6 @@ re:		fclean all
 
 dbg:
 		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) \
-		-I./includes -ltermcap -lreadline -o msh
+		-I./includes -ltermcap -lreadline -o minishell
 
 .PHONY: all clean fclean re
