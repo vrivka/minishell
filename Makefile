@@ -54,6 +54,9 @@ SRCS = main.c \
         vrivka/export_func_utils.c \
         vrivka/free_shlvl.c \
         vrivka/open_redirs.c \
+		vrivka/key_loop_rd.c \
+		vrivka/key_func_rd.c \
+		vrivka/term_setup_rd.c \
 		vrivka/open_redirs_signals.c \
         vrivka/open_redirs_utils.c \
         vrivka/path_finder.c \

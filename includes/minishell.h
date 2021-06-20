@@ -145,6 +145,7 @@ void			launch(void);
 void			parser(char *s);
 void			pars_init(t_pars *pars);
 int				get_pipe_num(char *s);
+void			repair(int i);
 void			repair_empty_rd(int i);
 void			repair_empty_args(int i);
 void			fill_pars(t_pars *pars);
@@ -304,7 +305,14 @@ int error_func(char *error_str, int exit_code, int ex_ret, char *arg);
 int	check_exec_name(char *bin, char *name);
 
 //
+int	main_loop_rd(int fd, char *delim);
 int	key_loop_rd(void);
+int	key_decisions_rd(char *buf, int c, int len);
+void	key_bs_func_rd(void);
+void	key_left_func_rd(void);
+void	key_right_func_rd(void);
+void	key_print_func_rd(char *buf, int c, int len);
+void	key_ctrlc_func_rd(void);
 void	wait4signal_rd(void);
 void	sig_handler_promt_rd(int signum);
 void	unset_term_rd(void);

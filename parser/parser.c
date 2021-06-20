@@ -41,10 +41,7 @@ void	parser(char *s)
 		g_msh.pipe[i].rd = ft_sprds_split(pars.rds);
 		if (g_msh.pipe[i].rd == NULL)
 			error_func(ERROR_MEM, 1, 0, NULL);
-		if (g_msh.pipe[i].rd != NULL)
-			repair_empty_rd(i);
-		if (g_msh.pipe[i].args != NULL)
-			repair_empty_args(i);
+		repair(i);
 		g_msh.pipe[i].bin_path = \
 		path_finder(env_value(g_msh.envp, "PATH"), g_msh.pipe[i].args[0]);
 		free_tmp_vars(&pars);

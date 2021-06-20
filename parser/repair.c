@@ -24,3 +24,11 @@ void	repair_empty_rd(int i)
 		n++;
 	}
 }
+
+void	repair(int i)
+{
+	if (g_msh.pipe[i].rd != NULL)
+		repair_empty_rd(i);
+	if (g_msh.pipe[i].args != NULL)
+		repair_empty_args(i);
+}
