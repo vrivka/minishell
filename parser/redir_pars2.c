@@ -11,9 +11,12 @@ void	dollar_pars_rd(t_pars *pars)
 	env_val = env_value(g_msh.envp, env_name);
 	free(env_name);
 	env_name = NULL;
-	pars->rds = ft_strjoin_fr(pars->rds, env_val);
-	change_sp2us(&env_val);
-	g_msh.check_sprds = ft_strjoin_fr(g_msh.check_sprds, env_val);
+	if (env_val)
+	{
+		pars->rds = ft_strjoin_fr(pars->rds, env_val);
+		change_sp2us(&env_val);
+		g_msh.check_sprds = ft_strjoin_fr(g_msh.check_sprds, env_val);
+	}
 	free(env_val);
 	env_val = NULL;
 }
