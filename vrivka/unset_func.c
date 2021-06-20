@@ -5,14 +5,14 @@ int	check_args_unset(char *arg)
 	int	i;
 
 	if (!ft_isalpha(arg[0]) && arg[0] != '_')
-		return (error_func("minishell: unset: %s: not a valid identifier\n",
-						   1, 1, arg));
+		return (error_func("minishell: unset: %s: not a valid identifier\n", \
+							1, 1, arg));
 	i = 0;
 	while (arg[i] && arg[i] != '=')
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (error_func("minishell: unset: %s: not a valid "
-							   "identifier\n", 1, 1, arg));
+			return (error_func("minishell: unset: %s: not a valid identifier\n", \
+								1, 1, arg));
 		i++;
 	}
 	return (0);
