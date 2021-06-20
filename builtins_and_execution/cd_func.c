@@ -42,7 +42,11 @@ void	switch_pwd_oldpwd(void)
 
 	tmp = env_value(g_msh.envp, "PWD");
 	if (!tmp)
-		tmp = "";
+	{
+		tmp = ft_strdup("");
+		if (!tmp)
+			error_func(ERROR_MEM, 1, 0, NULL);
+	}
 	pwd = cd_pwd(ft_strjoin("OLDPWD=", tmp));
 	free(tmp);
 	free(pwd[2]);

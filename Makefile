@@ -95,4 +95,8 @@ fclean:	clean
 
 re:		fclean all
 
+dbg:
+		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) \
+		-I./includes -ltermcap -lreadline -o minishell
+
 .PHONY: all clean fclean re
