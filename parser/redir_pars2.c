@@ -4,7 +4,8 @@ void	dollar_pars_rd(t_pars *pars)
 {
 	char	*env_name;
 	char	*env_val;
-
+	
+	env_val = NULL;
 	pars->s = ft_cutstr_begin(pars->s, (pars->i + 1));
 	pars->i = 0;
 	env_name = get_env_name(pars);
