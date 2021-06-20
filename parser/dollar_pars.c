@@ -89,7 +89,6 @@ void	dollar_pars(t_pars *pars)
 	if (env_val != NULL)
 	{
 		pars->args = ft_strjoin_fr(pars->args, env_val);
-		change_sp2us(&env_val);
 		g_msh.check_spargs = ft_strjoin_fr(g_msh.check_spargs, env_val);
 		free(env_val);
 	}
