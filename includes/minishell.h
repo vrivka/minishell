@@ -74,8 +74,6 @@ typedef struct s_msh
 	int				pid;
 	t_pipe			*pipe;
 	int				pipe_count;
-	int				l_fd;
-	int				r_fd;
 	int				rdfl;
 	int				**pipe_fd;
 	char			*pwd;

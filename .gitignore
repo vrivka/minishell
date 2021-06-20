@@ -1,11 +1,6 @@
 .DS_Store
 .vscode
 .idea/
-vrivka/CMakeLists.txt
-vrivka/a.out.dSYM/
-vrivka/check.sh
-vrivka/cmake-build-debug/
-vrivka/file
 a.out
 .history
 *.o

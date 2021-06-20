@@ -39,30 +39,30 @@ SRCS = main.c \
 		signals.c \
 		history/history.c \
 		history/history_utils.c \
-		vrivka/cd_func.c \
-        vrivka/echo_func.c \
-        vrivka/env_func.c \
-        vrivka/env_handler.c \
-        vrivka/envcpy.c \
-        vrivka/error_func.c \
-        vrivka/exec_func.c \
-        vrivka/exec_pipe_func.c \
-        vrivka/exec_utils.c \
-        vrivka/executor.c \
-        vrivka/exit_func.c \
-        vrivka/export_func.c \
-        vrivka/export_func_utils.c \
-        vrivka/free_shlvl.c \
-        vrivka/open_redirs.c \
-		vrivka/key_loop_rd.c \
-		vrivka/key_func_rd.c \
-		vrivka/term_setup_rd.c \
-		vrivka/open_redirs_signals.c \
-        vrivka/open_redirs_utils.c \
-        vrivka/path_finder.c \
-        vrivka/pwd_func.c \
-        vrivka/unset_func.c \
-        vrivka/text_handler.c
+		builtins_and_execution/cd_func.c \
+        builtins_and_execution/echo_func.c \
+        builtins_and_execution/env_func.c \
+        builtins_and_execution/env_handler.c \
+        builtins_and_execution/envcpy.c \
+        builtins_and_execution/error_func.c \
+        builtins_and_execution/exec_func.c \
+        builtins_and_execution/exec_pipe_func.c \
+        builtins_and_execution/exec_utils.c \
+        builtins_and_execution/executor.c \
+        builtins_and_execution/exit_func.c \
+        builtins_and_execution/export_func.c \
+        builtins_and_execution/export_func_utils.c \
+        builtins_and_execution/free_shlvl.c \
+        builtins_and_execution/open_redirs.c \
+		builtins_and_execution/key_loop_rd.c \
+		builtins_and_execution/key_func_rd.c \
+		builtins_and_execution/term_setup_rd.c \
+		builtins_and_execution/open_redirs_signals.c \
+        builtins_and_execution/open_redirs_utils.c \
+        builtins_and_execution/path_finder.c \
+        builtins_and_execution/pwd_func.c \
+        builtins_and_execution/unset_func.c \
+        builtins_and_execution/text_handler.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -94,9 +94,5 @@ fclean:	clean
 		@$(RM) $(NAME)
 
 re:		fclean all
-
-dbg:
-		gcc -g $(CFLAGS) $(SRCS) $(LIBFT) \
-		-I./includes -ltermcap -lreadline -o minishell
 
 .PHONY: all clean fclean re
