@@ -1,5 +1,5 @@
 # minishell
-my own bash. group project with vrivka
+my own bash. group project with @vrivka
 
 * terminal setup (termcaps)
 
