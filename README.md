@@ -1,12 +1,12 @@
 # minishell
-my own bash
+my own bash. group project with vrivka
 
-terminal setup (termcaps)
+* terminal setup (termcaps)
 
-history of commands
+* history of commands
 
-parser of input data
+* parser of input data
 
-syntax errors
+* syntax errors
 
-signal handling
+* signal handling
